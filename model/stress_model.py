@@ -293,7 +293,7 @@ def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
 
     return (
         industry[cols]
-        .sort_values("expected_loss_change", ascending=False)
+        .sort_values("stressed_pd", ascending=False)
         .head(int(top_n))
         .replace({np.nan: None})
         .to_dict(orient="records")
