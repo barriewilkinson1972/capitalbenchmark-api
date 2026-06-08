@@ -40,7 +40,7 @@ MODEL_NAME = "two_factor_vasicek_with_industry_mc"
 class StressConfig:
     """Runtime configuration for the stress simulation."""
 
-    n_sims: int = 10_000
+    n_sims: int = 1000
     n_bins: int = 40
     asset_rho: float = 0.20
     random_seed: int = 42
