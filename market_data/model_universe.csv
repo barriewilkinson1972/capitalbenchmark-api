@@ -1,0 +1,912 @@
+symbol,longName,industry,totalDebt_usd,Agency Rating
+OMC,Omnicom Group Inc.,Advertising Agencies,"11,516,600,320",BBB+
+CCO,"Clear Channel Outdoor Holdings, Inc.",Advertising Agencies,"6,442,229,760",CCC+
+DNTUY,Dentsu Group Inc.,Advertising Agencies,"2,815,202,929",AA-
+ZD,"Ziff Davis, Inc.",Advertising Agencies,"894,267,008",BB
+APP,AppLovin Corp.,Advertising Agencies,,BBB
+PUBGY,Publicis Groupe,Advertising Agencies,,BBB+
+JCDXY,JCDecaux SE,Advertising Agencies,,BBB-
+WPP,WPP plc,Advertising Agencies,,BBB
+BA,The Boeing Company,Aerospace & Defense,"49,614,000,128",BBB-
+TDG,TransDigm Group Incorporated,Aerospace & Defense,"32,003,000,320",BB-
+GE,GE Aerospace,Aerospace & Defense,"21,321,000,960",A-
+LMT,Lockheed Martin Corporation,Aerospace & Defense,"20,696,999,936",A-
+NOC,Northrop Grumman Corporation,Aerospace & Defense,"17,574,000,640",BBB+
+EADSY,Airbus SE,Aerospace & Defense,"16,805,075,843",A
+BAESY,BAE Systems plc,Aerospace & Defense,"12,236,636,679",A-
+GD,General Dynamics Corporation,Aerospace & Defense,"9,831,999,488",A
+FINMY,Leonardo S.p.a.,Aerospace & Defense,"5,269,896,254",BBB
+TXT,Textron Inc.,Aerospace & Defense,"4,215,000,064",BBB
+RNMBY,Rheinmetall AG,Aerospace & Defense,"2,487,889,263",BBB+
+CAE,CAE Inc.,Aerospace & Defense,"2,313,530,485",BBB-
+BWXT,"BWX Technologies, Inc.",Aerospace & Defense,"2,017,945,984",BB
+AIR,AAR Corp.,Aerospace & Defense,"979,699,968",BB
+MOS,The Mosaic Company,Agricultural Inputs,"5,762,500,096",BBB
+FMC,FMC Corporation,Agricultural Inputs,"4,656,600,064",BB+
+CF,"CF Industries Holdings, Inc.",Agricultural Inputs,"3,620,000,000",BBB
+ICL,ICL Group Ltd,Agricultural Inputs,"3,150,000,128",BBB-
+SMG,The Scotts Miracle-Gro Company,Agricultural Inputs,"2,665,600,000",B+
+NUFMF,Nufarm Limited,Agricultural Inputs,"720,868,454",B+
+CTVA,Corteva Inc.,Agricultural Inputs,,A-
+NTR,Nutrien Ltd.,Agricultural Inputs,,BBB
+YARIY,Yara International ASA,Agricultural Inputs,,BBB
+KPLUY,K+S Aktiengesellschaft,Agricultural Inputs,,BBB-
+UAN,"CVR Partners, LP",Agricultural Inputs,,B+
+AAL,American Airlines Group Inc.,Airlines,"34,892,001,280",B+
+UAL,"United Airlines Holdings, Inc.",Airlines,"30,971,000,832",BB+
+DAL,"Delta Air Lines, Inc.",Airlines,"21,398,999,040",BBB-
+JBLU,JetBlue Airways Corporation,Airlines,"9,333,999,616",CCC+
+ACDVF,Air Canada,Airlines,"8,799,312,716",BB
+ALK,"Alaska Air Group, Inc.",Airlines,"6,668,000,256",BB-
+LUV,Southwest Airlines Co.,Airlines,"6,396,000,256",BBB
+QUBSF,Qantas Airways Limited,Airlines,"5,766,969,844",BBB-
+ALGT,Allegiant Travel Company,Airlines,"1,853,789,952",B+
+AGZNF,Aegean Airlines S.A.,Airlines,"1,748,442,988",AA
+RYAAY,Ryanair Holdings plc,Airlines,"1,720,299,965",BBB+
+AA,Alcoa Corporation,Aluminum,"2,551,000,064",BB+
+CSTM,Constellium SE,Aluminum,"1,972,999,936",BB-
+KALU,Kaiser Aluminum Corporation,Aluminum,"1,069,600,000",BB-
+CENX,Century Aluminum Company,Aluminum,"545,900,032",B
+NORNQ,Noranda Aluminum Holding Corporation,Aluminum,,B-
+NHYKF,Norsk Hydro,Aluminum,,BBB
+VFC,V.F. Corporation,Apparel Manufacturing,"4,983,353,856",BB
+PVH,PVH Corp.,Apparel Manufacturing,"4,225,999,872",BBB
+RL,Ralph Lauren Corporation,Apparel Manufacturing,"3,009,400,064",A-
+LEVI,Levi Strauss & Co.,Apparel Manufacturing,"2,317,600,000",BB+
+COLM,Columbia Sportswear Company,Apparel Manufacturing,"472,568,000",A-
+GIL,Gildan Activewear Inc.,Apparel Manufacturing,,BBB-
+UAA,"Under Armour, Inc.",Apparel Manufacturing,,BB-
+BSDGY,Bosideng International Holdings Limited,Apparel Manufacturing,,BBB-
+KTB,"Kontoor Brands, Inc.",Apparel Manufacturing,,BB
+BOSSY,Hugo Boss AG,Apparel Manufacturing,,BBB-
+GOOS,Canada Goose,Apparel Manufacturing,,BB-
+TJX,"The TJX Companies, Inc.",Apparel Retail,"14,179,999,744",A
+ROST,"Ross Stores, Inc.",Apparel Retail,"4,723,149,824",A-
+FRCOY,"Fast Retailing Co., Ltd.",Apparel Retail,"4,286,565,140",A+
+ANF,Abercrombie & Fitch Co.,Apparel Retail,"1,292,477,056",BB
+CRI,"Carter's, Inc.",Apparel Retail,"1,196,312,960",BB+
+CAL,"Caleres, Inc.",Apparel Retail,"949,283,968",BB-
+BURL,"Burlington Stores, Inc.",Apparel Retail,,BB+
+GAP,"The Gap, Inc.",Apparel Retail,,BB+
+VSXY,Victoria's Secret & Co.,Apparel Retail,,BB-
+NXGPF,NEXT plc,Apparel Retail,,BBB
+TM,Toyota Motor Corporation,Auto Manufacturers,"269,156,066,606",A+
+F,Ford Motor Company,Auto Manufacturers,"159,511,003,136",BBB-
+GM,General Motors Company,Auto Manufacturers,"128,773,996,544",BBB
+HMC,"Honda Motor Co., Ltd.",Auto Manufacturers,"85,946,851,987",BBB+
+STLA,Stellantis N.V.,Auto Manufacturers,"55,291,810,924",BBB-
+TSLA,"Tesla, Inc.",Auto Manufacturers,"15,889,999,872",BBB
+YMHAY,Yamaha Motor Co.,Auto Manufacturers,,BBB+
+MZDAF,Mazda Motor Corp,Auto Manufacturers,,BBB+
+ISUZF,Isuzu Motors Limited,Auto Manufacturers,,A-
+MMTOY,Mitsubishi Motors Corporation,Auto Manufacturers,,BB+
+VWAGY,Volkswagen AG,Auto Manufacturers,,BBB+
+BMWKY,Bayerische Motoren Werke Aktiengesellschaft,Auto Manufacturers,,A
+MBGYY,Mercedes-Benz Group AG,Auto Manufacturers,,A
+RNLSY,Renault SA,Auto Manufacturers,,BBB-
+GELHY,Geely Automobile Holdings Limited,Auto Manufacturers,,BBB-
+NFYEF,NFI Group Inc.,Auto Manufacturers,,BB-
+PGGCY,Piaggio & C. SpA,Auto Manufacturers,,BB-
+LAD,"Lithia Motors, Inc.",Auto & Truck Dealerships,,BB+
+AN,"AutoNation, Inc.",Auto & Truck Dealerships,,BBB-
+PAG,Penske Automotive Group,Auto & Truck Dealerships,,BB+
+GPI,"Group 1 Automotive, Inc.",Auto & Truck Dealerships,,BB+
+ABG,"Asbury Automotive Group, Inc.",Auto & Truck Dealerships,,BB+
+SAH,"Sonic Automotive, Inc.",Auto & Truck Dealerships,,BB
+CWH,"Camping World Holdings, Inc.",Auto & Truck Dealerships,,B
+IHCPF,Inchcape plc,Auto & Truck Dealerships,,BBB
+OPLN,"OPENLANE, Inc.",Auto & Truck Dealerships,,B
+AZO,"AutoZone, Inc.",Auto Parts,"12,750,193,664",BBB
+FURCF,Forvia SE,Auto Parts,"11,508,881,567",BB+
+GT,The Goodyear Tire & Rubber Company,Auto Parts,"8,032,000,000",B+
+GPC,Genuine Parts Company,Auto Parts,"6,713,816,064",BBB-
+AAP,"Advance Auto Parts, Inc.",Auto Parts,"5,649,999,872",BB
+LKQ,LKQ Corporation,Auto Parts,"5,235,999,744",BBB-
+NPSGF,"Nippon Sheet Glass Company, Limited",Auto Parts,"3,408,685,407",BB+
+ALV,"Autoliv, Inc.",Auto Parts,"2,252,000,000",BBB+
+DAN,Dana Incorporated,Auto Parts,"1,535,000,064",BB
+CPS,Cooper-Standard Holdings Inc.,Auto Parts,"1,243,230,976",B-
+DORM,"Dorman Products, Inc.",Auto Parts,"548,238,016",BB
+VC,Visteon Corporation,Auto Parts,"436,000,000",BB+
+JELCF,Johnson Electric Holdings Limited,Auto Parts,"383,512,992",BBB
+DNZOY,DENSO Corporation,Auto Parts,,A+
+BRDCF,Bridgestone Corporation,Auto Parts,,AA+
+ASEKF,Aisin Corporation,Auto Parts,,A
+APTV,Aptiv PLC,Auto Parts,,BBB
+BUD,Anheuser-Busch InBev SA/NV,Beverages - Brewers,"73,333,997,568",A-
+HKHHY,Heineken Holding N.V.,Beverages - Brewers,"22,236,447,571",BBB+
+TAP,Molson Coors Beverage Company,Beverages - Brewers,"6,485,300,224",BBB
+ABEV,Ambev S.A.,Beverages - Brewers,"601,187,023",BBB+
+STZ,"Constellation Brands, Inc.",Beverages - Brewers,,BBB
+PEP,"PepsiCo, Inc.",Beverages - Non-Alcoholic,"52,728,000,512",A+
+KO,The Coca-Cola Company,Beverages - Non-Alcoholic,"44,646,998,016",A
+COKE,"Coca-Cola Consolidated, Inc.",Beverages - Non-Alcoholic,"1,118,844,032",BBB+
+EMBVF,Arca Continental,Beverages - Non-Alcoholic,,A
+PRMB,Primo Brands Corp.,Beverages - Non-Alcoholic,,BB-
+CELH,Celsius Holdings Inc.,Beverages - Non-Alcoholic,,BB-
+GMAB,Genmab A/S,Biotechnology,"5,351,000,064",BB+
+ALNY,"Alnylam Pharmaceuticals, Inc.",Biotechnology,"2,970,230,016",BB+
+REGN,"Regeneron Pharmaceuticals, Inc.",Biotechnology,"2,706,200,064",BBB+
+VRTX,Vertex Pharmaceuticals Incorporated,Biotechnology,"1,986,499,968",BBB-
+BMRN,BioMarin Pharmaceutical Inc.,Biotechnology,"1,439,601,024",BB+
+MLM,"Martin Marietta Materials, Inc.",Building Materials,"5,688,000,000",BBB+
+VMC,Vulcan Materials Company,Building Materials,"5,191,300,096",BBB+
+JHX,James Hardie Industries plc,Building Materials,"4,889,200,128",BB+
+EXP,Eagle Materials Inc.,Building Materials,"1,796,784,000",BBB
+CRH,CRH plc,Building Materials,,BBB+
+HCMLY,Holcim AG,Building Materials,,BBB+
+HDLMY,Heidelberg Materials AG,Building Materials,,BBB
+AMRZ,Amrize Ltd,Building Materials,,BBB+
+CX,"CEMEX, S.A.B.",Building Materials,,BBB-
+AHCHY,Anhui Conch Cement Company Limited,Building Materials,,A
+TTCIF,Titan S.A.,Building Materials,,BB+
+KNF,Knife River Corporation,Building Materials,,BB+
+GCWOF,"GCC, S.A.B.",Building Materials,,BBB
+WBRBY,Wienerberger AG,Building Materials,,BBB-
+JCI,Johnson Controls International plc,Building Products & Equipment,"9,523,000,320",BBB+
+OC,Owens Corning,Building Products & Equipment,"6,023,000,064",BBB
+MAS,Masco Corporation,Building Products & Equipment,"3,302,000,128",BBB
+CSL,Carlisle Companies Incorporated,Building Products & Equipment,"2,888,600,064",BBB
+WMS,"Advanced Drainage Systems, Inc.",Building Products & Equipment,"1,846,093,056",BB
+ROCK,"Gibraltar Industries, Inc.",Building Products & Equipment,"1,374,199,040",BB-
+AWI,"Armstrong World Industries, Inc.",Building Products & Equipment,"570,600,000",BB
+DOW,Dow Inc.,Chemicals,"19,634,999,296",BBB-
+CE,Celanese Corporation,Chemicals,"12,904,999,936",BB
+SHWDF,Resonac Holdings Corporation,Chemicals,"6,001,071,574",A+
+TROX,Tronox Holdings plc,Chemicals,"3,513,999,872",CCC+
+MEOH,Methanex Corporation,Chemicals,"3,453,582,080",BB
+OLN,Olin Corporation,Chemicals,"3,310,899,968",BB+
+HUN,Huntsman Corporation,Chemicals,"2,487,000,064",BB
+BASFY,BASF SE,Chemicals,,A-
+SVYSF,Solvay SA,Chemicals,,BBB-
+GPRE,Green Plains Inc.,Chemicals,,B
+HPE,Hewlett Packard Enterprise Company,Communication Equipment,"21,304,000,512",BBB
+MSI,"Motorola Solutions, Inc.",Communication Equipment,"9,589,000,192",BBB
+VSAT,"Viasat, Inc.",Communication Equipment,"6,939,566,080",B
+NOK,Nokia Oyj,Communication Equipment,"3,835,063,461",BBB-
+LITE,Lumentum Holdings Inc.,Communication Equipment,"3,313,700,096",B+
+ZBRA,Zebra Technologies Corporation,Communication Equipment,"2,848,999,936",BB+
+CIEN,Ciena Corporation,Communication Equipment,"1,580,579,968",BB+
+BDC,Belden Inc.,Communication Equipment,"1,377,171,968",BB
+VIAV,Viavi Solutions Inc.,Communication Equipment,"1,136,499,968",B+
+CSCO,Cisco Systems,Communication Equipment,,AA-
+HPQ,HP Inc.,Computer Hardware,"10,864,000,000",BBB
+CAJPY,Canon Inc.,Computer Hardware,"7,683,401,588",A
+LNVGY,Lenovo Group Limited,Computer Hardware,"5,156,451,840",BBB
+STX,Seagate Technology Holdings plc,Computer Hardware,"4,177,999,872",BB+
+SNDK,Sandisk Corporation,Computer Hardware,,BB+
+DELL,Dell Technologies,Computer Hardware,,BBB+
+MDLZ,"Mondelez International, Inc.",Confectioners,"21,621,999,616",BBB
+HSY,The Hershey Company,Confectioners,"5,681,147,904",A
+BYCBF,Barry Callebaut AG,Confectioners,,BBB-
+EFX,Equifax Inc.,Consulting Services,"5,308,100,096",BBB
+VRSK,"Verisk Analytics, Inc.",Consulting Services,"4,625,200,128",BBB
+BAH,Booz Allen Hamilton Holding Corporation,Consulting Services,"4,121,999,872",BBB-
+EXPGF,Experian plc,Consulting Services,,A-
+SGSOY,SGS SA,Consulting Services,,A-
+AAPL,Apple Inc.,Consumer Electronics,"84,710,998,016",AA+
+TCLHF,TCL Electronics Holdings Limited,Consumer Electronics,"923,402,925",BBB-
+SONY,Sony Group Corporation,Consumer Electronics,,A+
+PCRFF,Panasonic Holdings Corporation,Consumer Electronics,,A-
+FCX,Freeport-McMoRan Inc.,Copper,"10,401,000,448",BBB
+SCCO,Southern Copper Corporation,Copper,"7,401,699,840",BBB+
+ANFGF,Antofagasta plc,Copper,,BBB+
+LUNMF,Lundin Mining,Copper,,BB
+FQVLF,First Quantum Minerals,Copper,,B
+HBM,Hudbay Minerals,Copper,,BB-
+CSCCF,Capstone Copper Corp.,Copper,,BB-
+ERO,Ero Copper Corp.,Copper,,B
+TGB,Taseko Mines,Copper,,B-
+KSS,Kohl's Corporation,Department Stores,"6,533,000,192",B+
+M,"Macy's, Inc.",Department Stores,"5,109,000,192",BB+
+MAKSY,Marks and Spencer Group plc,Department Stores,"4,579,620,450",BBB-
+JFROF,"J. Front Retailing Co., Ltd.",Department Stores,"2,097,376,098",A+
+DDS,"Dillard's, Inc.",Department Stores,,BBB-
+TMO,Thermo Fisher Scientific Inc.,Diagnostics & Research,"43,161,001,984",A-
+DHR,Danaher Corporation,Diagnostics & Research,"19,683,999,744",A-
+LH,Labcorp Holdings Inc.,Diagnostics & Research,"7,294,400,000",BBB
+DGX,Quest Diagnostics Incorporated,Diagnostics & Research,"6,408,000,000",BBB+
+LZAGF,Lonza Group AG,Diagnostics & Research,"5,851,675,638",BBB+
+WAT,Waters Corporation,Diagnostics & Research,"5,601,999,872",BBB
+ICLR,ICON Public Limited Company,Diagnostics & Research,"3,555,781,888",BBB-
+A,"Agilent Technologies, Inc.",Diagnostics & Research,"3,542,000,128",BBB+
+CRL,"Charles River Laboratories International, Inc.",Diagnostics & Research,"3,064,531,968",BB+
+ILMN,"Illumina, Inc.",Diagnostics & Research,"2,544,000,000",BBB
+WMT,Walmart Inc.,Discount Stores,"75,545,001,984",AA
+TGT,Target Corporation,Discount Stores,"19,271,999,488",A
+DG,Dollar General Corporation,Discount Stores,"15,798,401,024",BBB
+COST,Costco Wholesale Corporation,Discount Stores,"10,227,999,744",AA
+DLTR,"Dollar Tree, Inc.",Discount Stores,"7,593,299,968",BBB
+DLMAF,Dollarama Inc.,Discount Stores,,BBB
+BJ,"BJ's Wholesale Club Holdings, Inc.",Discount Stores,,BB+
+ABBV,AbbVie Inc.,Drug Manufacturers - General,"72,912,003,072",A-
+PFE,Pfizer Inc.,Drug Manufacturers - General,"64,731,000,832",A
+AMGN,Amgen Inc.,Drug Manufacturers - General,"57,322,999,808",BBB+
+JNJ,Johnson & Johnson,Drug Manufacturers - General,"54,987,001,856",AAA
+MRK,"Merck & Co., Inc.",Drug Manufacturers - General,"49,116,999,680",A+
+NVS,Novartis AG,Drug Manufacturers - General,"46,997,999,616",AA-
+LLY,Eli Lilly and Company,Drug Manufacturers - General,"43,370,000,384",AA-
+AZN,AstraZeneca PLC,Drug Manufacturers - General,"34,029,000,704",A+
+GSK,GSK plc,Drug Manufacturers - General,"25,534,074,934",A
+NVO,Novo Nordisk A/S,Drug Manufacturers - General,"22,586,119,462",AA
+GILD,"Gilead Sciences, Inc.",Drug Manufacturers - General,"22,173,999,104",A-
+GRFS,"Grifols, S.A.",Drug Manufacturers - General,"11,152,249,641",BB-
+BIIB,Biogen Inc.,Drug Manufacturers - General,"6,561,900,032",BBB+
+OTSKY,"Otsuka Holdings Co., Ltd.",Drug Manufacturers - General,"1,212,463,029",AA-
+TEVA,Teva Pharmaceutical Industries Limited,Drug Manufacturers - Specialty & Generic,"16,924,999,680",BB+
+ZTS,Zoetis Inc.,Drug Manufacturers - Specialty & Generic,"9,253,999,616",BBB+
+PRGO,Perrigo Company plc,Drug Manufacturers - Specialty & Generic,"3,828,699,904",BB-
+HKMPF,Hikma Pharmaceuticals PLC,Drug Manufacturers - Specialty & Generic,"1,604,000,000",BBB
+EBS,Emergent BioSolutions Inc.,Drug Manufacturers - Specialty & Generic,"584,600,000",B-
+MKGAF,Merck KGaA,Drug Manufacturers - Specialty & Generic,,BBB+
+ENR,"Energizer Holdings, Inc.",Electrical Equipment & Parts,"3,406,599,936",B+
+HUBB,Hubbell Incorporated,Electrical Equipment & Parts,"2,738,700,032",BBB+
+MIELY,Mitsubishi Electric Corporation,Electrical Equipment & Parts,"2,263,104,130",A
+NXPRF,Nexans S.A.,Electrical Equipment & Parts,"2,191,464,877",BB+
+ENS,EnerSys,Electrical Equipment & Parts,"1,189,683,968",BB+
+AYI,Acuity Inc.,Electrical Equipment & Parts,"808,200,000",BBB
+YASKY,YASKAWA Electric Corporation,Electrical Equipment & Parts,"777,781,244",A
+APH,Amphenol Corporation,Electronic Components,"18,748,899,328",A-
+GLW,Corning Incorporated,Electronic Components,"9,923,999,744",BBB+
+FLEX,Flex Ltd.,Electronic Components,"4,464,999,936",BBB-
+JBL,Jabil Inc.,Electronic Components,"4,437,000,192",BBB-
+TTDKY,TDK Corporation,Electronic Components,"3,837,293,133",A-
+SANM,Sanmina Corporation,Electronic Components,"2,419,897,088",BB+
+CLS,Celestica Inc.,Electronic Components,"941,699,968",BB+
+TTWO,"Take-Two Interactive Software, Inc.",Electronic Gaming & Multimedia,"2,958,299,904",BBB
+EA,Electronic Arts Inc.,Electronic Gaming & Multimedia,"1,854,000,000",BB-
+RBLX,Roblox Corporation,Electronic Gaming & Multimedia,,BBB-
+SNX,TD SYNNEX Corporation,Electronics & Computer Distribution,"5,158,170,112",BBB-
+AVT,"Avnet, Inc.",Electronics & Computer Distribution,"3,172,492,032",BBB-
+ARW,"Arrow Electronics, Inc.",Electronics & Computer Distribution,"2,465,765,888",BBB-
+RXLSF,Rexel S.A.,Electronics & Computer Distribution,,BB+
+NSIT,Insight Enterprise,Electronics & Computer Distribution,,BB+
+VCISY,Vinci SA,Engineering & Construction,"47,023,068,586",A-
+GKTRF,Gek Terna S.A.,Engineering & Construction,"7,063,314,192",BBB-
+PWR,"Quanta Services, Inc.",Engineering & Construction,"6,319,672,832",BBB
+NWSZF,CTF Services Limited,Engineering & Construction,"4,512,186,336",A+
+IMPJY,Webuild S.p.A.,Engineering & Construction,"3,538,685,138",BB+
+ACM,AECOM,Engineering & Construction,"3,346,927,104",BB+
+DY,"Dycom Industries, Inc.",Engineering & Construction,"2,998,935,040",BB+
+KBR,"KBR, Inc.",Engineering & Construction,"2,811,000,064",BB+
+ACA,"Arcosa, Inc.",Engineering & Construction,"1,579,699,968",BB
+GVA,Granite Construction Incorporated,Engineering & Construction,"1,395,993,984",BB
+FLR,Fluor Corporation,Engineering & Construction,"1,071,000,000",BB+
+EME,"EMCOR Group, Inc.",Engineering & Construction,"516,518,016",BBB-
+DIS,The Walt Disney Company,Entertainment,"47,358,001,152",A
+NFLX,"Netflix, Inc.",Entertainment,"16,742,200,320",A
+SIRI,Sirius XM Holdings Inc.,Entertainment,"9,957,000,192",BB+
+FOX,Fox Corporation,Entertainment,"7,574,000,128",BBB
+NWSA,News Corporation,Entertainment,"2,928,999,936",BBB-
+WBD,Warner Bros. Discovery,Entertainment,,BB+
+DE,Deere & Company,Farm & Heavy Construction Machinery,"48,473,001,984",A
+CAT,Caterpillar Inc.,Farm & Heavy Construction Machinery,"43,065,999,360",A
+KUBTY,Kubota Corporation,Farm & Heavy Construction Machinery,"14,561,368,766",A
+KMTUY,Komatsu Ltd.,Farm & Heavy Construction Machinery,"8,843,354,716",A
+TEX,Terex Corporation,Farm & Heavy Construction Machinery,"2,748,999,936",BB
+AGCO,AGCO Corporation,Farm & Heavy Construction Machinery,"2,741,900,032",BBB-
+OUKPY,Metso Oyj,Farm & Heavy Construction Machinery,"1,790,080,784",BBB
+TWI,"Titan International, Inc.",Farm & Heavy Construction Machinery,"738,539,008",B
+WNC,Wabash National Corporation,Farm & Heavy Construction Machinery,"530,948,992",B-
+HY,"Hyster-Yale, Inc.",Farm & Heavy Construction Machinery,"505,300,000",B
+BG,Bunge Global SA,Farm Products,"16,291,000,320",A-
+ADM,Archer-Daniels-Midland Company,Farm Products,"10,657,000,448",A
+TSN,"Tyson Foods, Inc.",Farm Products,"8,082,999,808",BBB
+MNHVF,Mowi ASA,Farm Products,"4,083,506,596",BBB+
+FDP,Fresh Del Monte Produce Inc.,Farm Products,"628,899,968",BB
+PFGC,Performance Food Group Company,Food Distribution,"7,877,899,776",BB
+BZLFY,Bunzl plc,Food Distribution,"3,952,357,338",BBB+
+UNFI,"United Natural Foods, Inc.",Food Distribution,"3,152,999,936",B+
+SYY,Sysco Corporation,Food Distribution,,BBB
+USFD,US Foods Holding Corp.,Food Distribution,,BB+
+NKE,"NIKE, Inc.",Footwear & Accessories,"11,178,000,384",A+
+CROX,"Crocs, Inc.",Footwear & Accessories,"1,725,443,968",BB
+ADDYY,Adidas AG,Footwear & Accessories,,A
+PMMAF,PUMA SE,Footwear & Accessories,,BBB+
+BIRK,Birkenstock Holding plc,Footwear & Accessories,,BB+
+WWW,"Wolverine World Wide, Inc.",Footwear & Accessories,,B+
+WHR,Whirlpool Corporation,"Furnishings, Fixtures & Appliances","7,104,000,000",BB-
+MHK,"Mohawk Industries, Inc.","Furnishings, Fixtures & Appliances","2,523,500,032",BBB+
+HNI,HNI Corporation,"Furnishings, Fixtures & Appliances","1,727,600,000",BB+
+LEG,"Leggett & Platt, Incorporated","Furnishings, Fixtures & Appliances","1,647,900,032",BBB-
+LZB,La-Z-Boy Incorporated,"Furnishings, Fixtures & Appliances","568,465,984",BB-
+MGCLY,Midea Group Co Ltd.,"Furnishings, Fixtures & Appliances",,A+
+SGI,Somnigroup International Inc.,"Furnishings, Fixtures & Appliances",,BB
+ALH,Alliance Laundry Holdings LLC,"Furnishings, Fixtures & Appliances",,B+
+MLKN,"MillerKnoll, Inc.","Furnishings, Fixtures & Appliances",,BB
+GOFPY,Allwyn AG,Gambling,"6,732,411,005",BB
+FLUT,Flutter Entertainment plc,Gambling,,BBB-
+LNWO,"Light & Wonder, Inc.",Gambling,,BB
+CHDN,Churchill Downs Inc.,Gambling,,BB-
+GMVHY,Entain Plc,Gambling,,BB-
+LFDJF,FDJ United,Gambling,,BBB+
+DKNG,DraftKings Inc.,Gambling,,BB+
+ARLUF,Aristocrat Leisure,Gambling,,BBB
+GFI,Gold Fields Limited,Gold,"3,221,199,872",BBB-
+AU,AngloGold Ashanti plc,Gold,"2,286,000,128",BBB-
+HMY,Harmony Gold Mining Company Limited,Gold,"805,247,204",BB
+KR,The Kroger Co.,Grocery Stores,"24,692,000,768",BBB
+SVNDY,"Seven & i Holdings Co., Ltd.",Grocery Stores,"23,634,006,800",A-
+AHODF,Koninklijke Ahold Delhaize N.V.,Grocery Stores,"22,399,078,145",BBB+
+SFM,"Sprouts Farmers Market, Inc.",Grocery Stores,"2,060,856,960",BB
+GO,Grocery Outlet Holding Corp.,Grocery Stores,"1,841,769,984",BB-
+LBLCF,Loblaw Companies Limited,Grocery Stores,,BBB+
+TSCDF,Tesco PLC,Grocery Stores,,BBB
+WNGRF,George Weston Limited,Grocery Stores,,BBB+
+CRERF,Carrefour S.A.,Grocery Stores,,BBB
+JSAIY,J Sainsbury plc,Grocery Stores,,BBB
+CVS,CVS Health Corporation,Healthcare Plans,"78,345,003,008",BBB
+UNH,UnitedHealth Group Incorporated,Healthcare Plans,"77,917,003,776",AA-
+CI,The Cigna Group,Healthcare Plans,"30,900,000,768",A-
+CNC,Centene Corporation,Healthcare Plans,"16,371,000,320",BB+
+HUM,Humana Inc.,Healthcare Plans,"14,371,000,320",BBB
+HD,"The Home Depot, Inc.",Home Improvement Retail,"63,730,999,296",A
+LOW,"Lowe's Companies, Inc.",Home Improvement Retail,"42,555,998,208",BBB+
+WFAFY,Wesfarmers Limited,Home Improvement Retail,,A-
+KGFHY,Kingfisher plc,Home Improvement Retail,,BBB
+FND,Floor & Decor Holdings Inc.,Home Improvement Retail,,BB
+HBBHF,HORNBACH Holding AG & Co.,Home Improvement Retail,,BBB-
+PG,The Procter & Gamble Company,Household & Personal Products,"37,026,000,896",AA-
+RBGLY,Reckitt Benckiser Group plc,Household & Personal Products,"11,389,598,134",A-
+CL,Colgate-Palmolive Company,Household & Personal Products,"7,973,000,192",A+
+KMB,Kimberly-Clark Corporation,Household & Personal Products,"7,105,999,872",A
+NWL,Newell Brands Inc.,Household & Personal Products,"5,694,000,128",B+
+CLX,The Clorox Company,Household & Personal Products,"4,486,000,128",BBB
+HENOY,Henkel AG & Co. KGaA,Household & Personal Products,"4,276,816,718",A
+COTY,Coty Inc.,Household & Personal Products,"3,424,999,936",BB+
+CHD,"Church & Dwight Co., Inc.",Household & Personal Products,"2,377,400,064",BBB+
+EPC,Edgewell Personal Care Company,Household & Personal Products,"1,279,500,032",BB-
+SPB,"Spectrum Brands Holdings, Inc.",Household & Personal Products,"725,500,032",B+
+LRLCY,L'Oral S.A.,Household & Personal Products,,AA
+UL,Unilever PLC,Household & Personal Products,,A+
+IBM,International Business Machines Corporation,Information Technology Services,"69,802,000,384",A-
+FIS,"Fidelity National Information Services, Inc.",Information Technology Services,"21,145,999,360",BBB
+LDOS,"Leidos Holdings, Inc.",Information Technology Services,"6,944,000,000",BBB
+CDW,CDW Corporation,Information Technology Services,"6,146,299,904",BBB-
+CACI,CACI International Inc,Information Technology Services,"5,616,314,880",BB+
+BR,"Broadridge Financial Solutions, Inc.",Information Technology Services,"3,407,300,096",BBB
+IT,"Gartner, Inc.",Information Technology Services,"3,355,174,912",BBB-
+GIB,CGI Inc.,Information Technology Services,"3,159,178,139",BBB+
+SAIC,Science Applications International Corporation,Information Technology Services,"2,675,000,064",BB+
+WIT,Wipro Limited,Information Technology Services,"2,118,943,220",A-
+G,Genpact Limited,Information Technology Services,"1,757,917,056",BBB-
+INFY,Infosys Limited,Information Technology Services,"967,000,000",A
+CNDT,Conduent Incorporated,Information Technology Services,"901,000,000",B-
+FJTSY,Fujitsu Limited,Information Technology Services,"829,132,430",A-
+UIS,Unisys Corporation,Information Technology Services,"765,299,968",B
+BPOSF,bpost NV/SA,Integrated Freight & Logistics,"3,493,195,088",A-
+PBI,Pitney Bowes Inc.,Integrated Freight & Logistics,"2,268,225,024",B+
+FWRD,Forward Air Corporation,Integrated Freight & Logistics,"2,150,382,080",B
+CHRW,"C.H. Robinson Worldwide, Inc.",Integrated Freight & Logistics,"1,644,486,016",BBB+
+JBHT,"J.B. Hunt Transport Services, Inc.",Integrated Freight & Logistics,"1,567,938,048",BBB+
+TNTFF,PostNL N.V.,Integrated Freight & Logistics,"1,280,276,849",BBB-
+GOOG,Alphabet Inc.,Internet Content & Information,"95,875,997,696",AA+
+META,"Meta Platforms, Inc.",Internet Content & Information,"86,769,000,448",AA-
+SNAP,Snap Inc.,Internet Content & Information,"4,201,579,008",BB-
+MTCH,"Match Group, Inc.",Internet Content & Information,"3,974,202,112",BB
+TCTZF,Tencent Holdings Limited,Internet Content & Information,,A+
+AMZN,"Amazon.com, Inc.",Internet Retail,"235,540,004,864",AA
+NPSNY,Naspers Limited,Internet Retail,"18,168,999,936",BBB-
+MELI,"MercadoLibre, Inc.",Internet Retail,"12,376,000,512",BBB-
+W,Wayfair Inc.,Internet Retail,"3,673,999,872",B+
+BABA,Alibaba Group Holding Limited,Internet Retail,,A+
+MCARY,"Mercari, Inc.",Internet Retail,,BBB
+JD,"JD.com, Inc.",Internet Retail,,A-
+PROSY,Prosus N.V.,Internet Retail,,BBB
+EBAY,eBay Inc.,Internet Retail,,BBB+
+HAS,"Hasbro, Inc.",Leisure,"3,873,200,128",BBB
+MAT,"Mattel, Inc.",Leisure,"2,675,515,904",BBB
+ANPDF,ANTA Sports Products Limited,Leisure,,A-
+FUN,Six Flags Entertainment Corporation,Leisure,,B+
+LTH,"Life Time Group Holdings, Inc.",Leisure,,BB
+LUCK,Lucky Strike Entertainment Corporation,Leisure,,B
+MAR,"Marriott International, Inc.",Lodging,"17,405,999,104",BBB
+HLT,Hilton Worldwide Holdings Inc.,Lodging,"13,057,999,872",BB+
+IHG,InterContinental Hotels Group PLC,Lodging,"4,618,999,808",BBB
+H,Hyatt Hotels Corporation,Lodging,"4,513,999,872",BBB-
+CHH,"Choice Hotels International, Inc.",Lodging,"2,109,619,968",BBB-
+MNILY,Minor International Public Company,Lodging,,BBB+
+ACCYY,Accor SA,Lodging,,BBB-
+WH,Wyndham Hotels & Resorts,Lodging,,BB+
+WFG,West Fraser Timber,Lumber & Wood Production,,BBB-
+BCC,Boise Cascade Company,Lumber & Wood Production,,BB
+CHDRY,Christian Dior SE,Luxury Goods,"42,438,293,309",AA-
+SIG,Signet Jewelers Limited,Luxury Goods,"1,223,600,000",BB
+LVMUY,LVMH,Luxury Goods,,AA-
+PPRUF,Kering SA,Luxury Goods,,BBB+
+TPR,"Tapestry, Inc.",Luxury Goods,,BBB
+BBRYF,Burberry Group plc,Luxury Goods,,BBB-
+CPRI,Capri Holdings Limited,Luxury Goods,,BB
+HCA,"HCA Healthcare, Inc.",Medical Care Facilities,"49,844,998,144",BBB-
+DVA,DaVita Inc.,Medical Care Facilities,"13,220,841,472",BB
+FMS,Fresenius Medical Care AG,Medical Care Facilities,"12,738,398,516",BBB
+MD,"Pediatrix Medical Group, Inc.",Medical Care Facilities,"629,715,008",BB
+THC,Tenet Healthcare Corporation,Medical Care Facilities,,BB
+ABT,Abbott Laboratories,Medical Devices,"34,136,000,512",A+
+MDT,Medtronic plc,Medical Devices,"28,071,000,064",A
+SYK,Stryker Corporation,Medical Devices,"15,233,999,872",BBB+
+BSX,Boston Scientific Corporation,Medical Devices,"11,029,000,192",A-
+PHG,Koninklijke Philips N.V.,Medical Devices,"9,339,100,510",BBB+
+ZBH,"Zimmer Biomet Holdings, Inc.",Medical Devices,"7,586,999,808",BBB
+WILYY,Demant A/S,Medical Devices,"3,238,359,183",A+
+QDEL,QuidelOrtho Corporation,Medical Devices,"2,874,700,032",B
+STE,STERIS plc,Medical Devices,"2,087,100,032",BBB
+BIO,"Bio-Rad Laboratories, Inc.",Medical Devices,"1,378,200,064",BBB
+PODD,Insulet Corporation,Medical Devices,"1,014,000,000",BB
+EW,Edwards Lifesciences Corporation,Medical Devices,"702,899,968",BBB
+COR,"Cencora, Inc.",Medical Distribution,"15,092,111,360",BBB+
+CAH,"Cardinal Health, Inc.",Medical Distribution,"8,915,999,744",BBB
+MCK,McKesson Corporation,Medical Distribution,"8,785,999,872",A-
+EBOSF,EBOS Group Limited,Medical Distribution,,A-
+MAHLY,Medipal Holdings Corporation,Medical Distribution,,A+
+BDX,"Becton, Dickinson and Company",Medical Instruments & Supplies,"17,279,000,576",BBB
+BAX,Baxter International Inc.,Medical Instruments & Supplies,"9,687,000,064",BBB-
+SUVPF,Sartorius Aktiengesellschaft,Medical Instruments & Supplies,"4,960,668,915",BBB-
+COO,"The Cooper Companies, Inc.",Medical Instruments & Supplies,"2,726,599,936",BB+
+XRAY,DENTSPLY SIRONA Inc.,Medical Instruments & Supplies,"2,344,999,936",BBB-
+ATR,"AptarGroup, Inc.",Medical Instruments & Supplies,"1,436,706,048",BBB+
+CMC,Commercial Metals Company,Metal Fabrication,"3,596,049,920",BB+
+ATI,ATI Inc.,Metal Fabrication,"1,827,900,032",BB
+CRS,Carpenter Technology Corporation,Metal Fabrication,"699,299,968",BB+
+WOR,"Worthington Enterprises, Inc.",Metal Fabrication,"357,679,008",BBB-
+NBR,Nabors Industries Ltd.,Oil & Gas Drilling,"2,128,199,040",B
+HP,"Helmerich & Payne, Inc.",Oil & Gas Drilling,"2,002,433,024",BBB
+PDS,Precision Drilling Corporation,Oil & Gas Drilling,"523,676,781",BB-
+NE,Noble Corporation,Oil & Gas Drilling,,BB-
+RIG,Transocean Ltd.,Oil & Gas Drilling,,B-
+COP,ConocoPhillips,Oil & Gas E&P,"23,327,000,576",A-
+OXY,Occidental Petroleum Corporation,Oil & Gas E&P,"16,611,000,320",BB+
+FANG,"Diamondback Energy, Inc.",Oil & Gas E&P,"13,898,000,384",BBB+
+DVN,Devon Energy Corporation,Oil & Gas E&P,"8,702,000,128",BBB+
+SM,SM Energy Company,Oil & Gas E&P,"8,558,000,128",BB
+EOG,"EOG Resources, Inc.",Oil & Gas E&P,"8,305,999,872",A-
+EQT,EQT Corporation,Oil & Gas E&P,"5,992,411,136",BBB-
+AR,Antero Resources Corporation,Oil & Gas E&P,"4,750,665,216",BBB-
+APA,APA Corporation,Oil & Gas E&P,"4,536,000,000",BBB-
+MTDR,Matador Resources Company,Oil & Gas E&P,"3,570,465,024",BB-
+KOS,Kosmos Energy Ltd.,Oil & Gas E&P,"2,987,828,992",B-
+NOG,"Northern Oil and Gas, Inc.",Oil & Gas E&P,"2,551,527,936",B+
+CNX,CNX Resources Corporation,Oil & Gas E&P,"2,536,599,040",BB+
+MUR,Murphy Oil Corporation,Oil & Gas E&P,"2,300,069,120",BB
+RRC,Range Resources Corporation,Oil & Gas E&P,"979,137,984",BB+
+UNEGF,United Energy Group Limited,Oil & Gas E&P,"488,961,415",B+
+SLB,SLB N.V.,Oil & Gas Equipment & Services,"11,628,999,680",A
+HAL,Halliburton Company,Oil & Gas Equipment & Services,"8,080,999,936",BBB+
+NOV,NOV Inc.,Oil & Gas Equipment & Services,"2,339,000,064",BBB
+FTI,TechnipFMC plc,Oil & Gas Equipment & Services,"1,304,099,968",BBB-
+BKR,Baker Hughes,Oil & Gas Equipment & Services,,A
+RYDAF,Shell plc,Oil & Gas Integrated,"75,645,001,728",A+
+BP,BP p.l.c.,Oil & Gas Integrated,"74,178,002,944",A-
+TTE,TotalEnergies SE,Oil & Gas Integrated,"64,250,998,784",A+
+XOM,Exxon Mobil Corporation,Oil & Gas Integrated,"47,660,998,656",AA-
+CVX,Chevron Corporation,Oil & Gas Integrated,"45,427,998,720",AA-
+E,Eni S.p.A.,Oil & Gas Integrated,"42,178,780,758",A-
+STOHF,Equinor ASA,Oil & Gas Integrated,"31,857,000,448",AA-
+SU,Suncor Energy Inc.,Oil & Gas Integrated,"10,595,514,641",BBB-
+OMVKY,OMV Aktiengesellschaft,Oil & Gas Integrated,"9,238,754,413",A-
+GLPEF,"Galp Energia, SGPS, S.A.",Oil & Gas Integrated,"5,031,141,849",BBB-
+NFG,National Fuel Gas Company,Oil & Gas Integrated,"2,426,181,888",BBB
+TRP,TC Energy Corporation,Oil & Gas Midstream,"44,257,659,948",BBB+
+OKE,"ONEOK, Inc.",Oil & Gas Midstream,"33,652,000,768",BBB
+KMI,"Kinder Morgan, Inc.",Oil & Gas Midstream,"32,205,000,704",BBB+
+WMB,"The Williams Companies, Inc.",Oil & Gas Midstream,"30,301,999,104",BBB
+LNG,"Cheniere Energy, Inc.",Oil & Gas Midstream,"27,847,999,488",BBB+
+TRGP,Targa Resources Corp.,Oil & Gas Midstream,"19,131,799,552",BBB-
+PAA,"Plains All American Pipeline, L.P.",Oil & Gas Midstream,"11,578,000,384",BBB
+WES,"Western Midstream Partners, LP",Oil & Gas Midstream,"8,707,448,832",BBB-
+GEL,"Genesis Energy, L.P.",Oil & Gas Midstream,"3,176,176,128",B+
+GLP,Global Partners LP,Oil & Gas Midstream,"2,245,167,104",BB-
+MPC,Marathon Petroleum Corporation,Oil & Gas Refining & Marketing,"34,325,999,616",BBB
+PSX,Phillips 66,Oil & Gas Refining & Marketing,"27,124,000,768",BBB+
+VLO,Valero Energy Corporation,Oil & Gas Refining & Marketing,"11,491,000,320",BB-
+PBF,PBF Energy Inc.,Oil & Gas Refining & Marketing,"3,601,600,000",BB
+DK,"Delek US Holdings, Inc.",Oil & Gas Refining & Marketing,"3,399,000,064",BB-
+DINO,HF Sinclair Corporation,Oil & Gas Refining & Marketing,"3,372,999,936",BBB-
+PARR,"Par Pacific Holdings, Inc.",Oil & Gas Refining & Marketing,"1,357,059,968",B+
+TCKRF,Teck Resources Limited,Other Industrial Metals & Mining,"6,872,205,514",BBB-
+AMVMF,AMG Critical Materials N.V.,Other Industrial Metals & Mining,"847,324,032",B
+CMP,"Compass Minerals International, Inc.",Other Industrial Metals & Mining,"775,400,000",B
+AUSDF,Perenti Limited,Other Industrial Metals & Mining,"462,198,056",BB+
+BHP,BHP Group Limited,Other Industrial Metals & Mining,,A
+RIO,Rio Tinto Group,Other Industrial Metals & Mining,,A
+GLNCY,Glencore plc,Other Industrial Metals & Mining,,BBB+
+VALE,Vale S.A.,Other Industrial Metals & Mining,,BBB
+NGLOY,Anglo American plc,Other Industrial Metals & Mining,,BBB
+FSUGY,Fortescue Ltd,Other Industrial Metals & Mining,,BB+
+TECK,Teck Resources Limited,Other Industrial Metals & Mining,,BBB-
+SOUHY,South32 Limited,Other Industrial Metals & Mining,,BBB+
+IVPAF,Ivanhoe Mines Ltd,Other Industrial Metals & Mining,,B-
+KHC,The Kraft Heinz Company,Packaged Foods,"21,133,000,704",BBB
+POST,"Post Holdings, Inc.",Packaged Foods,"7,631,399,936",B+
+CPB,The Campbell's Company,Packaged Foods,"7,336,000,000",BBB-
+CAG,"Conagra Brands, Inc.",Packaged Foods,"7,332,400,128",BBB-
+MKC,"McCormick & Company, Incorporated",Packaged Foods,"4,923,400,192",BBB
+DAR,Darling Ingredients Inc.,Packaged Foods,"4,347,005,952",BB+
+PPC,Pilgrim's Pride Corporation,Packaged Foods,"3,348,645,888",BBB-
+NOMD,Nomad Foods Limited,Packaged Foods,"2,654,325,290",BB-
+HLF,Herbalife Ltd.,Packaged Foods,"2,182,200,064",B+
+INGR,Ingredion Incorporated,Packaged Foods,"1,824,999,936",BBB
+FLO,"Flowers Foods, Inc.",Packaged Foods,"1,465,965,952",BBB-
+PRRFY,Premier Foods plc,Packaged Foods,"453,179,073",BB+
+SMPL,The Simply Good Foods Company,Packaged Foods,"449,846,016",BB-
+NSRGY,Nestl S.A.,Packaged Foods,,AA-
+DANOY,Danone S.A.,Packaged Foods,,BBB+
+IP,International Paper Company,Packaging & Containers,"9,758,999,552",BBB
+CCK,"Crown Holdings, Inc.",Packaging & Containers,"6,465,999,872",BB+
+GPK,Graphic Packaging Holding Company,Packaging & Containers,"5,788,000,256",BB
+SON,Sonoco Products Company,Packaging & Containers,"5,007,867,904",BBB-
+PKG,Packaging Corporation of America,Packaging & Containers,"4,366,900,224",BBB
+AVY,Avery Dennison Corporation,Packaging & Containers,"3,790,099,968",BBB
+AMCCF,Amcor plc,Packaging & Containers,,BBB
+SW,Smurfit Westrock plc,Packaging & Containers,,BBB+
+BALL,Ball Corporation,Packaging & Containers,,BB+
+SLGN,Silgan Holdings,Packaging & Containers,,BB+
+CCDBF,CCL Industries Inc.,Packaging & Containers,,BBB
+SPPJY,Sappi Limited,Paper & Paper Products,"2,156,000,000",BB
+MERC,Mercer International Inc.,Paper & Paper Products,"1,624,365,952",CCC+
+CLW,Clearwater Paper Corporation,Paper & Paper Products,"373,200,000",CCC+
+KLBAY,Klabin SA,Paper & Paper Products,,BB+
+UPMMY,UPM-Kymmene Corp.,Paper & Paper Products,,BBB
+SUZ,Suzano S.A.,Paper & Paper Products,,BBB-
+MNODF,Mondi plc,Paper & Paper Products,,BBB
+SLVM,Sylvamo Corporation,Paper & Paper Products,,BB+
+SCI,Service Corporation International,Personal Services,"5,162,816,000",BB+
+HRB,"H&R Block, Inc.",Personal Services,"2,025,762,944",BBB
+FTDR,"Frontdoor, Inc.",Personal Services,"1,199,000,064",BB-
+BFAM,Bright Horizons Family Solutions Inc.,Personal Services,,BB
+ROL,"Rollins, Inc.",Personal Services,,BBB+
+CSV,Carriage Services Inc.,Personal Services,,B+
+EJPRY,East Japan Railway Company,Railroads,"30,276,721,780",AA+
+CSX,CSX Corporation,Railroads,"19,428,999,168",BBB+
+NSC,Norfolk Southern Corporation,Railroads,"17,635,000,320",BBB+
+CP,Canadian Pacific Kansas City Limited,Railroads,"17,396,901,945",BBB+
+CNI,Canadian National Railway Company,Railroads,"16,213,741,208",A
+WAB,Westinghouse Air Brake Technologies Corporation,Railroads,"6,917,000,192",BBB
+TRN,"Trinity Industries, Inc.",Railroads,"5,391,499,776",BB+
+QRNNF,Aurizon Holdings Limited,Railroads,"3,962,911,158",BBB+
+GBX,"The Greenbrier Companies, Inc.",Railroads,"1,840,899,968",BB-
+CCS,"Century Communities, Inc.",Real Estate - Development,"1,538,748,032",BB
+CTPVF,CTP N.V.,Real Estate - Development,,BBB
+LGFRY,Longfor Group Holdings Limited,Real Estate - Development,,BB-
+HHH,Howard Hughes Holdings Inc.,Real Estate - Development,,BB+
+KRYPY,Kerry Properties,Real Estate - Development,,BBB-
+LLESF,Lendlease Group,Real Estate - Diversified,"2,940,517,745",BBB-
+DITTF,"Daito Trust Construction Co.,Ltd.",Real Estate - Diversified,"1,458,815,625",BBB
+TAGYY,TAG Immobilien AG,Real Estate - Diversified,,BBB-
+JLL,Jones Lang LaSalle Incorporated,Real Estate Services,"3,975,500,032",BBB+
+CSGP,"CoStar Group, Inc.",Real Estate Services,"1,155,000,064",BB+
+CBRE,"CBRE Group, Inc.",Real Estate Services,,BBB+
+VONOY,Vonovia SE,Real Estate Services,,BBB+
+VTWRF,Vantage Towers AG,Real Estate Services,,BBB-
+BC,Brunswick Corporation,Recreational Vehicles,"2,441,700,096",BBB-
+PII,Polaris Inc.,Recreational Vehicles,"2,205,600,000",BBB-
+HOG,"Harley-Davidson, Inc.",Recreational Vehicles,"2,200,221,952",BBB-
+THO,"THOR Industries, Inc.",Recreational Vehicles,"919,264,000",BB
+WGO,"Winnebago Industries, Inc.",Recreational Vehicles,"478,200,000",BB-
+DOO,BRP Inc.,Recreational Vehicles,,BB+
+PATK,Patrick Industries,Recreational Vehicles,,BB
+LCII,LCI Industries,Recreational Vehicles,,BB-
+VTR,"Ventas, Inc.",REIT - Healthcare Facilities,"12,726,149,120",BBB+
+WELL,Welltower Inc.,REIT - Healthcare Facilities,,A-
+OHI,"Omega Healthcare Investors, Inc.",REIT - Healthcare Facilities,,BBB-
+CTRE,"CareTrust REIT, Inc.",REIT - Healthcare Facilities,,BBB-
+HST,"Host Hotels & Resorts, Inc.",REIT - Hotel & Motel,"5,645,000,192",BBB-
+PEB,Pebblebrook Hotel Trust,REIT - Hotel & Motel,"2,456,964,096",B
+RLJ,RLJ Lodging Trust,REIT - Hotel & Motel,"2,308,418,048",B+
+DRH,DiamondRock Hospitality Company,REIT - Hotel & Motel,"1,195,531,008",BBB-
+RHP,"Ryman Hospitality Properties, Inc.",REIT - Hotel & Motel,,BB
+PLD,"Prologis, Inc.",REIT - Industrial,"35,310,190,592",A
+EXR,Extra Space Storage Inc.,REIT - Industrial,"13,941,396,480",BBB+
+CUBE,CubeSmart,REIT - Industrial,"3,505,200,896",BBB
+PSA,Public Storage,REIT - Industrial,,A
+EGP,"EastGroup Properties, Inc.",REIT - Industrial,,BBB+
+BXP,"BXP, Inc.",REIT - Office,"16,362,374,144",BBB
+ARE,"Alexandria Real Estate Equities, Inc.",REIT - Office,"12,878,605,312",BBB+
+VNO-PL,Vornado Realty Trust,REIT - Office,"8,462,876,160",BB+
+SLG,SL Green Realty Corp.,REIT - Office,"6,543,857,152",BB
+KRC,Kilroy Realty Corporation,REIT - Office,"4,716,805,120",BBB-
+HPP,"Hudson Pacific Properties, Inc.",REIT - Office,"3,756,483,072",B
+AVB,"AvalonBay Communities, Inc.",REIT - Residential,"9,524,757,504",A-
+EQR,Equity Residential,REIT - Residential,"8,643,318,784",A-
+ESS,"Essex Property Trust, Inc.",REIT - Residential,"6,857,027,072",BBB+
+UDR,"UDR, Inc.",REIT - Residential,"5,845,310,976",BBB+
+MAA,"Mid-America Apartment Communities, Inc.",REIT - Residential,"5,680,351,232",A-
+AMH,American Homes 4 Rent,REIT - Residential,"5,145,438,208",BBB
+SUI,"Sun Communities, Inc.",REIT - Residential,"4,291,699,968",BBB+
+CPT,Camden Property Trust,REIT - Residential,"4,275,068,928",A-
+ELS,"Equity LifeStyle Properties, Inc.",REIT - Residential,"3,290,608,896",BBB+
+O,Realty Income Corporation,REIT - Retail,"30,294,552,576",A-
+SPG,"Simon Property Group, Inc.",REIT - Retail,"28,989,048,832",A
+UNBLF,Unibail-Rodamco-Westfield SE,REIT - Retail,"27,090,082,500",BBB+
+KIM,Kimco Realty Corporation,REIT - Retail,"8,308,660,224",A-
+BRX,Brixmor Property Group Inc.,REIT - Retail,"5,546,542,080",BBB
+REG,Regency Centers Corporation,REIT - Retail,"5,245,984,768",A-
+FRT,Federal Realty Investment Trust,REIT - Retail,"4,934,187,008",BBB+
+WRDEF,Wereldhave N.V.,REIT - Retail,"1,344,901,940",BBB
+AMT,American Tower Corporation,REIT - Specialty,"45,131,198,464",BBB+
+CCI,Crown Castle Inc.,REIT - Specialty,"29,878,999,040",BBB
+EQIX,"Equinix, Inc.",REIT - Specialty,"23,335,999,488",BBB+
+IRM,Iron Mountain Incorporated,REIT - Specialty,"19,716,626,432",BB-
+DLR,"Digital Realty Trust, Inc.",REIT - Specialty,"19,452,149,760",BBB+
+SBAC,SBA Communications Corporation,REIT - Specialty,"15,421,450,240",BBB-
+UNIT,Uniti Group Inc.,REIT - Specialty,"11,112,999,936",B-
+WY,Weyerhaeuser Company,REIT - Specialty,"5,448,999,936",BBB
+AER,AerCap Holdings N.V.,Rental & Leasing Services,"43,125,653,504",BBB+
+CAR,"Avis Budget Group, Inc.",Rental & Leasing Services,"27,672,000,512",BB-
+URI,"United Rentals, Inc.",Rental & Leasing Services,"15,018,999,808",BB+
+R,"Ryder System, Inc.",Rental & Leasing Services,"8,716,999,680",BBB+
+DHI,"D.R. Horton, Inc.",Residential Construction,"6,643,400,192",BBB+
+LEN-B,Lennar Corporation,Residential Construction,"5,506,315,776",BBB
+PHM,"PulteGroup, Inc.",Residential Construction,"2,453,818,112",BBB+
+TMHC,Taylor Morrison Home Corporation,Residential Construction,"2,414,603,008",BB+
+KBH,KB Home,Residential Construction,"1,921,730,944",BB+
+MTH,Meritage Homes Corporation,Residential Construction,"1,902,057,984",BBB-
+BZH,"Beazer Homes USA, Inc.",Residential Construction,"1,251,389,056",B
+TPH,"Tri Pointe Homes, Inc.",Residential Construction,"1,249,508,992",BB
+HOV,"Hovnanian Enterprises, Inc.",Residential Construction,"1,077,022,976",B+
+MGM,MGM Resorts International,Resorts & Casinos,"31,693,570,048",BB-
+CZR,"Caesars Entertainment, Inc.",Resorts & Casinos,"25,994,000,384",B+
+LVS,Las Vegas Sands Corp.,Resorts & Casinos,"15,781,000,192",BBB
+WYNN,"Wynn Resorts, Limited",Resorts & Casinos,"12,159,864,832",BB-
+PENN,"PENN Entertainment, Inc.",Resorts & Casinos,"11,192,999,936",B
+MDEVF,Melco International Development Limited,Resorts & Casinos,"7,593,313,366",BB-
+VAC,Marriott Vacations Worldwide Corporation,Resorts & Casinos,"5,647,000,064",B+
+BYD,Boyd Gaming Corporation,Resorts & Casinos,"2,921,530,112",BB
+HGV,Hilton Grand Vacations Inc.,Resorts & Casinos,,BB-
+MLCO,Melco Resorts,Resorts & Casinos,,BB-
+BALY,Bally's Corporation,Resorts & Casinos,,B-
+MTN,"Vail Resorts, Inc.",Resorts & Casinos,,BB
+SBUX,Starbucks Corporation,Restaurants,"24,408,500,224",BBB+
+QSR,Restaurant Brands International Inc.,Restaurants,"15,683,000,320",BB
+YUM,"Yum! Brands, Inc.",Restaurants,"13,144,000,512",BB+
+DRI,"Darden Restaurants, Inc.",Restaurants,"8,156,800,000",BBB
+DPZ,"Domino's Pizza, Inc.",Restaurants,"5,135,773,184",BBB+
+WEN,The Wendy's Company,Restaurants,"4,116,592,896",B+
+CAKE,The Cheesecake Factory Incorporated,Restaurants,"2,141,740,032",A-
+BLMN,"Bloomin' Brands, Inc.",Restaurants,"1,983,243,008",B+
+EAT,"Brinker International, Inc.",Restaurants,"1,748,000,000",BB+
+CBRL,"Cracker Barrel Old Country Store, Inc.",Restaurants,"1,206,418,944",BB-
+MCD,McDonald's Corporation,Restaurants,,BBB+
+ARCO,Arcos Dorados Holdings Inc.,Restaurants,,BBB-
+MKSI,MKS Inc.,Scientific & Technical Instruments,"4,292,000,000",BB
+COHR,Coherent Corp.,Scientific & Technical Instruments,"3,425,114,880",BB
+ITRI,"Itron, Inc.",Scientific & Technical Instruments,"1,602,113,024",BB
+TRMB,Trimble Inc.,Scientific & Technical Instruments,"1,412,800,000",BBB-
+KEYS,"Keysight Technologies, Inc.",Scientific & Technical Instruments,,BBB+
+ADT,ADT Inc.,Security & Protection Services,"7,767,962,112",BB
+BCO,The Brink's Company,Security & Protection Services,"4,466,500,096",BB+
+GEO,"The GEO Group, Inc.",Security & Protection Services,"1,659,895,040",BB-
+ALLE,Allegion plc,Security & Protection Services,,BBB
+AMAT,"Applied Materials, Inc.",Semiconductor Equipment & Materials,"7,267,999,744",A
+KLAC,KLA Corporation,Semiconductor Equipment & Materials,"6,145,359,872",A-
+ENTG,"Entegris, Inc.",Semiconductor Equipment & Materials,"3,757,499,904",BB
+LRCX,Lam Research Corporation,Semiconductor Equipment & Materials,"3,734,479,104",A-
+ASML,ASML Holding N.V.,Semiconductor Equipment & Materials,"3,120,645,985",A+
+AMKR,"Amkor Technology, Inc.",Semiconductor Equipment & Materials,"1,617,483,008",BB
+AVGO,Broadcom Inc.,Semiconductors,"64,907,001,856",A-
+INTC,Intel Corporation,Semiconductors,"45,030,998,016",BBB
+QCOM,QUALCOMM Incorporated,Semiconductors,"15,269,999,616",A
+TXN,Texas Instruments Incorporated,Semiconductors,"14,049,999,872",A+
+NVDA,NVIDIA Corporation,Semiconductors,"12,814,000,128",AA
+NXPI,NXP Semiconductors N.V.,Semiconductors,"11,724,000,256",BBB+
+IFNNY,Infineon Technologies AG,Semiconductors,"9,566,321,038",BBB+
+ADI,"Analog Devices, Inc.",Semiconductors,"8,708,730,880",A
+ASX,"ASE Technology Holding Co., Ltd.",Semiconductors,"8,093,822,546",BBB
+RNECY,Renesas Electronics Corporation,Semiconductors,"7,507,064,099",BBB
+MCHP,Microchip Technology Incorporated,Semiconductors,"5,642,200,064",BBB
+MRVL,"Marvell Technology, Inc.",Semiconductors,"5,277,199,872",BBB
+AMD,"Advanced Micro Devices, Inc.",Semiconductors,"3,871,000,064",A
+ON,ON Semiconductor Corporation,Semiconductors,"3,245,799,936",BB+
+STM,STMicroelectronics N.V.,Semiconductors,"2,783,000,064",BBB+
+UMC,United Microelectronics Corporation,Semiconductors,"2,404,216,311",BBB+
+QRVO,"Qorvo, Inc.",Semiconductors,"1,606,237,056",BBB-
+SWKS,"Skyworks Solutions, Inc.",Semiconductors,"1,189,600,000",BBB-
+CRM,"Salesforce, Inc.",Software - Application,"42,547,998,720",A+
+ROP,"Roper Technologies, Inc.",Software - Application,"10,464,000,000",BBB+
+ADBE,Adobe Inc.,Software - Application,"6,670,000,128",A+
+OTEX,Open Text Corporation,Software - Application,"6,415,261,184",BB+
+PAYX,"Paychex, Inc.",Software - Application,"5,013,400,064",BBB+
+WDAY,"Workday, Inc.",Software - Application,"3,804,999,936",BBB+
+CDNS,"Cadence Design Systems, Inc.",Software - Application,"3,083,354,112",BBB+
+ADSK,"Autodesk, Inc.",Software - Application,"2,724,000,000",BBB+
+NOW,"ServiceNow, Inc.",Software - Application,"2,431,000,064",A
+PTC,PTC Inc.,Software - Application,"1,381,052,032",BB+
+TEAM,Atlassian Corporation,Software - Application,"1,243,017,984",BBB
+ESTC,Elastic N.V.,Software - Application,"591,563,008",BB
+MSFT,Microsoft Corporation,Software - Infrastructure,"125,431,996,416",AAA
+SNPS,"Synopsys, Inc.",Software - Infrastructure,"10,841,960,448",BBB
+GEN,Gen Digital Inc.,Software - Infrastructure,"8,259,999,744",BB
+AKAM,"Akamai Technologies, Inc.",Software - Infrastructure,"5,867,704,832",BBB-
+WEX,WEX Inc.,Software - Infrastructure,"5,237,100,032",BB-
+SABR,Sabre Corporation,Software - Infrastructure,"4,266,260,992",B-
+GDDY,GoDaddy Inc.,Software - Infrastructure,"3,848,100,096",BB
+NTAP,"NetApp, Inc.",Software - Infrastructure,"2,732,999,936",BBB+
+DOX,Amdocs Limited,Software - Infrastructure,"1,067,795,008",BBB
+ACIW,"ACI Worldwide, Inc.",Software - Infrastructure,"854,988,032",BB+
+FTNT,"Fortinet, Inc.",Software - Infrastructure,"567,200,000",BBB+
+GPN,Global Payments Inc.,Specialty Business Services,"23,587,248,128",BBB-
+ARMK,Aramark,Specialty Business Services,"6,424,145,920",BB
+RBA,"RB Global, Inc.",Specialty Business Services,"4,440,399,872",BB+
+CTAS,Cintas Corporation,Specialty Business Services,"2,918,187,008",A-
+TRI,Thomson Reuters Corporation,Specialty Business Services,"2,699,000,064",BBB+
+CMPR,Cimpress plc,Specialty Business Services,"1,745,746,048",BB-
+MMS,"Maximus, Inc.",Specialty Business Services,"1,627,986,048",BB+
+BV,"BrightView Holdings, Inc.",Specialty Business Services,"902,600,000",B
+LIN,Linde plc,Specialty Chemicals,"26,317,000,704",A
+APD,"Air Products and Chemicals, Inc.",Specialty Chemicals,"18,442,199,040",A
+SHW,The Sherwin-Williams Company,Specialty Chemicals,"14,601,400,320",BBB+
+LYB,LyondellBasell Industries N.V.,Specialty Chemicals,"14,357,000,192",BBB-
+ECL,Ecolab Inc.,Specialty Chemicals,"9,266,499,584",A-
+NPCPF,"Nippon Paint Holdings Co., Ltd.",Specialty Chemicals,"8,854,319,162",A
+PPG,"PPG Industries, Inc.",Specialty Chemicals,"7,736,999,936",BBB+
+AKZOY,Akzo Nobel N.V.,Specialty Chemicals,"7,047,289,831",BBB
+SSL,Sasol Limited,Specialty Chemicals,"6,687,803,127",BB+
+IFF,International Flavors & Fragrances Inc.,Specialty Chemicals,"6,467,999,744",BBB
+WLK,Westlake Corporation,Specialty Chemicals,"6,380,000,256",BBB
+PTCAY,PT Chandra Asri Pacific Tbk,Specialty Chemicals,"5,683,763,200",B+
+EMN,Eastman Chemical Company,Specialty Chemicals,"5,454,000,128",BBB
+ARKAY,Arkema S.A.,Specialty Chemicals,"4,929,527,268",BBB+
+CC,The Chemours Company,Specialty Chemicals,"4,392,999,936",BB-
+NVZMY,Novozymes A/S,Specialty Chemicals,"3,705,075,103",A-
+DD,"DuPont de Nemours, Inc.",Specialty Chemicals,"3,216,999,936",BBB+
+AXTA,Axalta Coating Systems Ltd.,Specialty Chemicals,"3,147,000,064",BB+
+SYIEF,Symrise AG,Specialty Chemicals,"3,033,637,872",BBB+
+ESI,Element Solutions Inc,Specialty Chemicals,"2,161,299,968",BB+
+ALB,Albemarle Corporation,Specialty Chemicals,"2,005,991,040",BBB-
+ASH,Ashland Inc.,Specialty Chemicals,"1,478,000,000",BB
+CBT,Cabot Corporation,Specialty Chemicals,"1,311,000,064",BBB
+OEC,Orion S.A.,Specialty Chemicals,"1,146,899,968",B+
+MTX,Minerals Technologies Inc.,Specialty Chemicals,"966,200,000",BB
+KRO,"Kronos Worldwide, Inc.",Specialty Chemicals,"621,500,032",CCC+
+AIQUY,L'Air Liquide S.A.,Specialty Chemicals,,A
+SXYAY,Sika AG,Specialty Chemicals,,A-
+GVDNY,Givaudan SA,Specialty Chemicals,,A-
+SIEGY,Siemens Aktiengesellschaft,Specialty Industrial Machinery,"62,469,434,581",AA-
+ETN,Eaton Corporation plc,Specialty Industrial Machinery,"21,833,000,960",A-
+EMR,Emerson Electric Co.,Specialty Industrial Machinery,"14,056,999,936",A
+PH,Parker-Hannifin Corporation,Specialty Industrial Machinery,"9,582,000,128",BBB+
+ITW,Illinois Tool Works Inc.,Specialty Industrial Machinery,"9,148,000,256",A+
+CMI,Cummins Inc.,Specialty Industrial Machinery,"8,240,000,000",A
+IR,Ingersoll Rand Inc.,Specialty Industrial Machinery,"4,951,199,744",BBB
+ROK,"Rockwell Automation, Inc.",Specialty Industrial Machinery,"4,054,000,128",A-
+ITT,ITT Inc.,Specialty Industrial Machinery,"3,964,999,936",BBB
+GTLS,"Chart Industries, Inc.",Specialty Industrial Machinery,"3,902,799,872",BB-
+DOV,Dover Corporation,Specialty Industrial Machinery,"3,290,113,024",BBB+
+PNR,Pentair plc,Specialty Industrial Machinery,"2,081,600,000",BBB-
+XYL,Xylem Inc.,Specialty Industrial Machinery,"2,060,999,936",BBB
+NDSN,Nordson Corporation,Specialty Industrial Machinery,"1,973,748,992",BBB
+IEX,IDEX Corporation,Specialty Industrial Machinery,"1,899,299,968",BBB
+FLS,Flowserve Corporation,Specialty Industrial Machinery,"1,890,324,992",BBB-
+GNRC,Generac Holdings Inc.,Specialty Industrial Machinery,"1,393,465,984",BB+
+NPO,Enpro Inc.,Specialty Industrial Machinery,"617,800,000",BB
+MWA,"Mueller Water Products, Inc.",Specialty Industrial Machinery,"452,400,000",BB+
+TNC,Tennant Company,Specialty Industrial Machinery,"392,500,000",BB
+ANCTF,Alimentation Couche-Tard Inc.,Specialty Retail,"9,043,399,680",BBB+
+DKS,"DICK'S Sporting Goods, Inc.",Specialty Retail,"7,789,426,176",BBB
+TSCO,Tractor Supply Company,Specialty Retail,"6,408,778,240",BBB
+BBY,"Best Buy Co., Inc.",Specialty Retail,"4,134,000,128",BBB+
+RH,RH,Specialty Retail,"3,969,317,888",B
+MTTRY,Ceconomy AG,Specialty Retail,"3,106,113,039",BB
+MUSA,Murphy USA Inc.,Specialty Retail,"2,715,599,872",BB+
+EYE,"National Vision Holdings, Inc.",Specialty Retail,"692,126,976",BB
+DFRYF,Avolta AG,Specialty Retail,,BB+
+BBWI,Bath & Body Works,Specialty Retail,,BB+
+FIVE,"Five Below, Inc.",Specialty Retail,,B+
+ASO,"Academy Sports and Outdoors, Inc.",Specialty Retail,,BB+
+MAN,ManpowerGroup Inc.,Staffing & Employment Services,"1,538,899,968",BBB-
+KFY,Korn Ferry,Staffing & Employment Services,"564,547,008",BB+
+RANJY,Randstad N.V.,Staffing & Employment Services,,BBB+
+AHEXY,Adecco Group,Staffing & Employment Services,,BBB
+TNET,"TriNet Group, Inc.",Staffing & Employment Services,,BB
+MT,ArcelorMittal S.A.,Steel,"13,683,000,320",BBB
+CLF,Cleveland-Cliffs Inc.,Steel,"7,784,000,000",B+
+STLD,"Steel Dynamics, Inc.",Steel,"4,200,793,088",BBB
+RS,"Reliance, Inc.",Steel,"2,028,999,936",A-
+BLSFF,BlueScope Steel Limited,Steel,"755,143,477",BBB-
+VZ,Verizon Communications Inc.,Telecom Services,"200,921,006,080",BBB+
+DTEGY,Deutsche Telekom AG,Telecom Services,"171,821,223,373",A-
+T,AT&T Inc.,Telecom Services,"159,750,995,968",BBB
+TMUS,"T-Mobile US, Inc.",Telecom Services,"122,134,003,712",BBB+
+CHTR,"Charter Communications, Inc.",Telecom Services,"96,822,001,664",BB+
+CMCSA,Comcast Corporation,Telecom Services,"94,611,996,672",A-
+RCI,Rogers Communications Inc.,Telecom Services,"32,049,069,399",BBB-
+BCE,BCE Inc.,Telecom Services,"30,730,710,927",BBB
+TIGO,Millicom International Cellular S.A.,Telecom Services,"11,886,000,128",BB
+TELNY,Telenor ASA,Telecom Services,"10,199,914,736",A-
+LBTYA,Liberty Global Ltd.,Telecom Services,"9,375,599,616",BB-
+SNGNF,Singapore Telecommunications Limited,Telecom Services,"9,065,131,108",A
+BGAOY,Proximus PLC,Telecom Services,"5,878,892,810",BBB+
+ZONNF,"NOS, S.G.P.S., S.A.",Telecom Services,"1,819,088,803",BBB
+ELMUF,Elisa Oyj,Telecom Services,"1,801,499,506",BBB+
+SPKKY,Spark New Zealand Limited,Telecom Services,"1,340,891,995",A-
+CHT,"Chunghwa Telecom Co., Ltd.",Telecom Services,"1,256,925,345",AA
+TDS,"Telephone and Data Systems, Inc.",Telecom Services,"1,254,931,968",BBB-
+HLTOY,Hellenic Telecommunications Organization S.A.,Telecom Services,"1,221,337,941",A-
+PM,Philip Morris International Inc.,Tobacco,"51,975,000,064",A-
+BTI,British American Tobacco p.l.c.,Tobacco,"46,854,335,566",BBB+
+MO,"Altria Group, Inc.",Tobacco,"24,601,999,360",BBB+
+IMBBY,Imperial Brands PLC,Tobacco,"15,006,212,711",BBB
+JAPAF,Japan Tobacco Inc.,Tobacco,"12,379,573,865",A
+UVV,Universal Corporation,Tobacco,"939,822,016",BBB-
+SWK,"Stanley Black & Decker, Inc.",Tools & Accessories,"6,966,499,840",BBB+
+TKR,The Timken Company,Tools & Accessories,"2,203,200,000",BBB-
+LECO,"Lincoln Electric Holdings, Inc.",Tools & Accessories,"1,364,840,960",AA
+SNA,Snap-on Incorporated,Tools & Accessories,"1,300,199,936",A-
+TTC,The Toro Company,Tools & Accessories,"1,136,999,936",BBB
+KMT,Kennametal Inc.,Tools & Accessories,"659,568,000",BBB
+RCL,Royal Caribbean Cruises Ltd.,Travel Services,"21,792,000,000",BBB
+NCLH,Norwegian Cruise Line Holdings Ltd.,Travel Services,"16,082,653,184",B+
+TUIFF,TUI AG,Travel Services,"5,157,785,377",BB-
+EXPE,"Expedia Group, Inc.",Travel Services,"4,710,000,128",BBB
+CCL,Carnival Corporation,Travel Services,,BBB-
+BKNG,Booking Holdings Inc.,Travel Services,,A-
+TNL,Travel + Leisure Co,Travel Services,,BB-
+VIK,Viking Holdings,Travel Services,,BB+
+ABNB,"Airbnb, Inc.",Travel Services,,A-
+GBTG,Global Business Travel Group,Travel Services,,BB-
+TRIP,"Tripadvisor, Inc.",Travel Services,,BB-
+LIND,"Lindblad Expeditions Holdings, Inc.",Travel Services,,B+
+EONGY,E.ON SE,Utilities - Diversified,"49,883,508,133",BBB+
+SRE,Sempra,Utilities - Diversified,"36,432,998,400",BBB+
+AES,The AES Corporation,Utilities - Diversified,"31,804,000,256",BBB-
+RWEOY,RWE Aktiengesellschaft,Utilities - Diversified,"28,297,578,134",BBB-
+CHUEF,"Chubu Electric Power Company, Incorporated",Utilities - Diversified,"18,283,804,673",AA+
+AQN,Algonquin Power & Utilities Corp.,Utilities - Diversified,"6,716,899,840",BBB
+NRG,"NRG Energy, Inc.",Utilities - Independent Power Producers,"23,357,999,104",BBB-
+TAC,TransAlta Corporation,Utilities - Independent Power Producers,"3,192,531,846",BB+
+CEG,Constellation Energy Generation LLC,Utilities - Independent Power Producers,,BBB+
+VST,Vistra Corp.,Utilities - Independent Power Producers,,BBB-
+TLN,"Talen Energy Supply, LLC",Utilities - Independent Power Producers,,BB-
+NEE,"NextEra Energy, Inc.",Utilities - Regulated Electric,"104,403,001,344",A-
+DUK,Duke Energy Corporation,Utilities - Regulated Electric,"91,208,998,912",BBB+
+SO,The Southern Company,Utilities - Regulated Electric,"76,004,999,168",BBB+
+NGG,National Grid plc,Utilities - Regulated Electric,"63,734,989,954",BBB+
+PCG,PG&E Corporation,Utilities - Regulated Electric,"62,940,999,680",BB+
+D,"Dominion Energy, Inc.",Utilities - Regulated Electric,"52,214,001,664",BBB+
+AEP,"American Electric Power Company, Inc.",Utilities - Regulated Electric,"51,808,002,048",BBB+
+EXC,Exelon Corporation,Utilities - Regulated Electric,"51,241,000,960",A-
+EIX,Edison International,Utilities - Regulated Electric,"42,696,998,912",BBB-
+XEL,Xcel Energy Inc.,Utilities - Regulated Electric,"39,243,001,856",BBB+
+ETR,Entergy Corporation,Utilities - Regulated Electric,"34,058,442,752",BBB+
+ES,Eversource Energy,Utilities - Regulated Electric,"30,339,694,592",BBB+
+ED,"Consolidated Edison, Inc.",Utilities - Regulated Electric,"27,177,000,960",B-
+DTE,DTE Energy Company,Utilities - Regulated Electric,"26,972,000,256",BBB
+CNP,"CenterPoint Energy, Inc.",Utilities - Regulated Electric,"24,682,999,808",BBB
+PEG,Public Service Enterprise Group Incorporated,Utilities - Regulated Electric,"24,398,999,552",BBB+
+WEC,"WEC Energy Group, Inc.",Utilities - Regulated Electric,"22,317,799,424",A-
+AEE,Ameren Corporation,Utilities - Regulated Electric,"21,304,000,512",BBB+
+PPL,PPL Corporation,Utilities - Regulated Electric,"20,292,999,168",A-
+CMS,CMS Energy Corporation,Utilities - Regulated Electric,"19,081,000,960",BBB+
+TEZNY,Terna S.p.A.,Utilities - Regulated Electric,"17,849,019,657",A-
+PNW,Pinnacle West Capital Corporation,Utilities - Regulated Electric,"15,143,285,760",BBB
+CMS-PB,Consumers Energy Company,Utilities - Regulated Electric,"13,761,000,448",A-
+ELEZY,"Endesa, S.A.",Utilities - Regulated Electric,"13,348,328,128",BBB+
+LNT,Alliant Energy Corporation,Utilities - Regulated Electric,"11,840,000,000",BBB+
+CLPHY,CLP Holdings Limited,Utilities - Regulated Electric,"8,047,495,518",A
+OGE,OGE Energy Corp.,Utilities - Regulated Electric,"5,862,000,128",BBB+
+POR,Portland General Electric Company,Utilities - Regulated Electric,"5,336,999,936",BBB+
+IDA,"IDACORP, Inc.",Utilities - Regulated Electric,"4,009,299,968",BBB
+NWE,"NorthWestern Energy Group, Inc.",Utilities - Regulated Electric,"3,442,790,912",BBB
+HE,"Hawaiian Electric Industries, Inc.",Utilities - Regulated Electric,"2,946,522,880",B+
+NI,NiSource Inc.,Utilities - Regulated Gas,"16,806,800,384",BBB+
+ATO,Atmos Energy Corporation,Utilities - Regulated Gas,"9,629,233,152",A-
+UGI,UGI Corporation,Utilities - Regulated Gas,"7,040,999,936",BBB
+BKH,Black Hills Corporation,Utilities - Regulated Gas,"4,654,700,032",BBB+
+SWX,"Southwest Gas Holdings, Inc.",Utilities - Regulated Gas,"3,508,929,024",BBB+
+OGS,"ONE Gas, Inc.",Utilities - Regulated Gas,"3,381,221,888",A-
+NWN,Northwest Natural Holding Company,Utilities - Regulated Gas,"2,682,576,896",A-
+AWK,"American Water Works Company, Inc.",Utilities - Regulated Water,"15,708,999,680",A
+UUGRY,United Utilities Group PLC,Utilities - Regulated Water,"15,351,708,228",BBB+
+CWAFF,China Water Affairs Group Limited,Utilities - Regulated Water,"3,303,787,908",BB+
+AWAEF,SIIC Environment Holdings Ltd.,Utilities - Regulated Water,"3,203,726,283",BBB-
+WTRG,"Essential Utilities, Inc.",Utilities - Regulated Water,,A-
+BEP,Brookfield Renewable Partners L.P.,Utilities - Renewable,"37,394,001,920",BBB+
+TEPCY,"Tohoku Electric Power Company, Incorporated",Utilities - Renewable,"19,346,519,791",A-
+FOJCY,Fortum Oyj,Utilities - Renewable,"4,625,144,146",BBB+
+OEZVY,VERBUND AG,Utilities - Renewable,,A
+AXIA,AXIA Energia S.A.,Utilities - Renewable,,BB
+WM,"Waste Management, Inc.",Waste Management,"22,890,999,808",A-
+RSG,"Republic Services, Inc.",Waste Management,"14,087,000,064",A-
+WCN,"Waste Connections, Inc.",Waste Management,"9,435,247,616",A-
+CLH,"Clean Harbors, Inc.",Waste Management,"3,232,133,120",BB+
+CWST,"Casella Waste Systems, Inc.",Waste Management,"1,242,125,056",BB

@@ -1,0 +1,912 @@
+symbol,shortName,longName,industry,sector,totalDebt_usd,totalRevenue_usd,profitMargins,annual_vol_5y,Agency Rating,cb_rating,Agency pd
+OMC,Omnicom Group Inc.,Omnicom Group Inc.,Advertising Agencies,Communication Services,11516600320.0,19824400384.0,0.00318,0.28746797014055464,BBB+,BBB+,0.0015
+CCO,"Clear Channel Outdoor Holdings,","Clear Channel Outdoor Holdings, Inc.",Advertising Agencies,Communication Services,6442229760.0,1643824000.0,-0.05546,0.6504002090113107,CCC+,CCC+,0.1
+DNTUY,Dentsu Group Inc.,Dentsu Group Inc.,Advertising Agencies,Communication Services,2820703047.1008015,9033288134.44993,-0.20295,0.3485717999223985,AA-,BBB+,0.0004
+ZD,"Ziff Davis, Inc.","Ziff Davis, Inc.",Advertising Agencies,Communication Services,894267008.0,1446093056.0,0.03138,0.42726259319390475,BB,BB-,0.009
+APP,Applovin Corporation,AppLovin Corporation,Advertising Agencies,Communication Services,3849840128.0,6164192256.0,0.6429,0.7620344665163944,BBB,BBB-,0.0025
+PUBGY,Publicis Groupe S.A.,Publicis Groupe S.A.,Advertising Agencies,Communication Services,6609796001.089722,20193824931.54541,0.095010005,0.28435600906162495,BBB+,BBB+,0.0015
+JCDXY,JCDECAUX SE UNSP ADR EACH REPR ,JCDecaux SE,Advertising Agencies,Communication Services,4563950963.038757,4263463525.999695,0.071490005,0.1833409692391426,BBB-,BBB-,0.0045
+WPP,WPP plc,WPP plc,Advertising Agencies,Communication Services,9175889467.23938,18198668538.58423,-0.01587,0.3565191563905208,BBB,BBB,0.0025
+BA,Boeing Company (The),The Boeing Company,Aerospace & Defense,Industrials,49614000128.0,92184002560.0,0.024600001,0.3663474270815216,BBB-,BBB-,0.0045
+TDG,Transdigm Group Incorporated,TransDigm Group Incorporated,Aerospace & Defense,Industrials,32003000320.0,9502999552.0,0.21909,0.2810525851967863,BB-,BB,0.02
+GE,GE Aerospace,GE Aerospace,Aerospace & Defense,Industrials,21321000960.0,48312999936.0,0.17863001,0.3120334646946529,A-,A-,0.001
+LMT,Lockheed Martin Corporation,Lockheed Martin Corporation,Aerospace & Defense,Industrials,20696999936.0,75106000896.0,0.06382,0.23148828597914525,A-,A-,0.001
+NOC,Northrop Grumman Corporation,Northrop Grumman Corporation,Aerospace & Defense,Industrials,17574000640.0,42367000576.0,0.108009994,0.2537946682652071,BBB+,BBB+,0.0015
+EADSY,Airbus SE,Airbus SE,Aerospace & Defense,Industrials,16910400209.266602,84179439029.60547,0.06913,0.30528358527178384,A,A,0.0007
+BAESY,BAE Systems PLC,BAE Systems plc,Aerospace & Defense,Industrials,12301225441.701172,38057379001.72803,0.07277,0.2792763200343911,A-,A-,0.001
+GD,General Dynamics Corporation,General Dynamics Corporation,Aerospace & Defense,Industrials,9831999488.0,53808001024.0,0.08068,0.2051674122931761,A,A+,0.0007
+FINMY,Leonardo S.P.A.,Leonardo S.p.a.,Aerospace & Defense,Industrials,5302924875.604004,22971215841.08496,0.05098,0.3821514658131947,BBB,BBB,0.0025
+TXT,Textron Inc.,Textron Inc.,Aerospace & Defense,Industrials,4215000064.0,15187999744.0,0.0615,0.27546671795252736,BBB,BBB,0.0025
+RNMBY,Rheinmetall AG,Rheinmetall AG,Aerospace & Defense,Industrials,2503481894.8377075,11691040201.531738,0.071779996,0.44294351450432645,BBB+,BBB+,0.0015
+CAE,CAE Inc.,CAE Inc.,Aerospace & Defense,Industrials,2312438831.1360326,3513488310.972433,0.06372,0.36491913917814445,BBB-,BB+,0.0045
+BWXT,"BWX Technologies, Inc.","BWX Technologies, Inc.",Aerospace & Defense,Industrials,2017945984.0,3376384000.0,0.10205,0.3294691275131486,BB,BB,0.009
+AIR,AAR Corp.,AAR Corp.,Aerospace & Defense,Industrials,979699968.0,3134500096.0,0.05455,0.3563218710278874,BB,BB,0.009
+MOS,Mosaic Company (The),The Mosaic Company,Agricultural Inputs,Basic Materials,5762500096.0,12429500416.0,0.0036199999,0.4228087238035429,BBB,BBB-,0.0025
+FMC,FMC Corporation,FMC Corporation,Agricultural Inputs,Basic Materials,4656600064.0,3434599936.0,-0.72926,0.5227525487884324,BB+,BB,0.0065
+CF,"CF Industries Holdings, Inc.","CF Industries Holdings, Inc.",Agricultural Inputs,Basic Materials,3620000000.0,7407000064.0,0.23733999,0.38243154370350446,BBB,BBB,0.0025
+ICL,ICL Group Ltd.,ICL Group Ltd,Agricultural Inputs,Basic Materials,3150000128.0,7408999936.0,0.03523,0.37615846108171275,BBB-,BB+,0.0045
+SMG,Scotts Miracle-Gro Company (The,The Scotts Miracle-Gro Company,Agricultural Inputs,Basic Materials,2665600000.0,3470799872.0,0.03192,0.46546487695509203,B+,B+,0.03
+NUFMF,NuFarm Ltd.,Nufarm Limited,Agricultural Inputs,Basic Materials,729754199.9968262,2370937228.1953125,-0.046869997,0.48424537642437854,B+,BB,0.03
+CTVA,"Corteva, Inc.","Corteva, Inc.",Agricultural Inputs,Basic Materials,3356000000.0,17888999424.0,0.064959995,0.26780975406153745,A-,A-,0.001
+NTR,Nutrien Ltd.,Nutrien Ltd.,Agricultural Inputs,Basic Materials,13946000384.0,26876999680.0,0.08881,0.34368162421581055,BBB,BBB,0.0025
+YARIY,Yara International ASA,Yara International ASA,Agricultural Inputs,Basic Materials,4270000128.0,16222999552.0,0.0863,0.31357382782483173,BBB,A-,0.0025
+KPLUY,K + S AG,K+S Aktiengesellschaft,Agricultural Inputs,Basic Materials,847609161.8722229,4345404029.846191,-0.35208,0.40929529239940704,BBB-,BBB-,0.0045
+UAN,"CVR Partners, LP","CVR Partners, LP",Agricultural Inputs,Basic Materials,574606976.0,643219968.0,0.18887,0.42593395738004486,B+,B+,0.03
+AAL,"American Airlines Group, Inc.",American Airlines Group Inc.,Airlines,Industrials,34892001280.0,55993999360.0,0.00361,0.4810552979039969,B+,BB-,0.03
+UAL,"United Airlines Holdings, Inc.","United Airlines Holdings, Inc.",Airlines,Industrials,30971000832.0,60465000448.0,0.06061,0.48561352605333147,BB+,BBB,0.0065
+DAL,"Delta Air Lines, Inc.","Delta Air Lines, Inc.",Airlines,Industrials,21398999040.0,65178001408.0,0.068670005,0.407254414108206,BBB-,BBB,0.0045
+JBLU,JetBlue Airways Corporation,JetBlue Airways Corporation,Airlines,Industrials,9333999616.0,9162000384.0,-0.07782,0.6066615218275037,CCC+,B,0.1
+ACDVF,Air Canada,Air Canada,Airlines,Industrials,8795160707.109526,16417014404.488937,0.03458,0.3785546025522304,BB,BB+,0.009
+ALK,"Alaska Air Group, Inc.","Alaska Air Group, Inc.",Airlines,Industrials,6668000256.0,14401999872.0,0.0050700004,0.42734898606469657,BB-,BB-,0.02
+LUV,Southwest Airlines Company,Southwest Airlines Co.,Airlines,Industrials,6396000256.0,28884000768.0,0.02829,0.38469973922206013,BBB,BBB,0.0025
+QUBSF,QANTAS AIRWAYS,Qantas Airways Limited,Airlines,Industrials,5838056087.931641,17419949164.46875,0.065349996,0.38541063066001274,BBB-,BBB,0.0045
+ALGT,Allegiant Travel Company,Allegiant Travel Company,Airlines,Industrials,1853789952.0,2639937024.0,-0.012999999,0.5453784411262136,B+,B,0.03
+AGZNF,AEGEAN AIRLINES,Aegean Airlines S.A.,Airlines,Industrials,1759401204.032257,2175470297.2715454,0.07082,0.3726098821451161,AA,BBB,0.0003
+RYAAY,Ryanair Holdings plc,Ryanair Holdings plc,Airlines,Industrials,1731081797.4274902,18041202397.260742,0.13984,0.3568283407184438,BBB+,BBB+,0.0015
+AA,Alcoa Corporation,Alcoa Corporation,Aluminum,Basic Materials,2551000064.0,12654999552.0,0.081709996,0.563196351039502,BB+,BB+,0.0065
+CSTM,Constellium SE,Constellium SE,Aluminum,Basic Materials,1972999936.0,8931000320.0,0.04871,0.47248146172876815,BB-,BB+,0.02
+KALU,Kaiser Aluminum Corporation,Kaiser Aluminum Corporation,Aluminum,Basic Materials,1069600000.0,3702400000.0,0.04143,0.4455170856210686,BB-,BB-,0.02
+CENX,Century Aluminum Company,Century Aluminum Company,Aluminum,Basic Materials,545900032.0,2543200000.0,0.13676,0.7198726376181827,B,B+,0.05
+NORNQ,NORANDA ALUM HLDG CORP,Noranda Aluminum Holding Corporation,Aluminum,Basic Materials,742300032.0,1228099968.0,-0.21138,3.151006115110938,B-,B-,0.07
+NHYKF,Norsk Hydro ASA,Norsk Hydro ASA,Aluminum,Basic Materials,3544143704.3195224,21132774023.277554,0.0304,0.4806528057502218,BBB,BBB,0.0025
+VFC,V.F. Corporation,V.F. Corporation,Apparel Manufacturing,Consumer Cyclical,4983353856.0,12784847872.0,0.05546,0.5367048909865898,BB,BB+,0.009
+PVH,PVH Corp.,PVH Corp.,Apparel Manufacturing,Consumer Cyclical,4225999872.0,8991699968.0,0.01758,0.48350413345114873,BBB,BBB-,0.0025
+RL,Ralph Lauren Corporation,Ralph Lauren Corporation,Apparel Manufacturing,Consumer Cyclical,3009400064.0,8114500096.0,0.11598,0.3708036452727411,A-,BBB+,0.001
+LEVI,Levi Strauss & Co,Levi Strauss & Co.,Apparel Manufacturing,Consumer Cyclical,2317600000.0,6497699840.0,0.095249996,0.39784903633153584,BB+,BB+,0.0065
+COLM,Columbia Sportswear Company,Columbia Sportswear Company,Apparel Manufacturing,Consumer Cyclical,472568000.0,3397912064.0,0.04982,0.32033618691986016,A-,BBB+,0.001
+GIL,"Gildan Activewear, Inc.",Gildan Activewear Inc.,Apparel Manufacturing,Consumer Cyclical,5088175104.0,4073508096.0,0.06098,0.3203733818251361,BBB-,BBB-,0.0045
+UAA,"Under Armour, Inc.","Under Armour, Inc.",Apparel Manufacturing,Consumer Cyclical,1939633024.0,4966369792.0,-0.0998,0.5295342265446525,BB-,BB-,0.02
+BSDGY,Bosideng International Holdings,Bosideng International Holdings Limited,Apparel Manufacturing,Consumer Cyclical,286534749.4524743,3851879381.383701,0.13731,0.39098819617191705,BBB-,BBB,0.0045
+KTB,"Kontoor Brands, Inc.","Kontoor Brands, Inc.",Apparel Manufacturing,Consumer Cyclical,1275374976.0,3342777088.0,0.08287,0.437291342034084,BB,BB,0.009
+BOSSY,Hugo Boss AG,Hugo Boss AG,Apparel Manufacturing,Consumer Cyclical,1353296233.6540222,4846608724.520691,0.055430003,0.418036218501338,BBB-,BBB,0.0045
+GOOS,Canada Goose Holdings Inc. Subo,Canada Goose Holdings Inc.,Apparel Manufacturing,Consumer Cyclical,561414548.9696004,1092656237.6525881,0.01472,0.5361871378527447,BB-,B+,0.02
+TJX,"TJX Companies, Inc. (The)","The TJX Companies, Inc.",Apparel Retail,Consumer Cyclical,14179999744.0,61583998976.0,0.09402,0.22308928763496721,A,A,0.0007
+ROST,"Ross Stores, Inc.","Ross Stores, Inc.",Apparel Retail,Consumer Cyclical,4723149824.0,23776063488.0,0.097399995,0.29925050119089747,A-,A-,0.001
+FRCOY,Fast Retailing Co. Ltd.,"Fast Retailing Co., Ltd.",Apparel Retail,Consumer Cyclical,4294939888.6008525,22879912795.07939,0.1306,0.3009586489143392,A+,A+,0.0005
+ANF,Abercrombie & Fitch Company,Abercrombie & Fitch Co.,Apparel Retail,Consumer Cyclical,1292477056.0,5282802176.0,0.093439996,0.6045825591671786,BB,BB,0.009
+CRI,"Carter's, Inc.","Carter's, Inc.",Apparel Retail,Consumer Cyclical,1196312960.0,2949711872.0,0.03071,0.4196449560438254,BB+,BB,0.0065
+CAL,"Caleres, Inc.","Caleres, Inc.",Apparel Retail,Consumer Cyclical,949283968.0,2810231040.0,0.00023,0.5593057481764029,BB-,B+,0.02
+BURL,"Burlington Stores, Inc.","Burlington Stores, Inc.",Apparel Retail,Consumer Cyclical,5872111104.0,11911286784.0,0.052389998,0.4389511498279187,BB+,BB+,0.0065
+GAP,"Gap, Inc. (The)","The Gap, Inc.",Apparel Retail,Consumer Cyclical,5641999872.0,15399999488.0,0.062470004,0.5562803961867279,BB+,BB+,0.0065
+VSXY,Victorias Secret & Co.,,Apparel Retail,Consumer Cyclical,2851000064.0,6760000000.0,0.03121,0.6661997331142555,BB-,BB-,0.02
+NXGPF,NEXT,NEXT plc,Apparel Retail,Consumer Cyclical,2430697331.7554016,9268964876.413696,0.12874,0.32786183310774814,BBB,BBB+,0.0025
+TM,Toyota Motor Corporation,Toyota Motor Corporation,Auto Manufacturers,Consumer Cyclical,274119937730.74997,316367689199.6911,0.07592,0.2684874535937249,A+,AA-,0.0005
+F,Ford Motor Company,Ford Motor Company,Auto Manufacturers,Consumer Cyclical,159511003136.0,189861003264.0,-0.03216,0.3957246890664323,BBB-,BBB-,0.0045
+GM,General Motors Company,General Motors Company,Auto Manufacturers,Consumer Cyclical,128773996544.0,184623005696.0,0.0137600005,0.36602265695559216,BBB,BBB,0.0025
+HMC,"Honda Motor Company, Ltd.","Honda Motor Co., Ltd.",Auto Manufacturers,Consumer Cyclical,86114768077.3001,136051101684.62073,-0.019450001,0.26906283890714183,BBB+,BBB+,0.0015
+STLA,Stellantis N.V.,Stellantis N.V.,Auto Manufacturers,Consumer Cyclical,55638347589.97363,180857706437.20703,-0.13866,0.42163567508695254,BBB-,BBB,0.0045
+TSLA,"Tesla, Inc.","Tesla, Inc.",Auto Manufacturers,Consumer Cyclical,15889999872.0,97878999040.0,0.03946,0.5884357547717323,BBB,BBB,0.0025
+YMHAY,"Yamaha Motor Co., Ltd.","Yamaha Motor Co., Ltd.",Auto Manufacturers,Consumer Cyclical,7376570579.5640745,16468345285.663652,0.01012,0.5406435525445304,BBB+,BBB-,0.0015
+MZDAF,Mazda Motor Corp.,Mazda Motor Corporation,Auto Manufacturers,Consumer Cyclical,5427466799.915096,30698476364.711834,0.00713,0.46408188615290186,BBB+,BBB,0.0015
+ISUZF,ISUZU MOTORS,Isuzu Motors Limited,Auto Manufacturers,Consumer Cyclical,5351759382.156263,21715846103.33115,0.03877,0.5360004218372098,A-,BBB+,0.001
+MMTOY,,Mitsubishi Motors Corporation,Auto Manufacturers,Consumer Cyclical,2468144695.640455,18079733456.75334,0.0034599998,0.48381039010220517,BB+,BBB-,0.0065
+VWAGY,Volkswagen AG,Volkswagen AG,Auto Manufacturers,Consumer Cyclical,323854452186.33594,371415973387.7422,0.0212,0.3364195621359446,BBB+,A-,0.0015
+BMWKY,Bayerische Motoren Werke AG,,Auto Manufacturers,Consumer Cyclical,130203115653.85547,151696847773.8164,0.05217,0.3062398989899622,A,A,0.0007
+MBGYY,Mercedes Benz Group AG,Mercedes-Benz Group AG,Auto Manufacturers,Consumer Cyclical,115518803087.85156,151569175792.27734,0.03738,0.30044333558510833,A,A-,0.0007
+RNLSY,Renault SA,Renault SA,Auto Manufacturers,Consumer Cyclical,81644615852.49219,67226091669.56348,-0.18872,0.40382538038542837,BBB-,BBB,0.0045
+GELHY,Geely Automobile Holdings Ltd.,Geely Automobile Holdings Limited,Auto Manufacturers,Consumer Cyclical,2901502470.6829815,52736805981.74675,0.043070003,0.46422729833428433,BBB-,BBB,0.0045
+NFYEF,NFI Group Inc.,NFI Group Inc.,Auto Manufacturers,Consumer Cyclical,1321222016.0,3615121920.0,-0.03433,0.5125657223871292,BB-,BB-,0.02
+PGGCY,Piaggio & C Spa Pontedera,Piaggio & C. SpA,Auto Manufacturers,Consumer Cyclical,923256777.8793945,1709627534.9465942,0.020750001,0.2906826093995018,BB-,BBB,0.02
+LAD,"Lithia Motors, Inc.","Lithia Motors, Inc.",Auto & Truck Dealerships,Consumer Cyclical,16129500160.0,37728002048.0,0.01883,0.3867096850585937,BB+,BB+,0.0065
+AN,"AutoNation, Inc.","AutoNation, Inc.",Auto & Truck Dealerships,Consumer Cyclical,10478900224.0,27493099520.0,0.0247,0.3609057299466535,BBB-,BBB-,0.0045
+PAG,"Penske Automotive Group, Inc.","Penske Automotive Group, Inc.",Auto & Truck Dealerships,Consumer Cyclical,9332799488.0,31718299648.0,0.02876,0.32190262565931377,BB+,BBB-,0.0065
+GPI,"Group 1 Automotive, Inc.","Group 1 Automotive, Inc.",Auto & Truck Dealerships,Consumer Cyclical,5611899904.0,22473199616.0,0.01456,0.37380455445068345,BB+,BB+,0.0065
+ABG,Asbury Automotive Group Inc,"Asbury Automotive Group, Inc.",Auto & Truck Dealerships,Consumer Cyclical,5429199872.0,17963499520.0,0.03049,0.3997190984536144,BB+,BB+,0.0065
+SAH,"Sonic Automotive, Inc.","Sonic Automotive, Inc.",Auto & Truck Dealerships,Consumer Cyclical,4428700160.0,15190800384.0,0.00717,0.4205538435957695,BB,BB,0.009
+CWH,"Camping World Holdings, Inc.","Camping World Holdings, Inc.",Auto & Truck Dealerships,Consumer Cyclical,4090256896.0,6310230016.0,-0.014880001,0.5562490655246032,B,B+,0.05
+IHCPF,Inchcape PLC,Inchcape plc,Auto & Truck Dealerships,Consumer Cyclical,4064145250.7834473,12221984265.355103,0.02989,0.27916812897463544,BBB,BBB,0.0025
+OPLN,"OPENLANE, Inc.","OPENLANE, Inc.",Auto & Truck Dealerships,Consumer Cyclical,2300499968.0,2002300032.0,0.09474,0.3847215250169775,B,BB-,0.05
+AZO,"AutoZone, Inc.","AutoZone, Inc.",Auto Parts,Consumer Cyclical,13086533632.0,19986403328.0,0.12399,0.2456987048079622,BBB,BBB,0.0025
+FURCF,FORVIA SE,Forvia SE,Auto Parts,Consumer Cyclical,11581012491.644531,24775766312.950195,-0.097959995,0.5958310593952155,BB+,BB+,0.0065
+GT,The Goodyear Tire & Rubber Comp,The Goodyear Tire & Rubber Company,Auto Parts,Consumer Cyclical,8032000000.0,17908000768.0,-0.11643,0.5169346093130313,B+,BB-,0.03
+GPC,Genuine Parts Company,Genuine Parts Company,Auto Parts,Consumer Cyclical,6713816064.0,24699011072.0,0.00243,0.2759325449583298,BBB-,BBB-,0.0045
+AAP,Advance Auto Parts Inc.,"Advance Auto Parts, Inc.",Auto Parts,Consumer Cyclical,5649999872.0,8632000512.0,0.0050999997,0.5230901194751999,BB,BB-,0.009
+LKQ,LKQ Corporation,LKQ Corporation,Auto Parts,Consumer Cyclical,5235999744.0,13793000448.0,0.03748,0.3054866627526756,BBB-,BBB-,0.0045
+NPSGF,"Nippon Sheet Glass Co., Ltd.","Nippon Sheet Glass Company, Limited",Auto Parts,Consumer Cyclical,3415345023.7797923,5489466836.509203,0.00503,0.21249350328153596,BB+,BBB-,0.0065
+ALV,"Autoliv, Inc.","Autoliv, Inc.",Auto Parts,Consumer Cyclical,2252000000.0,10990000128.0,0.06451,0.3199276682215476,BBB+,BB+,0.0015
+DAN,Dana Incorporated,Dana Incorporated,Auto Parts,Consumer Cyclical,1535000064.0,7586999808.0,0.15118,0.47528747932476706,BB,BB,0.009
+CPS,Cooper-Standard Holdings Inc.,Cooper-Standard Holdings Inc.,Auto Parts,Consumer Cyclical,1243230976.0,2760205056.0,-0.014140001,0.8372765211717987,B-,B-,0.07
+DORM,"Dorman Products, Inc.","Dorman Products, Inc.",Auto Parts,Consumer Cyclical,548238016.0,2151397120.0,0.08843,0.32582129297009044,BB,BB,0.009
+VC,Visteon Corporation,Visteon Corporation,Auto Parts,Consumer Cyclical,436000000.0,3788000000.0,0.04356,0.3876208217560834,BB+,BB+,0.0065
+JELCF,JOHNSON ELECTRIC HOLDINGS,Johnson Electric Holdings Limited,Auto Parts,Consumer Cyclical,383512992.0,3650417920.0,0.055370003,0.45812826804815326,BBB,BBB,0.0025
+DNZOY,Denso Corp.,DENSO Corporation,Auto Parts,Consumer Cyclical,5326354768.474739,47063367308.97215,0.05885,0.3005870788892543,A+,AA-,0.0005
+BRDCF,BRIDGESTONE CORP,Bridgestone Corporation,Auto Parts,Consumer Cyclical,4991448622.860908,27992997909.751274,0.07659,0.5688286096905312,AA+,AA-,0.0002
+ASEKF,Aisin Corporation,Aisin Corporation,Auto Parts,Consumer Cyclical,4281919328.6774507,31944297282.78905,0.03355,0.4519070804226938,A,A-,0.0007
+APTV,Aptiv PLC,Aptiv PLC,Auto Parts,Consumer Cyclical,9886000128.0,20658999296.0,0.01767,0.402895664672369,BBB,BBB-,0.0025
+BUD,Anheuser-Busch Inbev SA Sponsor,Anheuser-Busch InBev SA/NV,Beverages - Brewers,Consumer Defensive,73333997568.0,60958998528.0,0.11897001,0.24985068486577955,A-,A,0.001
+HKHHY,Heineken Holding N.V.,Heineken Holding N.V.,Beverages - Brewers,Consumer Defensive,22375812592.057617,33371635688.276855,0.03311,0.2559074932701873,BBB+,BBB+,0.0015
+TAP,Molson Coors Beverage Company,Molson Coors Beverage Company,Beverages - Brewers,Consumer Defensive,6485300224.0,11187800064.0,-0.18854,0.25711069670646075,BBB,BBB,0.0025
+ABEV,Ambev S.A.,Ambev S.A.,Beverages - Brewers,Consumer Defensive,613902369.3679765,17436167537.8425,0.1766,0.3038730925391279,BBB+,A-,0.0015
+STZ,"Constellation Brands, Inc.","Constellation Brands, Inc.",Beverages - Brewers,Consumer Defensive,11202599936.0,9139000320.0,0.18456,0.2486476443491558,BBB,BBB,0.0025
+PEP,"Pepsico, Inc.","PepsiCo, Inc.",Beverages - Non-Alcoholic,Consumer Defensive,52728000512.0,95448997888.0,0.09149,0.18405769955366832,A+,A+,0.0005
+KO,Coca-Cola Company (The),The Coca-Cola Company,Beverages - Non-Alcoholic,Consumer Defensive,44646998016.0,49284001792.0,0.278,0.16195739891088884,A,A+,0.0007
+COKE,"Coca-Cola Consolidated, Inc.","Coca-Cola Consolidated, Inc.",Beverages - Non-Alcoholic,Consumer Defensive,1118844032.0,7494746112.0,0.07719,0.3782696998171379,BBB+,BBB+,0.0015
+EMBVF,Arca Continental SAB de CV,"Arca Continental, S.A.B. de C.V.",Beverages - Non-Alcoholic,Consumer Defensive,3905964259.0831957,14557439433.154932,0.07681,0.34079018130340744,A,BBB+,0.0007
+PRMB,Primo Brands Corporation,Primo Brands Corporation,Beverages - Non-Alcoholic,Consumer Defensive,5710300160.0,6676400128.0,0.00879,0.336460593850632,BB-,BB,0.02
+CELH,"Celsius Holdings, Inc.","Celsius Holdings, Inc.",Beverages - Non-Alcoholic,Consumer Defensive,675881024.0,2968608000.0,0.058509998,0.6508079753716034,BB-,BB-,0.02
+GMAB,Genmab A/S,Genmab A/S,Biotechnology,Healthcare,5351000064.0,3900999936.0,0.21045999,0.33611400580351375,BB+,BBB-,0.0065
+ALNY,"Alnylam Pharmaceuticals, Inc.","Alnylam Pharmaceuticals, Inc.",Biotechnology,Healthcare,2970230016.0,4286923008.0,0.12550001,0.4666289691064314,BB+,BB+,0.0065
+REGN,"Regeneron Pharmaceuticals, Inc.","Regeneron Pharmaceuticals, Inc.",Biotechnology,Healthcare,2706200064.0,14919600128.0,0.29648,0.30954367841235547,BBB+,BBB+,0.0015
+VRTX,Vertex Pharmaceuticals Incorpor,Vertex Pharmaceuticals Incorporated,Biotechnology,Healthcare,1986499968.0,12218000384.0,0.35507,0.2886550041216473,BBB-,BBB,0.0045
+BMRN,BioMarin Pharmaceutical Inc.,BioMarin Pharmaceutical Inc.,Biotechnology,Healthcare,1439601024.0,3242316032.0,0.08289,0.32912403629576215,BB+,BB+,0.0065
+MLM,"Martin Marietta Materials, Inc.","Martin Marietta Materials, Inc.",Building Materials,Basic Materials,5688000000.0,6350000128.0,0.39905998,0.26651145352811556,BBB+,BBB+,0.0015
+VMC,Vulcan Materials Company (Holdi,Vulcan Materials Company,Building Materials,Basic Materials,5191300096.0,8062400000.0,0.13809,0.2617641069602938,BBB+,BBB+,0.0015
+JHX,James Hardie Industries plc.,James Hardie Industries plc,Building Materials,Basic Materials,4889200128.0,4835800064.0,0.02151,0.4509952239142635,BB+,BBB-,0.0065
+EXP,Eagle Materials Inc,Eagle Materials Inc.,Building Materials,Basic Materials,1796784000.0,2308657920.0,0.18357,0.3272360003040236,BBB,BBB,0.0025
+CRH,CRH PLC,CRH plc,Building Materials,Basic Materials,20427999232.0,38060998656.0,0.09645,0.3079776300900149,BBB+,A-,0.0015
+HCMLY,HOLCIM LTD,Holcim AG,Building Materials,Basic Materials,11651377637.204103,19812509335.584965,0.83815,0.25252864816521114,BBB+,A-,0.0015
+HDLMY,HEIDELBERG MATERIALS AG,,Building Materials,Basic Materials,9733867255.272583,25014160080.534668,0.090059996,0.33608920097017186,BBB,A-,0.0025
+AMRZ,Amrize Ltd,,Building Materials,Basic Materials,7097999872.0,11911999488.0,0.097040005,0.35553622873394564,BBB+,BBB+,0.0015
+CX,"Cemex, S.A.B. de C.V. Sponsored","CEMEX, S.A.B. de C.V.",Building Materials,Basic Materials,6236120064.0,16536876032.0,0.02744,0.3987860291787405,BBB-,BBB+,0.0045
+AHCHY,"Anhui Conch Cement Co., Ltd.",Anhui Conch Cement Company Limited,Building Materials,Basic Materials,4028242908.2155194,11920369785.218489,0.09646,0.3706683761614743,A,A-,0.0007
+TTCIF,TITAN CEMENT INTERNATIONAL SA,Titan S.A.,Building Materials,Basic Materials,1301138609.065216,3095068616.3598633,0.09623,0.36650215911293316,BB+,BBB-,0.0065
+KNF,Knife Riv Holding Co.,Knife River Corporation,Building Materials,Basic Materials,1482973056.0,3202672128.0,0.04578,0.42085287132668575,BB+,BB+,0.0065
+GCWOF,Grupo Cementos de Chihuahua SAB,"GCC, S.A.B. de C.V.",Building Materials,Basic Materials,660857984.0,1457576960.0,0.21016,0.35080720888974104,BBB,BBB-,0.0025
+WBRBY,Wienerberger Baustoffindustrie ,Wienerberger AG,Building Materials,Basic Materials,2472144920.8259583,5213556627.80249,0.029159999,0.5067919003817895,BBB-,BBB+,0.0045
+JCI,Johnson Controls International ,Johnson Controls International plc,Building Products & Equipment,Industrials,9523000320.0,24433000448.0,0.14452,0.28490713583605476,BBB+,BBB+,0.0015
+OC,Owens Corning Inc,Owens Corning,Building Products & Equipment,Industrials,6023000064.0,9838000128.0,-0.054279998,0.34707901403621694,BBB,BBB,0.0025
+MAS,Masco Corporation,Masco Corporation,Building Products & Equipment,Industrials,3302000128.0,7679000064.0,0.109,0.2990620122583816,BBB,BBB,0.0025
+CSL,Carlisle Companies Incorporated,Carlisle Companies Incorporated,Building Products & Equipment,Industrials,2888600064.0,4976200192.0,0.14571,0.3104683667729825,BBB,BBB,0.0025
+WMS,"Advanced Drainage Systems, Inc.","Advanced Drainage Systems, Inc.",Building Products & Equipment,Industrials,1846093056.0,3050375936.0,0.13981,0.42507337883970475,BB,BB,0.009
+ROCK,"Gibraltar Industries, Inc.","Gibraltar Industries, Inc.",Building Products & Equipment,Industrials,1374199040.0,1245431040.0,-0.10677,0.40181013075399036,BB-,B+,0.02
+AWI,Armstrong World Industries Inc,"Armstrong World Industries, Inc.",Building Products & Equipment,Industrials,570600000.0,1648000000.0,0.18591999,0.26181151554895554,BB,BB+,0.009
+DOW,Dow Inc.,Dow Inc.,Chemicals,Basic Materials,19634999296.0,39331000320.0,-0.07244,0.3367347147307195,BBB-,BBB-,0.0045
+CE,Celanese Corporation,Celanese Corporation,Chemicals,Basic Materials,12904999936.0,9491999744.0,-0.11557,0.4595978415075489,BB,BB,0.009
+SHWDF,Resonac Holdings Corporation,Resonac Holdings Corporation,Chemicals,Basic Materials,6012795987.80313,8325967794.824638,0.026659999,0.4435907318159075,A+,BBB+,0.0005
+TROX,Tronox Holdings plc,Tronox Holdings plc,Chemicals,Basic Materials,3513999872.0,2920000000.0,-0.15822,0.6182485003618745,CCC+,B-,0.1
+MEOH,Methanex Corporation,Methanex Corporation,Chemicals,Basic Materials,3453582080.0,3666468096.0,-0.01228,0.4400142018876504,BB,BB,0.009
+OLN,Olin Corporation,Olin Corporation,Chemicals,Basic Materials,3310899968.0,6719600128.0,-0.027520001,0.4486943015364849,BB+,BB+,0.0065
+HUN,Huntsman Corporation,Huntsman Corporation,Chemicals,Basic Materials,2487000064.0,5693000192.0,-0.058319997,0.39375776188868294,BB,BB,0.009
+BASFY,BASF SE,BASF SE,Chemicals,Basic Materials,27470985260.8833,68672237376.75,0.02937,0.30607441060443014,A-,BBB+,0.001
+SVYSF,Solvay S.A.,Solvay SA,Chemicals,Basic Materials,2548746594.429016,5391133160.510986,-0.00538,0.4225104460286638,BBB-,BBB-,0.0045
+GPRE,"Green Plains, Inc.",Green Plains Inc.,Chemicals,Basic Materials,558761024.0,1935969024.0,-0.00797,0.6011894056680561,B,B,0.05
+HPE,Hewlett Packard Enterprise Comp,Hewlett Packard Enterprise Company,Communication Equipment,Technology,21304000512.0,38793998336.0,0.040110003,0.38986464751207844,BBB,BBB-,0.0025
+MSI,"Motorola Solutions, Inc.","Motorola Solutions, Inc.",Communication Equipment,Technology,9589000192.0,11868000256.0,0.1761,0.23154670911197037,BBB,BBB,0.0025
+VSAT,"ViaSat, Inc.","Viasat, Inc.",Communication Equipment,Technology,6939566080.0,4640280064.0,-0.00735,0.7494957310242059,B,B+,0.05
+NOK,Nokia Corporation Sponsored,Nokia Oyj,Communication Equipment,Technology,3859099391.328186,23207986136.01172,0.039809998,0.36736619931881836,BBB-,BBB,0.0045
+LITE,Lumentum Holdings Inc.,Lumentum Holdings Inc.,Communication Equipment,Technology,3313700096.0,2488399872.0,0.17678,0.6018785612083979,B+,B+,0.03
+ZBRA,Zebra Technologies Corporation,Zebra Technologies Corporation,Communication Equipment,Technology,2848999936.0,5583000064.0,0.07487,0.409122752024765,BB+,BB+,0.0065
+CIEN,Ciena Corporation,Ciena Corporation,Communication Equipment,Technology,1580579968.0,5569149952.0,0.0787,0.4855188326306008,BB+,BB+,0.0065
+BDC,Belden Inc,Belden Inc.,Communication Equipment,Technology,1377171968.0,2786707968.0,0.084910005,0.372603663877887,BB,BB,0.009
+VIAV,Viavi Solutions Inc.,Viavi Solutions Inc.,Communication Equipment,Technology,1136499968.0,1365699968.0,-0.040349998,0.4269553909977679,B+,B+,0.03
+CSCO,"Cisco Systems, Inc.","Cisco Systems, Inc.",Communication Equipment,Technology,33001000960.0,60745998336.0,0.19685,0.250269262182878,AA-,A+,0.0004
+HPQ,HP Inc.,HP Inc.,Computer Hardware,Technology,10864000000.0,57416998912.0,0.044460002,0.35669362150128403,BBB,BBB,0.0025
+CAJPY,"Canon, Inc.",Canon Inc.,Computer Hardware,Technology,7698412804.294659,29086904932.206947,0.06612,0.23819667510006096,A,A+,0.0007
+LNVGY,Lenovo Group Ltd.,Lenovo Group Limited,Computer Hardware,Technology,5156451840.0,83074555904.0,0.02301,0.46085340233519845,BBB,BBB,0.0025
+STX,Seagate Technology Holdings PLC,Seagate Technology Holdings plc,Computer Hardware,Technology,4177999872.0,11009999872.0,0.21599,0.4459962498579526,BB+,BBB,0.0065
+SNDK,Sandisk Corporation,Sandisk Corporation,Computer Hardware,Technology,207000000.0,13184000000.0,0.34185,0.9832144575650911,BB+,BBB-,0.0065
+DELL,Dell Technologies Inc.,Dell Technologies Inc.,Computer Hardware,Technology,31924000768.0,134001999872.0,0.062750004,0.4973065793121453,BBB+,BBB+,0.0015
+MDLZ,"Mondelez International, Inc.","Mondelez International, Inc.",Confectioners,Consumer Defensive,21621999616.0,39303999488.0,0.06638,0.1957349786782349,BBB,BBB+,0.0025
+HSY,The Hershey Company,The Hershey Company,Confectioners,Consumer Defensive,5681147904.0,11991323648.0,0.09125,0.2274539204579127,A,A-,0.0007
+BYCBF,Barry Callebaut AG,Barry Callebaut AG,Confectioners,Consumer Defensive,6588863883.66583,17959969202.069744,0.01706,0.39389503946358484,BBB-,BBB,0.0045
+EFX,"Equifax, Inc.",Equifax Inc.,Consulting Services,Industrials,5308100096.0,6281399808.0,0.11123,0.3346731212244703,BBB,BBB,0.0025
+VRSK,"Verisk Analytics, Inc.","Verisk Analytics, Inc.",Consulting Services,Industrials,4625200128.0,3102299904.0,0.2934,0.2445191887729887,BBB,BBB,0.0025
+BAH,Booz Allen Hamilton Holding Cor,Booz Allen Hamilton Holding Corporation,Consulting Services,Industrials,4121999872.0,11217000448.0,0.07587,0.3126898314673292,BBB-,BBB,0.0045
+EXPGF,Experian plc,Experian plc,Consulting Services,Industrials,5600999936.0,8445000192.0,0.17785999,0.306951289061542,A-,BBB+,0.001
+SGSOY,SGS SA,SGS SA,Consulting Services,Industrials,6170303699.361564,8750818737.434965,0.09618,0.22835375033226823,A-,BBB+,0.001
+AAPL,Apple Inc.,Apple Inc.,Consumer Electronics,Technology,84710998016.0,451442016256.0,0.27152002,0.27435116641877827,AA+,AA,0.0002
+TCLHF,TCL Electronics Holdings Ltd.,TCL Electronics Holdings Limited,Consumer Electronics,Technology,923673992.8194994,15120264480.17874,0.022739999,0.7415313461244888,BBB-,BBB-,0.0045
+SONY,Sony Group Corporation,Sony Group Corporation,Consumer Electronics,Technology,10421818152.691696,77895873218.69759,-0.02619,0.2903114633224742,A+,A+,0.0005
+PCRFF,Panasonic Holdings Corporation,Panasonic Holdings Corporation,Consumer Electronics,Technology,10006909399.90038,50238888386.23318,0.02355,0.41789556201325384,A-,A-,0.001
+FCX,"Freeport-McMoRan, Inc.",Freeport-McMoRan Inc.,Copper,Basic Materials,10401000448.0,26421000192.0,0.10344,0.45225572240802675,BBB,BBB,0.0025
+SCCO,Southern Copper Corporation,Southern Copper Corporation,Copper,Basic Materials,7401699840.0,14549499904.0,0.34131,0.39880786781351774,BBB+,BBB,0.0015
+ANFGF,Antofagasta plc,Antofagasta plc,Copper,Basic Materials,7659400192.0,8620300288.0,0.15416001,0.4857442326733746,BBB+,BBB,0.0015
+LUNMF,Lundin Mining Corp.,Lundin Mining Corporation,Copper,Basic Materials,511200000.0,4292400128.0,0.3355,0.4949321531596217,BB,BB,0.009
+FQVLF,First Quantum Minerals Ltd.,First Quantum Minerals Ltd.,Copper,Basic Materials,7495000064.0,5450999808.0,-0.03687,0.6115480004119578,B,BB,0.05
+HBM,Hudbay Minerals Inc.,Hudbay Minerals Inc.,Copper,Basic Materials,1177200000.0,2373400064.0,0.27745,0.553455217806145,BB-,BB-,0.02
+CSCCF,CAPSTONE COPPER CORP.,Capstone Copper Corp.,Copper,Basic Materials,1668035968.0,2479053056.0,0.17148,0.6087223571215756,BB-,BB-,0.02
+ERO,Ero Copper Corp.,Ero Copper Corp.,Copper,Basic Materials,603436992.0,923926016.0,0.31633,0.5522195464543499,B,B+,0.05
+TGB,"Taseko Mines, Ltd.",Taseko Mines Limited,Copper,Basic Materials,538069221.7539575,551152932.0480369,0.01988,0.6251802205665866,B-,B,0.07
+KSS,Kohl's Corporation,Kohl's Corporation,Department Stores,Consumer Cyclical,6533000192.0,15461000192.0,0.01766,0.6811332903276003,B+,BB-,0.03
+M,Macy's Inc,"Macy's, Inc.",Department Stores,Consumer Cyclical,5109000192.0,22720000000.0,0.029360002,0.5336064374239475,BB+,BB+,0.0065
+MAKSY,Marks & Spencer Group Plc,Marks and Spencer Group plc,Department Stores,Consumer Cyclical,4603793106.4198,23199743018.341064,0.01502,0.3687976755671003,BBB-,BBB-,0.0045
+JFROF,"J. Front Retailing Co., Ltd.","J. Front Retailing Co., Ltd.",Department Stores,Consumer Cyclical,2101473783.4802208,2778208488.3209453,0.063540004,0.16960779026877354,A+,A-,0.0005
+DDS,"Dillard's, Inc.","Dillard's, Inc.",Department Stores,Consumer Cyclical,555353024.0,6604985856.0,0.09946,0.5044829718825791,BBB-,BBB-,0.0045
+TMO,Thermo Fisher Scientific Inc,Thermo Fisher Scientific Inc.,Diagnostics & Research,Healthcare,43161001984.0,45197000704.0,0.15151,0.2714662999007737,A-,A,0.001
+DHR,Danaher Corporation,Danaher Corporation,Diagnostics & Research,Healthcare,19683999744.0,24778000384.0,0.14887999,0.28048783281847106,A-,A-,0.001
+LH,Labcorp Holdings Inc.,Labcorp Holdings Inc.,Diagnostics & Research,Healthcare,7294400000.0,14144199680.0,0.06656,0.23419860013441754,BBB,BBB,0.0025
+DGX,Quest Diagnostics Incorporated,Quest Diagnostics Incorporated,Diagnostics & Research,Healthcare,6408000000.0,11278000128.0,0.0908,0.21783178151419433,BBB+,BBB+,0.0015
+LZAGF,Lonza Group AG,Lonza Group AG,Diagnostics & Research,Healthcare,5895620131.005081,8229171493.260984,-0.04211,0.4431175634645134,BBB+,BBB,0.0015
+WAT,Waters Corporation,Waters Corporation,Diagnostics & Research,Healthcare,5601999872.0,3770286080.0,0.11926,0.33500540955862934,BBB,BBB,0.0025
+ICLR,ICON plc,ICON Public Limited Company,Diagnostics & Research,Healthcare,3555781888.0,8251339776.0,0.02779,0.47285132142525704,BBB-,BBB,0.0045
+A,"Agilent Technologies, Inc.","Agilent Technologies, Inc.",Diagnostics & Research,Healthcare,3542000128.0,7232000000.0,0.19552,0.29834623856277936,BBB+,BBB+,0.0015
+CRL,Charles River Laboratories Inte,"Charles River Laboratories International, Inc.",Diagnostics & Research,Healthcare,3064531968.0,4027044096.0,-0.04585,0.4341521750886434,BB+,BB+,0.0065
+ILMN,"Illumina, Inc.","Illumina, Inc.",Diagnostics & Research,Healthcare,2544000000.0,4392999936.0,0.19417,0.45325870300374665,BBB,BBB,0.0025
+WMT,Walmart Inc.,Walmart Inc.,Discount Stores,Consumer Defensive,75545001984.0,725304999936.0,0.03135,0.21759757700469112,AA,AA-,0.0003
+TGT,Target Corporation,Target Corporation,Discount Stores,Consumer Defensive,19271999488.0,106377003008.0,0.03243,0.3630010187734673,A,A-,0.0007
+DG,Dollar General Corporation,Dollar General Corporation,Discount Stores,Consumer Defensive,15798401024.0,43075354624.0,0.03632,0.37530565561487006,BBB,BBB,0.0025
+COST,Costco Wholesale Corporation,Costco Wholesale Corporation,Discount Stores,Consumer Defensive,10227999744.0,293586993152.0,0.0301,0.22840645965244696,AA,AA-,0.0003
+DLTR,"Dollar Tree, Inc.","Dollar Tree, Inc.",Discount Stores,Consumer Defensive,7593299968.0,19747899392.0,0.06514,0.40644689732710454,BBB,BBB,0.0025
+DLMAF,"Dollarama, Inc.",Dollarama Inc.,Discount Stores,Consumer Defensive,4420836540.838351,5420119340.299987,0.1765,0.24568656754642318,BBB,BBB,0.0025
+BJ,"BJ's Wholesale Club Holdings, I","BJ's Wholesale Club Holdings, Inc.",Discount Stores,Consumer Defensive,2861490944.0,21965291520.0,0.026010001,0.32308364888646113,BB+,BBB-,0.0065
+ABBV,AbbVie Inc.,AbbVie Inc.,Drug Manufacturers - General,Healthcare,72912003072.0,62819000320.0,0.05786,0.23115846677060906,A-,A-,0.001
+PFE,"Pfizer, Inc.",Pfizer Inc.,Drug Manufacturers - General,Healthcare,64731000832.0,63315001344.0,0.118310004,0.2541263424101236,A,A+,0.0007
+AMGN,Amgen Inc.,Amgen Inc.,Drug Manufacturers - General,Healthcare,57322999808.0,37219999744.0,0.20955999,0.2390581113935652,BBB+,A-,0.0015
+JNJ,Johnson & Johnson,Johnson & Johnson,Drug Manufacturers - General,Healthcare,54987001856.0,96361996288.0,0.21834,0.1687442895839945,AAA,AA,0.0001
+MRK,"Merck & Company, Inc.","Merck & Co., Inc.",Drug Manufacturers - General,Healthcare,49116999680.0,65768001536.0,0.13586001,0.23743138149028495,A+,A+,0.0005
+NVS,Novartis AG,Novartis AG,Drug Manufacturers - General,Healthcare,46997999616.0,56577998848.0,0.23921,0.1888468287918745,AA-,A+,0.0004
+LLY,Eli Lilly and Company,Eli Lilly and Company,Drug Manufacturers - General,Healthcare,43370000384.0,72248999936.0,0.34986,0.32349758950073043,AA-,AA-,0.0004
+AZN,AstraZeneca PLC,AstraZeneca PLC,Drug Manufacturers - General,Healthcare,34029000704.0,60438999040.0,0.17188999,0.2414744942626725,A+,A,0.0005
+GSK,GSK plc,GSK plc,Drug Manufacturers - General,Healthcare,25668851697.866455,44026002589.14282,0.17782,0.23762328226126292,A,A,0.0007
+NVO,Novo Nordisk A/S,Novo Nordisk A/S,Drug Manufacturers - General,Healthcare,22725218497.711224,50889636321.62856,0.37205002,0.39002033460444135,AA,AA-,0.0003
+GILD,"Gilead Sciences, Inc.","Gilead Sciences, Inc.",Drug Manufacturers - General,Healthcare,22173999104.0,29735999488.0,0.30993,0.24022581411407581,A-,A-,0.001
+GRFS,"Grifols, S.A.","Grifols, S.A.",Drug Manufacturers - General,Healthcare,11222145405.689209,8632776637.341797,0.05579,0.4895639249738902,BB-,BBB,0.02
+BIIB,Biogen Inc.,Biogen Inc.,Drug Manufacturers - General,Healthcare,6561900032.0,9937399808.0,0.13805,0.32923129428728265,BBB+,BBB+,0.0015
+OTSKY,Otsuka Holdings Co. Ltd.,"Otsuka Holdings Co., Ltd.",Drug Manufacturers - General,Healthcare,1214831842.2865427,15706944829.666592,0.14962,0.2628079549850626,AA-,A+,0.0004
+TEVA,Teva Pharmaceutical Industries ,Teva Pharmaceutical Industries Limited,Drug Manufacturers - Specialty & Generic,Healthcare,16924999680.0,17348999168.0,0.09021,0.4183733819518709,BB+,BBB,0.0065
+ZTS,Zoetis Inc.,Zoetis Inc.,Drug Manufacturers - Specialty & Generic,Healthcare,9253999616.0,9530999808.0,0.28035,0.29379752482628424,BBB+,BBB+,0.0015
+PRGO,Perrigo Company plc,Perrigo Company plc,Drug Manufacturers - Specialty & Generic,Healthcare,3828699904.0,4178400000.0,-0.435,0.37015476123006685,BB-,BBB-,0.02
+HKMPF,Hikma Pharmaceuticals plc.,Hikma Pharmaceuticals PLC,Drug Manufacturers - Specialty & Generic,Healthcare,1604000000.0,3348999936.0,0.12004,0.3329968413051702,BBB,BBB,0.0025
+EBS,Emergent BioSolutions Inc.,Emergent BioSolutions Inc.,Drug Manufacturers - Specialty & Generic,Healthcare,584600000.0,676800000.0,-0.01271,0.9824661583620717,B-,B-,0.07
+MKGAF,Merck KGaA,Merck KGaA,Drug Manufacturers - Specialty & Generic,Healthcare,13972377020.079346,24321728787.74756,0.12083,0.4415219175570976,BBB+,BBB+,0.0015
+ENR,"Energizer Holdings, Inc.","Energizer Holdings, Inc.",Electrical Equipment & Parts,Industrials,3406599936.0,2980300032.0,0.06546,0.35222579879270105,B+,BB-,0.03
+HUBB,Hubbell Inc,Hubbell Incorporated,Electrical Equipment & Parts,Industrials,2738700032.0,5996100096.0,0.15105,0.2924024443310986,BBB+,BBB+,0.0015
+MIELY,Mitsubishi Electric Corp.,Mitsubishi Electric Corporation,Electrical Equipment & Parts,Industrials,2267525601.8725085,36794107739.38046,0.06917,0.3126944946402767,A,A+,0.0007
+NXPRF,Nexans Paris ACT,Nexans S.A.,Electrical Equipment & Parts,Industrials,2205199694.633484,9064531227.801025,0.04507,0.4287253416266817,BB+,BBB-,0.0065
+ENS,EnerSys,EnerSys,Electrical Equipment & Parts,Industrials,1189683968.0,3751375872.0,0.07825,0.3455803205046129,BB+,BB+,0.0065
+AYI,Acuity Inc.,Acuity Inc.,Electrical Equipment & Parts,Industrials,808200000.0,4587100160.0,0.09368,0.3196481482586339,BBB,BBB,0.0025
+YASKY,Yaskawa Electric Corp.,YASKAWA Electric Corporation,Electrical Equipment & Parts,Industrials,779300811.2989188,3383842263.7879276,0.065,0.39413130726119444,A,A-,0.0007
+APH,Amphenol Corporation,Amphenol Corporation,Electronic Components,Technology,18748899328.0,25903800320.0,0.17239,0.30944312448250727,A-,A-,0.001
+GLW,Corning Incorporated,Corning Incorporated,Electronic Components,Technology,9923999744.0,16321000448.0,0.1109,0.35515866354431147,BBB+,BBB+,0.0015
+FLEX,Flex Ltd.,Flex Ltd.,Electronic Components,Technology,4464999936.0,27914000384.0,0.03153,0.4243870987095245,BBB-,BBB-,0.0045
+JBL,Jabil Inc.,Jabil Inc.,Electronic Components,Technology,4437000192.0,32667000832.0,0.02477,0.379294138976973,BBB-,BBB-,0.0045
+TTDKY,TDK Corp.,TDK Corporation,Electronic Components,Technology,3844790129.2936363,15634702198.038805,0.07811,0.38440636262520556,A-,A-,0.001
+SANM,Sanmina Corporation,Sanmina Corporation,Electronic Components,Technology,2419897088.0,11340917760.0,0.02289,0.43919580147213705,BB+,BB+,0.0065
+CLS,"Celestica, Inc.",Celestica Inc.,Electronic Components,Technology,941699968.0,13789299712.0,0.069520004,0.5792415749570261,BB+,BB+,0.0065
+TTWO,"Take-Two Interactive Software, ","Take-Two Interactive Software, Inc.",Electronic Gaming & Multimedia,Communication Services,2958299904.0,6656399872.0,-0.0448,0.322910687780635,BBB,BBB,0.0025
+EA,Electronic Arts Inc.,Electronic Arts Inc.,Electronic Gaming & Multimedia,Communication Services,1854000000.0,7530999808.0,0.11778,0.2393786384716669,BB-,BB,0.02
+RBLX,Roblox Corporation,Roblox Corporation,Electronic Gaming & Multimedia,Communication Services,1788000000.0,5297550848.0,-0.2069,0.6907812286347161,BBB-,BB+,0.0045
+SNX,TD SYNNEX Corporation,TD SYNNEX Corporation,Electronics & Computer Distribution,Technology,5158170112.0,65137577984.0,0.015149999,0.29667709432483974,BBB-,BBB-,0.0045
+AVT,"Avnet, Inc.","Avnet, Inc.",Electronics & Computer Distribution,Technology,3172492032.0,24955101184.0,0.00857,0.29148635284532365,BBB-,BBB-,0.0045
+ARW,"Arrow Electronics, Inc.","Arrow Electronics, Inc.",Electronics & Computer Distribution,Technology,2465765888.0,33512466432.0,0.02168,0.29279737434821523,BBB-,BBB-,0.0045
+RXLSF,REXEL,Rexel S.A.,Electronics & Computer Distribution,Technology,5931290799.713135,22533194360.930176,0.03033,0.4213163050563433,BB+,BB+,0.0065
+NSIT,"Insight Enterprises, Inc.","Insight Enterprises, Inc.",Electronics & Computer Distribution,Technology,1728656000.0,8271609856.0,0.02174,0.32533411357358033,BB+,BB+,0.0065
+VCISY,Vinci SA,Vinci SA,Engineering & Construction,Industrials,47317781621.21973,87862121553.99805,0.064770006,0.25245222219567653,A-,A,0.001
+GKTRF,GEK TERNA S.A,Gek Terna S.A.,Engineering & Construction,Industrials,7107582905.504028,4478375175.889343,0.0396,0.3431475857335886,BBB-,BB+,0.0045
+PWR,"Quanta Services, Inc.","Quanta Services, Inc.",Engineering & Construction,Industrials,6319672832.0,30121150464.0,0.036679998,0.3578610436030873,BBB,BBB,0.0025
+NWSZF,CTF Services Limited,CTF Services Limited,Engineering & Construction,Industrials,4513510903.341598,3191401862.6448174,0.10103,0.7390567579553158,A+,BBB,0.0005
+IMPJY,Webuild SpA,Webuild S.p.A.,Engineering & Construction,Industrials,3560863542.100281,14665969464.247559,0.01898,0.6264142484259477,BB+,BB+,0.0065
+ACM,AECOM,AECOM,Engineering & Construction,Industrials,3346927104.0,15985833984.0,0.03164,0.26872095923927664,BB+,BBB-,0.0065
+DY,"Dycom Industries, Inc.","Dycom Industries, Inc.",Engineering & Construction,Industrials,2998935040.0,6252085760.0,0.04981,0.42874750362940184,BB+,BB+,0.0065
+KBR,"KBR, Inc.","KBR, Inc.",Engineering & Construction,Industrials,2811000064.0,7690999808.0,0.05214,0.288432641950594,BB+,BB+,0.0065
+ACA,"Arcosa, Inc.","Arcosa, Inc.",Engineering & Construction,Industrials,1579699968.0,2907500032.0,0.07656,0.34496590923373427,BB,BB,0.009
+GVA,Granite Construction Incorporat,Granite Construction Incorporated,Engineering & Construction,Industrials,1395993984.0,4637297152.0,0.039890002,0.29553363040401714,BB,BB,0.009
+FLR,Fluor Corporation,Fluor Corporation,Engineering & Construction,Industrials,1071000000.0,15184000000.0,0.02305,0.45817203498351305,BB+,BB+,0.0065
+EME,"EMCOR Group, Inc.","EMCOR Group, Inc.",Engineering & Construction,Industrials,516518016.0,17747283968.0,0.07537,0.3375212338805546,BBB-,BBB-,0.0045
+DIS,Walt Disney Company (The),The Walt Disney Company,Entertainment,Communication Services,47358001152.0,97263001600.0,0.1154,0.29424180105548825,A,A+,0.0007
+NFLX,"Netflix, Inc.","Netflix, Inc.",Entertainment,Communication Services,16742200320.0,46889992192.0,0.28521,0.44615054762538514,A,A-,0.0007
+SIRI,SiriusXM Holdings Inc.,Sirius XM Holdings Inc.,Entertainment,Communication Services,9957000192.0,8581000192.0,0.09859,0.43870871540437884,BB+,BB+,0.0065
+FOX,Fox Corporation,Fox Corporation,Entertainment,Communication Services,7574000128.0,16200999936.0,0.10561,0.2740673788660149,BBB,BBB,0.0025
+NWSA,News Corporation,News Corporation,Entertainment,Communication Services,2928999936.0,8800000000.0,0.1292,0.27313877006282944,BBB-,BBB,0.0045
+WBD,"Warner Bros. Discovery, Inc. - ","Warner Bros. Discovery, Inc.",Entertainment,Communication Services,32465999872.0,37210001408.0,-0.04665,0.5250441421724832,BB+,BB+,0.0065
+DE,Deere & Company,Deere & Company,Farm & Heavy Construction Machinery,Industrials,48473001984.0,47337000960.0,0.10104,0.2941699591334031,A,A,0.0007
+CAT,"Caterpillar, Inc.",Caterpillar Inc.,Farm & Heavy Construction Machinery,Industrials,43065999360.0,70755000320.0,0.13328,0.3067771035202416,A,A,0.0007
+KUBTY,Kubota Corp.,Kubota Corporation,Farm & Heavy Construction Machinery,Industrials,14589817604.148024,19451759311.92035,0.070149995,0.3068733591153183,A,A-,0.0007
+KMTUY,Komatsu Ltd.,Komatsu Ltd.,Farm & Heavy Construction Machinery,Industrials,8860632155.52722,25795997886.40324,0.091079995,0.2991589057788456,A,A+,0.0007
+TEX,Terex Corporation,Terex Corporation,Farm & Heavy Construction Machinery,Industrials,2748999936.0,5926000128.0,0.01873,0.4422625213608108,BB,BB,0.009
+AGCO,AGCO Corporation,AGCO Corporation,Farm & Heavy Construction Machinery,Industrials,2741900032.0,10374400000.0,0.07432,0.3510768222447516,BBB-,BBB-,0.0045
+OUKPY,Metso OYJ,Metso Oyj,Farm & Heavy Construction Machinery,Industrials,1801299961.090088,6128133888.244629,0.08125,0.4821099291952307,BBB,BBB,0.0025
+TWI,"Titan International, Inc. (DE)","Titan International, Inc.",Farm & Heavy Construction Machinery,Industrials,738539008.0,1842808064.0,-0.04724,0.5676187168748663,B,B,0.05
+WNC,Wabash National Corporation,Wabash National Corporation,Farm & Heavy Construction Machinery,Industrials,530948992.0,1465092992.0,-0.04413,0.47765391591197237,B-,B,0.07
+HY,"Hyster-Yale, Inc.","Hyster-Yale, Inc.",Farm & Heavy Construction Machinery,Industrials,505300000.0,3654099968.0,-0.02715,0.4814335825955206,B,B+,0.05
+BG,Bunge Limited,Bunge Global SA,Farm Products,Consumer Defensive,16291000320.0,80546996224.0,0.00848,0.2917565409563446,A-,A-,0.001
+ADM,Archer-Daniels-Midland Company,Archer-Daniels-Midland Company,Farm Products,Consumer Defensive,10657000448.0,80583999488.0,0.013409999,0.28997107363635294,A,A,0.0007
+TSN,"Tyson Foods, Inc.","Tyson Foods, Inc.",Farm Products,Consumer Defensive,8082999808.0,55709999104.0,0.00813,0.2506352599958836,BBB,BBB,0.0025
+MNHVF,Mowi ASA,Mowi ASA,Farm Products,Consumer Defensive,4109099621.6557617,6859911811.73645,0.14332,0.31189525090816544,BBB+,BBB+,0.0015
+FDP,Del Monte Corporation,Del Monte Corporation,Farm Products,Consumer Defensive,628899968.0,4268000000.0,0.01631,0.2884145990923614,BB,BB+,0.009
+PFGC,Performance Food Group Company,Performance Food Group Company,Food Distribution,Consumer Defensive,7877899776.0,63349501952.0,0.00519,0.32190442482740766,BB,BB+,0.009
+BZLFY,Bunzl plc,Bunzl plc,Food Distribution,Consumer Defensive,3973219105.68631,15909261853.694214,0.03877,0.2652365733311185,BBB+,BBB,0.0015
+UNFI,"United Natural Foods, Inc.","United Natural Foods, Inc.",Food Distribution,Consumer Defensive,3153999872.0,31206000640.0,-0.00122,0.5369379406750144,B+,BB-,0.03
+SYY,Sysco Corporation,Sysco Corporation,Food Distribution,Consumer Defensive,15399999488.0,83567001600.0,0.02079,0.24100506838575747,BBB,BBB,0.0025
+USFD,US Foods Holding Corp.,US Foods Holding Corp.,Food Distribution,Consumer Defensive,5325000192.0,39682998272.0,0.01706,0.2989328432168118,BB+,BBB-,0.0065
+NKE,"Nike, Inc.","NIKE, Inc.",Footwear & Accessories,Consumer Cyclical,11178000384.0,46522998784.0,0.04836,0.3631907255486483,A+,A,0.0005
+CROX,"Crocs, Inc.","Crocs, Inc.",Footwear & Accessories,Consumer Cyclical,1725443968.0,4024771072.0,-0.02578,0.5563081621644818,BB,BB,0.009
+ADDYY,adidas AG,adidas AG,Footwear & Accessories,Consumer Cyclical,6908078201.293945,29305944350.186523,0.055209998,0.37287395941240525,A,A-,0.0007
+PMMAF,PUMA SE,PUMA SE,Footwear & Accessories,Consumer Cyclical,3356894288.081482,8321959469.259888,-0.0864,0.5786444417336832,BBB+,BBB-,0.0015
+BIRK,Birkenstock Holding plc,Birkenstock Holding plc,Footwear & Accessories,Consumer Cyclical,1601999825.131256,2532049843.6968994,0.16296,0.43413506268247387,BB+,BBB-,0.0065
+WWW,"Wolverine World Wide, Inc.","Wolverine World Wide, Inc.",Footwear & Accessories,Consumer Cyclical,785100032.0,1919600000.0,0.054130003,0.592066281224755,B+,B+,0.03
+WHR,Whirlpool Corporation,Whirlpool Corporation,"Furnishings, Fixtures & Appliances",Consumer Cyclical,7104000000.0,15175999488.0,0.01087,0.39899237304665625,BB-,BB-,0.02
+MHK,"Mohawk Industries, Inc.","Mohawk Industries, Inc.","Furnishings, Fixtures & Appliances",Consumer Cyclical,2523500032.0,10988300288.0,0.03771,0.39239683328213704,BBB+,BBB,0.0015
+HNI,HNI Corporation,HNI Corporation,"Furnishings, Fixtures & Appliances",Consumer Cyclical,1727600000.0,3586700032.0,0.00042,0.3168644100623872,BB+,BB,0.0065
+LEG,"Leggett & Platt, Incorporated","Leggett & Platt, Incorporated","Furnishings, Fixtures & Appliances",Consumer Cyclical,1647900032.0,3951200000.0,0.05689,0.42483740956642363,BBB-,BBB-,0.0045
+LZB,La-Z-Boy Incorporated,La-Z-Boy Incorporated,"Furnishings, Fixtures & Appliances",Consumer Cyclical,568465984.0,2127168000.0,0.03932,0.36430317460192607,BB-,BB-,0.02
+MGCLY,Midea Group Co Ltd.,,"Furnishings, Fixtures & Appliances",Consumer Cyclical,8617633895.25546,68040008116.72818,0.096140005,0.549530449577237,A+,A+,0.0005
+SGI,Somnigroup International Inc.,Somnigroup International Inc.,"Furnishings, Fixtures & Appliances",Consumer Cyclical,6534499840.0,7673299968.0,0.06795,0.39586227965449433,BB,BB,0.009
+ALH,Alliance Laundry Holdings Inc.,Alliance Laundry Holdings Inc.,"Furnishings, Fixtures & Appliances",Consumer Cyclical,1932596992.0,1746551040.0,0.080979995,0.3869185459655522,B+,B+,0.03
+MLKN,"MillerKnoll, Inc.","MillerKnoll, Inc.","Furnishings, Fixtures & Appliances",Consumer Cyclical,1787399936.0,3799300096.0,0.0028400002,0.4571193738873462,BB,BB,0.009
+GOFPY,Allwyn AG,Allwyn AG,Gambling,Consumer Cyclical,6774605811.03894,10514160389.13086,0.02417,0.3887367012476761,BB,BBB-,0.009
+FLUT,Flutter Entertainment plc,Flutter Entertainment plc,Gambling,Consumer Cyclical,12560000000.0,17022000128.0,-0.022030002,0.44441702376931197,BBB-,BB+,0.0045
+LNWO,"Light & Wonder, Inc.",,Gambling,Consumer Cyclical,5185999872.0,3329999872.0,0.07387,0.45214961210084004,BB,BB,0.009
+CHDN,"Churchill Downs, Incorporated",Churchill Downs Incorporated,Gambling,Consumer Cyclical,5014000128.0,2945900032.0,0.13205,0.32483846815884365,BB-,BB,0.02
+GMVHY,ENTAIN PLC,Entain Plc,Gambling,Consumer Cyclical,5555764777.142761,7063769734.45105,-0.12675999,0.43719937650481355,BB-,BB+,0.02
+LFDJF,LA FRANCAISE DES JEUX,FDJ United,Gambling,Consumer Cyclical,2629874767.703369,4268221929.1134033,0.04783,0.358010187644493,BBB+,BBB,0.0015
+DKNG,DraftKings Inc.,DraftKings Inc.,Gambling,Consumer Cyclical,1917849984.0,6291794944.0,0.00932,0.618744663915267,BB+,BB,0.0065
+ARLUF,Aristocrat Leisure Ltd.,Aristocrat Leisure Limited,Gambling,Consumer Cyclical,1340393862.7524414,4456432278.830078,0.23455,0.419681394403181,BBB,BBB,0.0025
+GFI,Gold Fields Limited,Gold Fields Limited,Gold,Basic Materials,3221199872.0,8751299584.0,0.40764,0.5272898972342102,BBB-,BB+,0.0045
+AU,AngloGold Ashanti PLC,AngloGold Ashanti plc,Gold,Basic Materials,2286000128.0,11166000128.0,0.31112,0.4923139413376819,BBB-,BBB-,0.0045
+HMY,Harmony Gold Mining Company Lim,Harmony Gold Mining Company Limited,Gold,Basic Materials,821435397.3347342,5013807780.630264,0.20055,0.582668580890844,BB,BB,0.009
+KR,Kroger Company (The),The Kroger Co.,Grocery Stores,Consumer Defensive,24692000768.0,147642007552.0,0.0068800002,0.2671263948063422,BBB,BBB,0.0025
+SVNDY,"Seven & I Holdings Co., Ltd.","Seven & i Holdings Co., Ltd.",Grocery Stores,Consumer Defensive,23680181033.72433,65104141352.370026,0.02807,0.30705902041945793,A-,A-,0.001
+AHODF,Koninklijke Ahold Delhaize N.V.,Koninklijke Ahold Delhaize N.V.,Grocery Stores,Consumer Defensive,22539462439.112305,106024839572.35352,0.02476,0.29532869861338523,BBB+,BBB+,0.0015
+SFM,"Sprouts Farmers Market, Inc.","Sprouts Farmers Market, Inc.",Grocery Stores,Consumer Defensive,2060856960.0,8898902016.0,0.057010002,0.40052777978846604,BB,BB,0.009
+GO,Grocery Outlet Holding Corp.,Grocery Outlet Holding Corp.,Grocery Stores,Consumer Defensive,1841769984.0,4729544192.0,-0.080749996,0.493527350975298,BB-,BB-,0.02
+LBLCF,Loblaw Companies Limited,Loblaw Companies Limited,Grocery Stores,Consumer Defensive,11965451127.728662,46105061819.73943,0.04277,0.2111754211182034,BBB+,BBB+,0.0015
+TSCDF,Tesco PLC,Tesco PLC,Grocery Stores,Consumer Defensive,20253572668.020264,99000757289.99707,0.02424,0.426306982603664,BBB,BBB,0.0025
+WNGRF,Weston George Ltd. (Canada),George Weston Limited,Grocery Stores,Consumer Defensive,14328511556.172369,46543353530.66844,0.0179,0.7200281941407669,BBB+,BB+,0.0015
+CRERF,Carrefour S.A.,Carrefour SA,Grocery Stores,Consumer Defensive,24456824056.416992,97291089115.83203,0.0038100001,0.3142070043258547,BBB,BBB+,0.0025
+JSAIY,J Sainsbury plc,J Sainsbury plc,Grocery Stores,Consumer Defensive,8865639020.197632,45190449179.36255,0.0116799995,0.27305322344562,BBB,BBB+,0.0025
+CVS,CVS Health Corporation,CVS Health Corporation,Healthcare Plans,Healthcare,78345003008.0,405617999872.0,0.00723,0.30245597908913463,BBB,BBB,0.0025
+UNH,UnitedHealth Group Incorporated,UnitedHealth Group Incorporated,Healthcare Plans,Healthcare,77917003776.0,449713012736.0,0.02678,0.32820051378860854,AA-,A+,0.0004
+CI,The Cigna Group,The Cigna Group,Healthcare Plans,Healthcare,30900000768.0,277892005888.0,0.02263,0.28651980492499196,A-,A-,0.001
+CNC,Centene Corporation,Centene Corporation,Healthcare Plans,Healthcare,16371000320.0,178331992064.0,-0.03613,0.4215790700511431,BB+,BBB-,0.0065
+HUM,Humana Inc.,Humana Inc.,Healthcare Plans,Healthcare,14371000320.0,137200001024.0,0.00824,0.3830732828645457,BBB,BBB,0.0025
+HD,"Home Depot, Inc. (The)","The Home Depot, Inc.",Home Improvement Retail,Consumer Cyclical,63730999296.0,166592004096.0,0.08411,0.2416134616731714,A,A+,0.0007
+LOW,"Lowe's Companies, Inc.","Lowe's Companies, Inc.",Home Improvement Retail,Consumer Cyclical,42555998208.0,88433999872.0,0.075100005,0.2623351558618428,BBB+,A-,0.0015
+WFAFY,Wesfarmers Ltd.,Wesfarmers Limited,Home Improvement Retail,Consumer Cyclical,8988382019.042969,32886086588.625,0.065960005,0.25929598119336716,A-,A-,0.001
+KGFHY,Kingfisher plc,Kingfisher plc,Home Improvement Retail,Consumer Cyclical,3144138854.735138,17386108498.860107,0.01893,0.3383421970395869,BBB,BBB,0.0025
+FND,"Floor & Decor Holdings, Inc.","Floor & Decor Holdings, Inc.",Home Improvement Retail,Consumer Cyclical,2006609024.0,4675625984.0,0.042659998,0.46039688101989173,BB,BB,0.009
+HBBHF,HORNBACH HLDG AG & CO KGAA,HORNBACH Holding AG & Co. KGaA,Home Improvement Retail,Consumer Cyclical,2092314417.3440857,7467373445.526001,0.02151,0.28275061988882705,BBB-,BBB,0.0045
+PG,Procter & Gamble Company (The),The Procter & Gamble Company,Household & Personal Products,Consumer Defensive,37026000896.0,86716997632.0,0.19162,0.17867575345685696,AA-,AA-,0.0004
+RBGLY,Reckitt Benckiser Group Plc.,Reckitt Benckiser Group plc,Household & Personal Products,Consumer Defensive,11449715964.576477,19078382164.205322,0.22400999,0.24175879834659564,A-,BBB+,0.001
+CL,Colgate-Palmolive Company,Colgate-Palmolive Company,Household & Personal Products,Consumer Defensive,7973000192.0,20795000832.0,0.10041001,0.18846166046014723,A+,A+,0.0005
+KMB,Kimberly-Clark Corporation,Kimberly-Clark Corporation,Household & Personal Products,Consumer Defensive,7105999872.0,16556000256.0,0.12798999,0.20388683229935553,A,A,0.0007
+NWL,Newell Brands Inc.,Newell Brands Inc.,Household & Personal Products,Consumer Defensive,5694000128.0,7186999808.0,-0.039100002,0.5418927314575225,B+,B+,0.03
+CLX,Clorox Company (The),The Clorox Company,Household & Personal Products,Consumer Defensive,4486000128.0,6760000000.0,0.111829996,0.2631339753592279,BBB,BBB,0.0025
+HENOY,Henkel AG & Co. KGAA,Henkel AG & Co. KGaA,Household & Personal Products,Consumer Defensive,4303621298.789978,23787140396.623047,0.09929,0.22040775515642191,A,A-,0.0007
+COTY,Coty Inc.,Coty Inc.,Household & Personal Products,Consumer Defensive,3424999936.0,5789799936.0,-0.09199,0.44923854595112517,BB+,BB+,0.0065
+CHD,"Church & Dwight Company, Inc.","Church & Dwight Co., Inc.",Household & Personal Products,Consumer Defensive,2377400064.0,6205400064.0,0.11812,0.20746343954301621,BBB+,BBB+,0.0015
+EPC,Edgewell Personal Care Company,Edgewell Personal Care Company,Household & Personal Products,Consumer Defensive,1279500032.0,2234099968.0,-0.03482,0.334356333444706,BB-,BB-,0.02
+SPB,"Spectrum Brands Holdings, Inc.","Spectrum Brands Holdings, Inc.",Household & Personal Products,Consumer Defensive,725500032.0,2819000064.0,0.044699997,0.36428011885509204,B+,BB-,0.03
+LRLCY,L'Oreal Co.,L'Oréal S.A.,Household & Personal Products,Consumer Defensive,13830084276.728271,51128136127.15137,0.13909,0.2693600583352025,AA,A,0.0003
+UL,Unilever PLC,Unilever PLC,Household & Personal Products,Consumer Defensive,32820334798.973145,58615368589.05664,0.18749,0.20988448175692084,A+,A,0.0005
+IBM,International Business Machines,International Business Machines Corporation,Information Technology Services,Technology,69802000384.0,68910997504.0,0.15606,0.2716662740697682,A-,A-,0.001
+FIS,Fidelity National Information S,"Fidelity National Information Services, Inc.",Information Technology Services,Technology,21145999360.0,11440000000.0,0.23347999,0.34610178865359215,BBB,BBB,0.0025
+LDOS,"Leidos Holdings, Inc.","Leidos Holdings, Inc.",Information Technology Services,Technology,6944000000.0,17329000448.0,0.08154,0.2707883426405694,BBB,BBB,0.0025
+CDW,CDW Corporation,CDW Corporation,Information Technology Services,Technology,6146299904.0,22904799232.0,0.047030002,0.31480164493052865,BBB-,BBB-,0.0045
+CACI,"CACI International, Inc.",CACI International Inc,Information Technology Services,Technology,5616314880.0,9162865664.0,0.0586,0.2695023648676342,BB+,BB+,0.0065
+BR,"Broadridge Financial Solutions,","Broadridge Financial Solutions, Inc.",Information Technology Services,Technology,3407300096.0,7322299904.0,0.15028,0.2349109465366389,BBB,BBB,0.0025
+IT,"Gartner, Inc.","Gartner, Inc.",Information Technology Services,Technology,3355174912.0,6474137088.0,0.1144,0.35901765055238966,BBB-,BBB-,0.0045
+GIB,CGI Inc.,CGI Inc.,Information Technology Services,Technology,3157687461.9298644,11681986143.795576,0.10262,0.22923773292007835,BBB+,BBB+,0.0015
+SAIC,Science Applications Internatio,Science Applications International Corporation,Information Technology Services,Technology,2675000064.0,7290999808.0,0.055549998,0.3027526230308983,BB+,BB+,0.0065
+WIT,Wipro Limited,Wipro Limited,Information Technology Services,Technology,2142661180.9385743,9780781881.568928,0.14248,0.3096240198351212,A-,BBB+,0.001
+G,Genpact Limited,Genpact Limited,Information Technology Services,Technology,1757917056.0,5161025024.0,0.110369995,0.2862530816042423,BBB-,BBB-,0.0045
+INFY,Infosys Limited,Infosys Limited,Information Technology Services,Technology,967000000.0,20157999104.0,0.16434999,0.281725120998764,A,A-,0.0007
+CNDT,Conduent Incorporated,Conduent Incorporated,Information Technology Services,Technology,901000000.0,3014000128.0,-0.050430004,0.5254909085345595,B-,B-,0.07
+FJTSY,Fujitsu Ltd.,Fujitsu Limited,Information Technology Services,Technology,830752322.8796796,21865007805.19949,0.12829,0.3388452676230562,A-,A-,0.001
+UIS,Unisys Corporation New,Unisys Corporation,Information Technology Services,Technology,765299968.0,1955600000.0,-0.17698,0.7200463067067593,B,B,0.05
+BPOSF,BPOST SA,bpost NV/SA,Integrated Freight & Logistics,Industrials,3515088387.526184,5120241416.094482,-0.00784,0.47886218073152825,A-,BB+,0.001
+PBI,Pitney Bowes Inc.,Pitney Bowes Inc.,Integrated Freight & Logistics,Industrials,2268225024.0,1876621952.0,0.089209996,0.5127612675413876,B+,B+,0.03
+FWRD,Forward Air Corporation,Forward Air Corporation,Integrated Freight & Logistics,Industrials,2150382080.0,2463883008.0,-0.037130002,0.6555772141755747,B,B,0.05
+CHRW,"C.H. Robinson Worldwide, Inc.","C.H. Robinson Worldwide, Inc.",Integrated Freight & Logistics,Industrials,1644486016.0,16198957056.0,0.03698,0.32156491221383127,BBB+,BBB+,0.0015
+JBHT,"J.B. Hunt Transport Services, I","J.B. Hunt Transport Services, Inc.",Integrated Freight & Logistics,Industrials,1567938048.0,12134195200.0,0.051269997,0.31846115100075106,BBB+,BBB+,0.0015
+TNTFF,POSTNL N.V.,PostNL N.V.,Integrated Freight & Logistics,Industrials,1288300874.2332458,3857938834.1903687,-0.00481,0.42572503473142936,BBB-,BBB-,0.0045
+GOOG,Alphabet Inc.,Alphabet Inc.,Internet Content & Information,Communication Services,95875997696.0,422498009088.0,0.37919,0.3114247402570677,AA+,AA,0.0002
+META,"Meta Platforms, Inc.","Meta Platforms, Inc.",Internet Content & Information,Communication Services,86769000448.0,214962995200.0,0.32837,0.44554534659780687,AA-,A+,0.0004
+SNAP,Snap Inc.,Snap Inc.,Internet Content & Information,Communication Services,4201579008.0,6097020928.0,-0.06722,0.7892349313204278,BB-,BB-,0.02
+MTCH,"Match Group, Inc.","Match Group, Inc.",Internet Content & Information,Communication Services,3974202112.0,3519952896.0,0.18827,0.4437679560272365,BB,BB,0.009
+TCTZF,Tencent Holding Ltd.,Tencent Holdings Limited,Internet Content & Information,Communication Services,60017912575.73598,113698217776.83432,0.30606002,0.45724773318104656,A+,A+,0.0005
+AMZN,"Amazon.com, Inc.","Amazon.com, Inc.",Internet Retail,Consumer Cyclical,235540004864.0,742775980032.0,0.12224,0.35554208173606394,AA,AA-,0.0003
+NPSNY,Naspers Ltd.,Naspers Limited,Internet Retail,Consumer Cyclical,18168999936.0,7855000064.0,0.72743,0.46068524193584215,BBB-,BBB-,0.0045
+MELI,"MercadoLibre, Inc.","MercadoLibre, Inc.",Internet Retail,Consumer Cyclical,12376000512.0,31803000832.0,0.060370002,0.4982802453861116,BBB-,BBB,0.0045
+W,Wayfair Inc.,Wayfair Inc.,Internet Retail,Consumer Cyclical,3673999872.0,12657999872.0,-0.0241,0.8014209431323589,B+,B+,0.03
+BABA,Alibaba Group Holding Limited,Alibaba Group Holding Limited,Internet Retail,Consumer Cyclical,41696441199.82495,151508926440.5538,0.1012,0.5046302474241049,A+,A+,0.0005
+MCARY,Mercari Inc.,"Mercari, Inc.",Internet Retail,Consumer Cyclical,1581696447.0362747,1347346310.3659155,0.15665,0.5444993078310318,BBB,BBB-,0.0025
+JD,"JD.com, Inc.","JD.com, Inc.",Internet Retail,Consumer Cyclical,15987567888.737011,195914614237.0534,0.0104600005,0.5275805508794684,A-,A-,0.001
+PROSY,Prosus NV,Prosus N.V.,Internet Retail,Consumer Cyclical,17816999936.0,6830000128.0,1.96384,0.42744108306798523,BBB,BBB-,0.0025
+EBAY,eBay Inc.,eBay Inc.,Internet Retail,Consumer Cyclical,7206000128.0,11603999744.0,0.17615,0.3279182827324888,BBB+,BBB+,0.0015
+HAS,"Hasbro, Inc.","Hasbro, Inc.",Leisure,Consumer Cyclical,3873200128.0,4814400000.0,-0.046240002,0.3274935941100246,BBB,BBB,0.0025
+MAT,"Mattel, Inc.","Mattel, Inc.",Leisure,Consumer Cyclical,2675515904.0,5383164928.0,0.09268,0.3769043340866495,BBB,BBB,0.0025
+ANPDF,Anta Sports Products Ltd.,ANTA Sports Products Limited,Leisure,Consumer Cyclical,4701250923.105866,11872863094.616158,0.16939,0.5155257130070807,A-,A-,0.001
+FUN,Six Flags Entertainment Corpora,Six Flags Entertainment Corporation,Leisure,Consumer Cyclical,5531542016.0,3123858944.0,-0.52755,0.44057627950045264,B+,B+,0.03
+LTH,"Life Time Group Holdings, Inc.","Life Time Group Holdings, Inc.",Leisure,Consumer Cyclical,4155153920.0,3077914112.0,0.12529,0.47460849786263426,BB,BB-,0.009
+LUCK,LUCKY STRIKE ENTERTAINMENT CORP,Lucky Strike Entertainment Corporation,Leisure,Consumer Cyclical,3239481088.0,1242552064.0,-0.06786,0.5119533121415407,B,B-,0.05
+MAR,Marriott International,"Marriott International, Inc.",Lodging,Consumer Cyclical,17405999104.0,7184000000.0,0.35969,0.2882029174531741,BBB,BBB,0.0025
+HLT,Hilton Worldwide Holdings Inc.,Hilton Worldwide Holdings Inc.,Lodging,Consumer Cyclical,13057999872.0,5071000064.0,0.30408,0.2703673918408021,BB+,BB+,0.0065
+IHG,Intercontinental Hotels Group,InterContinental Hotels Group PLC,Lodging,Consumer Cyclical,4618999808.0,5189000192.0,0.14608,0.2674583137822038,BBB,BBB,0.0025
+H,Hyatt Hotels Corporation,Hyatt Hotels Corporation,Lodging,Consumer Cyclical,4513999872.0,3443000064.0,-0.00988,0.3444863729662879,BBB-,BB+,0.0045
+CHH,"Choice Hotels International, In","Choice Hotels International, Inc.",Lodging,Consumer Cyclical,2109619968.0,987824000.0,0.34998,0.2969765994058296,BBB-,BBB-,0.0045
+MNILY,MINOR INTERNATIONAL PUBLIC COMP,Minor International Public Company Limited,Lodging,Consumer Cyclical,5776989550.937264,5096316169.84596,0.05574,0.1449078481895299,BBB+,BB+,0.0015
+ACCYY,Accor SA Ltd.,Accor SA,Lodging,Consumer Cyclical,4993036509.77832,6544800641.668945,0.079619996,0.331562001544186,BBB-,BBB-,0.0045
+WH,"Wyndham Hotels & Resorts, Inc.","Wyndham Hotels & Resorts, Inc.",Lodging,Consumer Cyclical,2649999872.0,1440000000.0,0.13403,0.2959532095638579,BB+,BB+,0.0065
+WFG,West Fraser Timber Co. Ltd,West Fraser Timber Co. Ltd.,Lumber & Wood Production,Basic Materials,538000000.0,5336999936.0,-0.21866,0.3380587091521625,BBB-,BB+,0.0045
+BCC,"Boise Cascade, L.L.C.",Boise Cascade Company,Lumber & Wood Production,Basic Materials,551960000.0,6366714880.0,0.01733,0.40987640429856276,BB,BB,0.009
+CHDRY,Christian Dior S.E.,Christian Dior SE,Luxury Goods,Consumer Cyclical,42704271659.48242,93787145464.01562,0.05607,0.5146247971121822,AA-,A,0.0004
+SIG,Signet Jewelers Limited,Signet Jewelers Limited,Luxury Goods,Consumer Cyclical,1223600000.0,6825600000.0,0.04287,0.5309868176360003,BB,BB,0.009
+LVMUY,LVMH-Moet Hennessy Louis Vuitto,"LVMH Moët Hennessy - Louis Vuitton, Société Européenne",Luxury Goods,Consumer Cyclical,42686862708.171875,93787145464.01562,0.13462,0.32436379482105226,AA-,A+,0.0004
+PPRUF,Kering SA,Kering SA,Luxury Goods,Consumer Cyclical,21545961350.865723,17032266433.900146,0.00491,0.4702649381286378,BBB+,BBB,0.0015
+TPR,"Tapestry, Inc.","Tapestry, Inc.",Luxury Goods,Consumer Cyclical,3923200000.0,7850800128.0,0.08442,0.4033112532823607,BBB,BBB,0.0025
+BBRYF,Burberry Group Plc,Burberry Group plc,Luxury Goods,Consumer Cyclical,2045503548.8674622,3250241878.0326843,0.00868,0.4512126152183362,BBB-,BBB-,0.0045
+CPRI,Capri Holdings Limited,Capri Holdings Limited,Luxury Goods,Consumer Cyclical,1420000000.0,3473999872.0,0.03944,0.6130023544027156,BB,BB+,0.009
+HCA,"HCA Healthcare, Inc.","HCA Healthcare, Inc.",Medical Care Facilities,Healthcare,49844998144.0,76387999744.0,0.08894,0.3027147742082176,BBB-,BBB,0.0045
+DVA,DaVita Inc.,DaVita Inc.,Medical Care Facilities,Healthcare,13220841472.0,13835087872.0,0.056479998,0.3782813091364886,BB,BB+,0.009
+FMS,Fresenius Medical Care AG,Fresenius Medical Care AG,Medical Care Facilities,Healthcare,12818235332.779053,22467844238.26758,0.048800003,0.32512522570975444,BBB,BBB,0.0025
+MD,"Pediatrix Medical Group, Inc.","Pediatrix Medical Group, Inc.",Medical Care Facilities,Healthcare,629715008.0,1931686016.0,0.09019,0.43730235598408607,BB,BB,0.009
+THC,Tenet Healthcare Corporation,Tenet Healthcare Corporation,Medical Care Facilities,Healthcare,13208999936.0,21454999552.0,0.079380006,0.45144393775134306,BB,BB+,0.009
+ABT,Abbott Laboratories,Abbott Laboratories,Medical Devices,Healthcare,34136000512.0,45134000128.0,0.13904999,0.22161735769879784,A+,A+,0.0005
+MDT,Medtronic plc.,Medtronic plc,Medical Devices,Healthcare,28071000064.0,36364001280.0,0.13203,0.22014906054483013,A,A-,0.0007
+SYK,Stryker Corporation,Stryker Corporation,Medical Devices,Healthcare,15233999872.0,25269999616.0,0.13205,0.2425423562552683,BBB+,BBB+,0.0015
+BSX,Boston Scientific Corporation,Boston Scientific Corporation,Medical Devices,Healthcare,11029000192.0,20614000640.0,0.17294,0.2608723124200156,A-,A-,0.001
+PHG,Koninklijke Philips N.V. NY Reg,Koninklijke Philips N.V.,Medical Devices,Healthcare,9397632519.112915,20475859926.063477,0.054980002,0.37393046576654054,BBB+,BBB+,0.0015
+ZBH,"Zimmer Biomet Holdings, Inc.","Zimmer Biomet Holdings, Inc.",Medical Devices,Healthcare,7586999808.0,8409099776.0,0.09052,0.26973703971922836,BBB,BBB,0.0025
+WILYY,Demant AS,Demant A/S,Medical Devices,Healthcare,3258302964.6853113,3566155860.480201,0.06726,0.3887927021381112,A+,BBB+,0.0005
+QDEL,QuidelOrtho Corporation,QuidelOrtho Corporation,Medical Devices,Healthcare,2874700032.0,2657200128.0,-0.45571,0.605880341289618,B,B,0.05
+STE,STERIS plc (Ireland),STERIS plc,Medical Devices,Healthcare,2087100032.0,5935900160.0,0.13179,0.25863947198344356,BBB,BBB,0.0025
+BIO,"Bio-Rad Laboratories, Inc.","Bio-Rad Laboratories, Inc.",Medical Devices,Healthcare,1378200064.0,2589900032.0,0.06518,0.37402559720052747,BBB,BBB,0.0025
+PODD,Insulet Corporation,Insulet Corporation,Medical Devices,Healthcare,1014000000.0,2900800000.0,0.10438,0.4233483239123766,BB,BB,0.009
+EW,Edwards Lifesciences Corporatio,Edwards Lifesciences Corporation,Medical Devices,Healthcare,702899968.0,6303499776.0,0.1739,0.34142002556292256,BBB,BBB,0.0025
+COR,"Cencora, Inc.","Cencora, Inc.",Medical Distribution,Healthcare,15092111360.0,328680013824.0,0.00775,0.22648557232187658,BBB+,BBB+,0.0015
+CAH,"Cardinal Health, Inc.","Cardinal Health, Inc.",Medical Distribution,Healthcare,8915999744.0,250735001600.0,0.0062,0.25219039930689546,BBB,BBB,0.0025
+MCK,McKesson Corporation,McKesson Corporation,Medical Distribution,Healthcare,8785999872.0,403430014976.0,0.0117999995,0.2410341813472948,A-,A-,0.001
+EBOSF,EBOS GROUP,EBOS Group Limited,Medical Distribution,Healthcare,1307157841.0644531,9240008475.28125,0.01759,0.2144830647643827,A-,BBB+,0.001
+MAHLY,Medipal Holdings Corp.,MediPal Holdings Corporation,Medical Distribution,Healthcare,0.0,23827338313.863964,0.01114,0.3560920447656296,A+,A-,0.0005
+BDX,"Becton, Dickinson and Company","Becton, Dickinson and Company",Medical Instruments & Supplies,Healthcare,17279000576.0,22226999296.0,0.05124,0.2364781186366283,BBB,BBB,0.0025
+BAX,Baxter International Inc.,Baxter International Inc.,Medical Instruments & Supplies,Healthcare,9687000064.0,11320000512.0,-0.096999995,0.346755851079221,BBB-,BBB-,0.0045
+SUVPF,Sartorius AG,Sartorius Aktiengesellschaft,Medical Instruments & Supplies,Healthcare,4991759480.956421,4125116260.9468994,0.04575,0.5620995298571906,BBB-,BBB-,0.0045
+COO,"The Cooper Companies, Inc.","The Cooper Companies, Inc.",Medical Instruments & Supplies,Healthcare,2726599936.0,4231000064.0,0.05573,0.2920405149377081,BB+,BB+,0.0065
+XRAY,DENTSPLY SIRONA Inc.,DENTSPLY SIRONA Inc.,Medical Instruments & Supplies,Healthcare,2344999936.0,3680999936.0,-0.17061001,0.38306014473542743,BBB-,BB+,0.0045
+ATR,"AptarGroup, Inc.","AptarGroup, Inc.",Medical Instruments & Supplies,Healthcare,1436706048.0,3872743936.0,0.09984,0.22645761037332057,BBB+,BBB+,0.0015
+CMC,Commercial Metals Company,Commercial Metals Company,Metal Fabrication,Industrials,3596049920.0,8386826752.0,0.06024,0.35512706968508706,BB+,BB+,0.0065
+ATI,ATI Inc.,ATI Inc.,Metal Fabrication,Industrials,1827900032.0,4594500096.0,0.092609994,0.43028356784699145,BB,BB,0.009
+CRS,Carpenter Technology Corporatio,Carpenter Technology Corporation,Metal Fabrication,Industrials,699299968.0,3028800000.0,0.15818,0.46283374321105725,BB+,BB,0.0065
+WOR,"Worthington Enterprises, Inc.","Worthington Enterprises, Inc.",Metal Fabrication,Industrials,357679008.0,1327719936.0,0.08422,0.38074252838862743,BBB-,BBB-,0.0045
+NBR,Nabors Industries Ltd.,Nabors Industries Ltd.,Oil & Gas Drilling,Energy,2128199040.0,3232055040.0,0.07378,0.6643708464118679,B,BB,0.05
+HP,"Helmerich & Payne, Inc.","Helmerich & Payne, Inc.",Oil & Gas Drilling,Energy,2002433024.0,4002060032.0,-0.09380999,0.4874944116691904,BBB,BBB-,0.0025
+PDS,Precision Drilling Corporation,Precision Drilling Corporation,Oil & Gas Drilling,Energy,523429681.02360994,1339489926.119237,-0.00816,0.4858260942517029,BB-,B+,0.02
+NE,Noble Corporation plc A,Noble Corporation plc,Oil & Gas Drilling,Energy,1957214976.0,3017331968.0,0.07594,0.4346523154430693,BB-,BB-,0.02
+RIG,Transocean Ltd (Switzerland),Transocean Ltd.,Oil & Gas Drilling,Energy,5273999872.0,4140000000.0,-0.66787004,0.6243288133565914,B-,BBB-,0.07
+COP,ConocoPhillips,ConocoPhillips,Oil & Gas E&P,Energy,23327000576.0,59377999872.0,0.12331,0.32913014032786037,A-,A,0.001
+OXY,Occidental Petroleum Corporatio,Occidental Petroleum Corporation,Oil & Gas E&P,Energy,16611000320.0,21119000576.0,0.22421,0.39361588493831906,BB+,BBB-,0.0065
+FANG,"Diamondback Energy, Inc.","Diamondback Energy, Inc.",Oil & Gas E&P,Energy,13898000384.0,14458999808.0,0.01964,0.3804948420865557,BBB+,BBB,0.0015
+DVN,Devon Energy Corporation,Devon Energy Corporation,Oil & Gas E&P,Energy,8702000128.0,16003000320.0,0.14172,0.41288448276905687,BBB+,BBB,0.0015
+SM,SM Energy Company,SM Energy Company,Oil & Gas E&P,Energy,8558000128.0,3616999936.0,0.03622,0.5420043576379033,BB,BB,0.009
+EOG,"EOG Resources, Inc.","EOG Resources, Inc.",Oil & Gas E&P,Energy,8305999872.0,23569999872.0,0.23322001,0.3302455874184063,A-,A-,0.001
+EQT,EQT Corporation,EQT Corporation,Oil & Gas E&P,Energy,5992411136.0,9364126720.0,0.35074002,0.4283233724925237,BBB-,BBB-,0.0045
+AR,Antero Resources Corporation,Antero Resources Corporation,Oil & Gas E&P,Energy,4750665216.0,5625670144.0,0.17094,0.4835577043244463,BBB-,BBB-,0.0045
+APA,APA Corporation,APA Corporation,Oil & Gas E&P,Energy,4536000000.0,8370999808.0,0.18313,0.4884757546652425,BBB-,BBB-,0.0045
+MTDR,Matador Resources Company,Matador Resources Company,Oil & Gas E&P,Energy,3570465024.0,3591944960.0,0.13454,0.47695323234509485,BB-,BB-,0.02
+KOS,Kosmos Energy Ltd.,Kosmos Energy Ltd.,Oil & Gas E&P,Energy,2987828992.0,1369916032.0,-0.59475,0.7016527217511542,B-,B-,0.07
+NOG,"Northern Oil and Gas, Inc.","Northern Oil and Gas, Inc.",Oil & Gas E&P,Energy,2551527936.0,1925198976.0,-0.32364,0.4934188928799637,B+,B,0.03
+CNX,CNX Resources Corporation,CNX Resources Corporation,Oil & Gas E&P,Energy,2536599040.0,2237853952.0,0.52685,0.35600402779286283,BB+,BB+,0.0065
+MUR,Murphy Oil Corporation,Murphy Oil Corporation,Oil & Gas E&P,Energy,2300069120.0,2749468928.0,0.030620001,0.46234321584014976,BB,BB-,0.009
+RRC,Range Resources Corporation,Range Resources Corporation,Oil & Gas E&P,Energy,979137984.0,3210008064.0,0.28118,0.4515700323967021,BB+,BB+,0.0065
+UNEGF,UNITED ENERGY GROUP LTD.,United Energy Group Limited,Oil & Gas E&P,Energy,489104951.7952461,2449646972.298438,0.05821,0.8914028265293154,B+,B+,0.03
+SLB,SLB Limited,SLB N.V.,Oil & Gas Equipment & Services,Energy,11628999680.0,35939000320.0,0.09263,0.37701855598883727,A,A-,0.0007
+HAL,Halliburton Company,Halliburton Company,Oil & Gas Equipment & Services,Energy,8080999936.0,22168999936.0,0.06947,0.40248277737044763,BBB+,BBB+,0.0015
+NOV,NOV Inc.,NOV Inc.,Oil & Gas Equipment & Services,Energy,2339000064.0,8693000192.0,0.01047,0.4244933039915666,BBB,BBB,0.0025
+FTI,TechnipFMC plc,TechnipFMC plc,Oil & Gas Equipment & Services,Energy,1304099968.0,10191699968.0,0.1062,0.42538014661603857,BBB-,BBB+,0.0045
+BKR,Baker Hughes Company,Baker Hughes Company,Oil & Gas Equipment & Services,Energy,16163999744.0,27893000192.0,0.11171,0.3508928205982782,A,A,0.0007
+RYDAF,SHELL PLC,Shell plc,Oil & Gas Integrated,Energy,75645001728.0,267342004224.0,0.07014,0.3814416279118069,A+,A+,0.0005
+BP,BP p.l.c.,BP p.l.c.,Oil & Gas Integrated,Energy,74178002944.0,193004994560.0,0.01663,0.28714792398473327,A-,BBB+,0.001
+TTE,TotalEnergies SE,TotalEnergies SE,Oil & Gas Integrated,Energy,64250998784.0,183960993792.0,0.08201,0.25515957336577894,A+,A+,0.0005
+XOM,Exxon Mobil Corporation,Exxon Mobil Corporation,Oil & Gas Integrated,Energy,47660998656.0,326008012800.0,0.077649996,0.2678881770195577,AA-,AA,0.0004
+CVX,Chevron Corporation,Chevron Corporation,Oil & Gas Integrated,Energy,45427998720.0,185740001280.0,0.059270002,0.25229641052874663,AA-,AA-,0.0004
+E,ENI S.p.A.,Eni S.p.A.,Oil & Gas Integrated,Energy,42443132635.87793,98048982249.01953,0.029679999,0.25109429042226694,A-,A-,0.001
+STOHF,Equinor ASA,Equinor ASA,Oil & Gas Integrated,Energy,31857000448.0,104260001792.0,0.05296,0.38722990533396384,AA-,A,0.0004
+SU,Suncor Energy  Inc.,Suncor Energy Inc.,Oil & Gas Integrated,Energy,10590515082.857676,36511965102.36412,0.12394,0.3292322832038017,BBB-,BBB,0.0045
+OMVKY,OMV AG,OMV Aktiengesellschaft,Oil & Gas Integrated,Energy,9296657511.446655,27133241146.776855,0.10343,0.31808755986552195,A-,BBB+,0.001
+GLPEF,"Galp Energia, SA","Galp Energia, SGPS, S.A.",Oil & Gas Integrated,Energy,5062674097.750366,22906222264.394043,0.032780003,0.4925229090450594,BBB-,BBB,0.0045
+NFG,National Fuel Gas Company,National Fuel Gas Company,Oil & Gas Integrated,Energy,2426181888.0,2507990016.0,0.27371,0.22254775083549447,BBB,BBB,0.0025
+TRP,TC Energy Corporation,TC Energy Corporation,Oil & Gas Midstream,Energy,44236776702.53852,11065987114.358252,0.22227,0.22411383761456966,BBB+,BBB+,0.0015
+OKE,"ONEOK, Inc.","ONEOK, Inc.",Oil & Gas Midstream,Energy,33652000768.0,35204001792.0,0.1003,0.2854513592159562,BBB,BBB+,0.0025
+KMI,"Kinder Morgan, Inc.","Kinder Morgan, Inc.",Oil & Gas Midstream,Energy,32205000704.0,17524000768.0,0.18917,0.22695646503330327,BBB+,BBB+,0.0015
+WMB,"Williams Companies, Inc. (The)","The Williams Companies, Inc.",Oil & Gas Midstream,Energy,30301999104.0,12108999680.0,0.23056999,0.2369941398568908,BBB,BBB,0.0025
+LNG,"Cheniere Energy, Inc.","Cheniere Energy, Inc.",Oil & Gas Midstream,Energy,27847999488.0,20770000896.0,0.07102,0.30354434427974514,BBB+,BBB+,0.0015
+TRGP,"Targa Resources, Inc.",Targa Resources Corp.,Oil & Gas Midstream,Energy,19131799552.0,16561500160.0,0.12874,0.32101787338207405,BBB-,BBB-,0.0045
+PAA,"Plains All American Pipeline, L","Plains All American Pipeline, L.P.",Oil & Gas Midstream,Energy,11578000384.0,45255000064.0,0.02528,0.268991336660043,BBB,BBB,0.0025
+WES,"Western Midstream Partners, LP","Western Midstream Partners, LP",Oil & Gas Midstream,Energy,8707448832.0,4049865984.0,0.29508,0.29149483775262214,BBB-,BBB-,0.0045
+GEL,"Genesis Energy, L.P.","Genesis Energy, L.P.",Oil & Gas Midstream,Energy,3176176128.0,1678658944.0,0.02113,0.4131227190990694,B+,B+,0.03
+GLP,Global Partners LP,Global Partners LP,Oil & Gas Midstream,Energy,2245167104.0,19291023360.0,0.00672,0.3599972154728867,BB-,BB,0.02
+MPC,Marathon Petroleum Corporation,Marathon Petroleum Corporation,Oil & Gas Refining & Marketing,Energy,34325999616.0,135946002432.0,0.03407,0.3321790151254467,BBB,BBB,0.0025
+PSX,Phillips 66,Phillips 66,Oil & Gas Refining & Marketing,Energy,27124000768.0,134485999616.0,0.03066,0.3339127093185436,BBB+,BBB+,0.0015
+VLO,Valero Energy Corporation,Valero Energy Corporation,Oil & Gas Refining & Marketing,Energy,11491000320.0,117841002496.0,0.03569,0.370518859010205,BB-,BB,0.02
+PBF,PBF Energy Inc.,PBF Energy Inc.,Oil & Gas Refining & Marketing,Energy,3601600000.0,30170200064.0,0.01464,0.6045073875049293,BB,BB,0.009
+DK,"Delek US Holdings, Inc.","Delek US Holdings, Inc.",Oil & Gas Refining & Marketing,Energy,3399000064.0,10734100480.0,-0.00479,0.5269694979993012,BB-,BB-,0.02
+DINO,HF Sinclair Corporation,HF Sinclair Corporation,Oil & Gas Refining & Marketing,Energy,3372999936.0,27622000640.0,0.04457,0.3876375639049129,BBB-,BBB-,0.0045
+PARR,"Par Pacific Holdings, Inc. Comm","Par Pacific Holdings, Inc.",Oil & Gas Refining & Marketing,Energy,1357059968.0,7543364096.0,0.06022,0.5096069964892159,B+,BB-,0.03
+TCKRF,Teck Resources Ltd.,Teck Resources Limited,Other Industrial Metals & Mining,Basic Materials,6868962822.059962,8872380415.477892,0.14909,0.6657235093429269,BBB-,BB+,0.0045
+AMVMF,AMG Advanced Metallurgical Grou,AMG Critical Materials N.V.,Other Industrial Metals & Mining,Basic Materials,847324032.0,1766382976.0,-0.0064499998,0.595226350822144,B,BB-,0.05
+CMP,Compass Minerals Intl Inc,"Compass Minerals International, Inc.",Other Industrial Metals & Mining,Basic Materials,775400000.0,1291399936.0,0.0055,0.5263050276465395,B,B,0.05
+AUSDF,PERENTI LIMITED,Perenti Limited,Other Industrial Metals & Mining,Basic Materials,467895315.26171875,2476583292.7197266,0.03509,0.4918378973964153,BB+,BB+,0.0065
+BHP,BHP Group Limited,BHP Group Limited,Other Industrial Metals & Mining,Basic Materials,29195999232.0,53987999744.0,0.18972999,0.31512209414840564,A,A-,0.0007
+RIO,Rio Tinto Plc,Rio Tinto Group,Other Industrial Metals & Mining,Basic Materials,23747999744.0,57637998592.0,0.17291,0.2926743517815086,A,A,0.0007
+GLNCY,Glencore Plc,Glencore plc,Other Industrial Metals & Mining,Basic Materials,42125000704.0,247534993408.0,0.00147,0.35896913657673774,BBB+,BBB,0.0015
+VALE,VALE S.A.,Vale S.A.,Other Industrial Metals & Mining,Basic Materials,22130460422.675625,42471635189.55016,0.072620004,0.3537337297773314,BBB,BBB,0.0025
+NGLOY,Anglo American plc,Anglo American plc,Other Industrial Metals & Mining,Basic Materials,15797999616.0,18545999872.0,-0.20171,0.43380532974229175,BBB,BBB-,0.0025
+FSUGY,FORTESCUE LTD.,Fortescue Ltd,Other Industrial Metals & Mining,Basic Materials,5756000256.0,16341999616.0,0.22849001,0.38515224114753105,BB+,BBB,0.0065
+TECK,Teck Resources Ltd,Teck Resources Limited,Other Industrial Metals & Mining,Basic Materials,6868962822.059962,8872380415.477892,0.14909,0.45470923609697916,BBB-,BBB-,0.0045
+SOUHY,South32 Ltd.,South32 Limited,Other Industrial Metals & Mining,Basic Materials,1688999936.0,5905999872.0,0.05367,0.3754256691615971,BBB+,BBB,0.0015
+IVPAF,Ivanhoe Mines Ltd.,Ivanhoe Mines Ltd.,Other Industrial Metals & Mining,Basic Materials,1236732032.0,530124000.0,0.24864,0.5405392887527203,B-,B+,0.07
+KHC,The Kraft Heinz Company,The Kraft Heinz Company,Packaged Foods,Consumer Defensive,21133000704.0,24989999104.0,-0.23049,0.22559951735383313,BBB,BBB-,0.0025
+POST,"Post Holdings, Inc.","Post Holdings, Inc.",Packaged Foods,Consumer Defensive,7631399936.0,8448799744.0,0.04006,0.22426553550353648,B+,BB-,0.03
+CPB,The Campbell's Company,The Campbell's Company,Packaged Foods,Consumer Defensive,7336000000.0,9927999488.0,0.061240003,0.24112367021361886,BBB-,BBB-,0.0045
+CAG,"ConAgra Brands, Inc.","Conagra Brands, Inc.",Packaged Foods,Consumer Defensive,7332400128.0,11181299712.0,-0.00387,0.2349255172596732,BBB-,BBB-,0.0045
+MKC,"McCormick & Company, Incorporat","McCormick & Company, Incorporated",Packaged Foods,Consumer Defensive,4923400192.0,7108700160.0,0.23117,0.2441608522820777,BBB,BBB,0.0025
+DAR,Darling Ingredients Inc.,Darling Ingredients Inc.,Packaged Foods,Consumer Defensive,4347005952.0,6306103808.0,0.03541,0.4013484654722416,BB+,BB+,0.0065
+PPC,Pilgrim's Pride Corporation,Pilgrim's Pride Corporation,Packaged Foods,Consumer Defensive,3348645888.0,18567176192.0,0.047810003,0.3128299163110173,BBB-,BBB-,0.0045
+NOMD,Nomad Foods Limited,Nomad Foods Limited,Packaged Foods,Consumer Defensive,2670961045.628235,3467502276.5375977,0.04448,0.2929661433438129,BB-,BBB-,0.02
+HLF,Herbalife Ltd.,Herbalife Ltd.,Packaged Foods,Consumer Defensive,2182200064.0,5133000192.0,0.046719998,0.6079742328323348,B+,B+,0.03
+INGR,Ingredion Incorporated,Ingredion Incorporated,Packaged Foods,Consumer Defensive,1824999936.0,7198000128.0,0.09364,0.21229172430940463,BBB,BBB,0.0025
+FLO,"Flowers Foods, Inc.","Flowers Foods, Inc.",Packaged Foods,Consumer Defensive,1465965952.0,5273825792.0,0.01382,0.24884839441422132,BBB-,BBB-,0.0045
+PRRFY,Premier Foods Plc.,Premier Foods plc,Packaged Foods,Consumer Defensive,455571092.98706055,1578784889.1054382,0.116210006,0.35008458080213684,BB+,BBB,0.0065
+SMPL,The Simply Good Foods Company,The Simply Good Foods Company,Packaged Foods,Consumer Defensive,449846016.0,1416208000.0,-0.07462,0.34295548295139155,BB-,BB-,0.02
+NSRGY,Nestle S.A.,Nestlé S.A.,Packaged Foods,Consumer Defensive,72894507499.1892,113256637388.40959,0.1005,0.19907649284228202,AA-,A,0.0004
+DANOY,Danone,Danone S.A.,Packaged Foods,Consumer Defensive,17546425929.333984,31665506166.434082,0.06689,0.20697927135336927,BBB+,A-,0.0015
+IP,International Paper Company,International Paper Company,Packaging & Containers,Consumer Cyclical,9758999552.0,24341000192.0,-0.13767,0.3294234839441895,BBB,BBB,0.0025
+CCK,"Crown Holdings, Inc.","Crown Holdings, Inc.",Packaging & Containers,Consumer Cyclical,6465999872.0,12737000448.0,0.05653,0.29128300224348436,BB+,BBB-,0.0065
+GPK,Graphic Packaging Holding Compa,Graphic Packaging Holding Company,Packaging & Containers,Consumer Cyclical,5788000256.0,8652999680.0,0.03167,0.31306431774772375,BB,BB,0.009
+SON,Sonoco Products Company,Sonoco Products Company,Packaging & Containers,Consumer Cyclical,5007867904.0,7485966848.0,0.13575,0.26004113994733086,BBB-,BBB-,0.0045
+PKG,Packaging Corporation of Americ,Packaging Corporation of America,Packaging & Containers,Consumer Cyclical,4366900224.0,9216100352.0,0.080419995,0.2552951136702909,BBB,BBB,0.0025
+AVY,Avery Dennison Corporation,Avery Dennison Corporation,Packaging & Containers,Consumer Cyclical,3790099968.0,9005700096.0,0.0766,0.24648046420835684,BBB,BBB,0.0025
+AMCCF,AMCOR PLC CDI 1:1,Amcor plc,Packaging & Containers,Consumer Cyclical,16762999808.0,22190000128.0,0.030550001,0.49593858462540275,BBB,BBB-,0.0025
+SW,Smurfit WestRock plc,Smurfit Westrock Plc,Packaging & Containers,Consumer Cyclical,14254999552.0,31235000320.0,0.01217,0.4618500518940779,BBB+,BBB,0.0015
+BALL,Ball Corporation,Ball Corporation,Packaging & Containers,Consumer Cyclical,8177999872.0,13667000320.0,0.06863,0.3060921918051266,BB+,BBB-,0.0065
+SLGN,Silgan Holdings Inc.,Silgan Holdings Inc.,Packaging & Containers,Consumer Cyclical,4660447232.0,6577762816.0,0.0431,0.2607999615869974,BB+,BB+,0.0065
+CCDBF,CCL Industries Inc.,CCL Industries Inc.,Packaging & Containers,Consumer Cyclical,1699115463.9713402,5516691748.906782,0.10366999,0.2634267084929756,BBB,BBB,0.0025
+SPPJY,Sappi Ltd.,Sappi Limited,Paper & Paper Products,Basic Materials,2156000000.0,5330999808.0,-0.12699,0.6167764624378131,BB,BB,0.009
+MERC,Mercer International Inc.,Mercer International Inc.,Paper & Paper Products,Basic Materials,1624365952.0,1850400000.0,-0.2851,0.5221239620408721,CCC+,BB-,0.1
+CLW,Clearwater Paper Corporation,Clearwater Paper Corporation,Paper & Paper Products,Basic Materials,373200000.0,1537500032.0,-0.01633,0.46365632941713303,CCC+,B,0.1
+KLBAY,Klabin S.A.,Klabin S.A.,Paper & Paper Products,Basic Materials,6986883748.841394,4108505782.4291716,0.0227,0.5027529623947639,BB+,BB,0.0065
+UPMMY,UPM-Kymmene Corp.,UPM-Kymmene Oyj,Paper & Paper Products,Basic Materials,4362813575.400024,11043407721.59961,0.056539997,0.2703372983533582,BBB,BBB+,0.0025
+SUZ,Suzano S.A.,Suzano S.A.,Paper & Paper Products,Basic Materials,19272488778.399914,9790704637.795158,0.22961001,0.31331262695391376,BBB-,BBB,0.0045
+MNODF,MONDI PLC,Mondi plc,Paper & Paper Products,Basic Materials,3344939598.772705,8893918632.16272,0.02153,0.4404175624296998,BBB,BBB-,0.0025
+SLVM,Sylvamo Corporation,Sylvamo Corporation,Paper & Paper Products,Basic Materials,985000000.0,3284999936.0,0.03105,0.4462082039337507,BB+,BB+,0.0065
+SCI,Service Corporation Internation,Service Corporation International,Personal Services,Consumer Cyclical,5162816000.0,4331521024.0,0.12364,0.2477088105943846,BB+,BB+,0.0065
+HRB,"H&R Block, Inc.","H&R Block, Inc.",Personal Services,Consumer Cyclical,2025762944.0,3911534080.0,0.18902001,0.32322151239339086,BBB,BBB,0.0025
+FTDR,"frontdoor, inc.","Frontdoor, Inc.",Personal Services,Consumer Cyclical,1199000064.0,2118000000.0,0.12229,0.3862901371473824,BB-,BB-,0.02
+BFAM,Bright Horizons Family Solution,Bright Horizons Family Solutions Inc.,Personal Services,Consumer Cyclical,1873355008.0,2980302080.0,0.06348,0.3805676019402623,BB,BB,0.009
+ROL,"Rollins, Inc.","Rollins, Inc.",Personal Services,Consumer Cyclical,1067139968.0,3844969984.0,0.13766,0.24735301634289325,BBB+,BBB+,0.0015
+CSV,"Carriage Services, Inc.","Carriage Services, Inc.",Personal Services,Consumer Cyclical,546046976.0,416491008.0,0.10582,0.373198127281205,B+,BB-,0.03
+EJPRY,East Japan Railway Co.,East Japan Railway Company,Railroads,Industrials,30335874019.59521,19254093876.74263,0.08035,0.2408378106447393,AA+,AA-,0.0002
+CSX,CSX Corporation,CSX Corporation,Railroads,Industrials,19428999168.0,14151000064.0,0.21553,0.23484903966688356,BBB+,BBB+,0.0015
+NSC,Norfolk Southern Corporation,Norfolk Southern Corporation,Railroads,Industrials,17635000320.0,12184999936.0,0.21912001,0.25005574655325036,BBB+,BBB+,0.0015
+CP,Canadian Pacific Kansas City Li,Canadian Pacific Kansas City Limited,Railroads,Industrials,17388693111.233677,10713493777.784315,0.27209,0.24439524376125116,BBB+,BBB,0.0015
+CNI,Canadian National Railway Compa,Canadian National Railway Company,Railroads,Industrials,16206090655.282923,12355124052.718666,0.27228,0.22388383397184258,A,BBB,0.0007
+WAB,Westinghouse Air Brake Technolo,Westinghouse Air Brake Technologies Corporation,Railroads,Industrials,6917000192.0,11507000320.0,0.10515001,0.2587296491168988,BBB,BBB,0.0025
+TRN,"Trinity Industries, Inc.","Trinity Industries, Inc.",Railroads,Industrials,5391499776.0,2063500032.0,0.12367,0.35657399422305236,BB+,BB+,0.0065
+QRNNF,AURIZON HOLDINGS LIMITED,Aurizon Holdings Limited,Railroads,Industrials,4011759769.001953,2830830276.489258,0.07633,0.4750635287571422,BBB+,BBB-,0.0015
+GBX,"Greenbrier Companies, Inc. (The","The Greenbrier Companies, Inc.",Railroads,Industrials,1840899968.0,2895800064.0,0.051209997,0.42018430380631394,BB-,BB-,0.02
+CCS,"Century Communities, Inc.","Century Communities, Inc.",Real Estate - Development,Real Estate,1538748032.0,4004257024.0,0.03312,0.41753838911063607,BB,BB,0.009
+CTPVF,CTP N.V,CTP N.V.,Real Estate - Development,Real Estate,10914809909.020752,1164229412.764862,1.09461,0.2683890177378956,BBB,BBB,0.0025
+LGFRY,Longfor Group Holdings Ltd.,Longfor Group Holdings Limited,Real Estate - Development,Real Estate,24594612139.877296,14402225174.476114,0.0105,0.6448371327403434,BB-,BB+,0.02
+HHH,Howard Hughes Holdings Inc.,Howard Hughes Holdings Inc.,Real Estate - Development,Real Estate,5797624832.0,1511480960.0,0.08044,0.314638964646043,BB+,BB+,0.0065
+KRYPY,Kerry Properties Ltd.,Kerry Properties Limited,Real Estate - Development,Real Estate,7450442173.142621,2497734439.7197595,0.04794,0.3360885060866762,BBB-,BBB,0.0045
+LLESF,LENDLEASE CORPORATION LIMITED,Lendlease Group,Real Estate - Diversified,Real Estate,2976763878.7441406,4293709421.751953,-0.02326,0.34985550553652023,BBB-,BBB-,0.0045
+DITTF,DAITO TRUST CONSTRUCTION CO,"Daito Trust Construction Co.,Ltd.",Real Estate - Diversified,Real Estate,1461665742.4693868,12388461031.532497,0.0499,0.7764677322081636,BBB,BBB,0.0025
+TAGYY,TAG IMMOBILIEN AG UNSPONSORED A,TAG Immobilien AG,Real Estate - Diversified,Real Estate,4902395689.979553,1165733591.0828857,0.08875,0.18243299541695226,BBB-,BBB-,0.0045
+JLL,Jones Lang LaSalle Incorporated,Jones Lang LaSalle Incorporated,Real Estate Services,Real Estate,3975500032.0,26755700736.0,0.03348,0.3513254795340914,BBB+,BBB+,0.0015
+CSGP,"CoStar Group, Inc.","CoStar Group, Inc.",Real Estate Services,Real Estate,1155000064.0,3412000000.0,0.00733,0.3492115918746696,BB+,BB+,0.0065
+CBRE,CBRE Group Inc,"CBRE Group, Inc.",Real Estate Services,Real Estate,10581000192.0,42202001408.0,0.031089999,0.3030619465469119,BBB+,BBB+,0.0015
+VONOY,VONOVIA SE,Vonovia SE,Real Estate Services,Real Estate,48534354508.16113,6894730902.844116,0.5794,0.35222936270202243,BBB+,BBB-,0.0015
+VTWRF,VANTAGE TOWERS AG,Vantage Towers AG,Real Estate Services,Real Estate,4888927760.142639,938436648.3432465,0.45963,0.20869194448481523,BBB-,BBB-,0.0045
+BC,Brunswick Corporation,Brunswick Corporation,Recreational Vehicles,Consumer Cyclical,2441700096.0,5519099904.0,-0.02473,0.3814528776286092,BBB-,BBB-,0.0045
+PII,Polaris Inc.,Polaris Inc.,Recreational Vehicles,Consumer Cyclical,2205600000.0,7353200128.0,-0.06067,0.428423838020265,BBB-,BBB-,0.0045
+HOG,"Harley-Davidson, Inc.","Harley-Davidson, Inc.",Recreational Vehicles,Consumer Cyclical,2200221952.0,4316496896.0,0.053379998,0.40402634757563427,BBB-,BBB-,0.0045
+THO,"Thor Industries, Inc.","THOR Industries, Inc.",Recreational Vehicles,Consumer Cyclical,919264000.0,9820300288.0,0.026730001,0.41011913172384235,BB,BB,0.009
+WGO,"Winnebago Industries, Inc.","Winnebago Industries, Inc.",Recreational Vehicles,Consumer Cyclical,478200000.0,2912499968.0,0.01428,0.44073151969656416,BB-,BB-,0.02
+DOO,BRP Inc.,BRP Inc.,Recreational Vehicles,Consumer Cyclical,2089145680.84506,6426094407.104074,0.03014,0.44853251380771514,BB+,BB+,0.0065
+PATK,"Patrick Industries, Inc.","Patrick Industries, Inc.",Recreational Vehicles,Consumer Cyclical,1605667968.0,3944525056.0,0.03455,0.3758476007576917,BB,BB,0.009
+LCII,LCI Industries,LCI Industries,Recreational Vehicles,Consumer Cyclical,1235346048.0,4166944000.0,0.04842,0.39343031632506853,BB-,BB-,0.02
+VTR,"Ventas, Inc.","Ventas, Inc.",REIT - Healthcare Facilities,Real Estate,12726149120.0,6112847872.0,0.042600002,0.25021282270642065,BBB+,BBB+,0.0015
+WELL,Welltower Inc.,Welltower Inc.,REIT - Healthcare Facilities,Real Estate,19987095552.0,11766873088.0,0.119619995,0.23827310270050486,A-,A-,0.001
+OHI,"Omega Healthcare Investors, Inc","Omega Healthcare Investors, Inc.",REIT - Healthcare Facilities,Real Estate,4446428160.0,1229612032.0,0.51415,0.2417027311431585,BBB-,BBB-,0.0045
+CTRE,"CareTrust REIT, Inc.","CareTrust REIT, Inc.",REIT - Healthcare Facilities,Real Estate,665836032.0,522555008.0,0.64098,0.24586009134931297,BBB-,BBB-,0.0045
+HST,"Host Hotels & Resorts, Inc.","Host Hotels & Resorts, Inc.",REIT - Hotel & Motel,Real Estate,5645000192.0,6176999936.0,0.16367,0.30390367597101287,BBB-,BBB-,0.0045
+PEB,Pebblebrook Hotel Trust,Pebblebrook Hotel Trust,REIT - Hotel & Motel,Real Estate,2456964096.0,1500934016.0,-0.03474,0.387973395283534,B,B+,0.05
+RLJ,RLJ Lodging Trust,RLJ Lodging Trust,REIT - Hotel & Motel,Real Estate,2308418048.0,1361474048.0,0.01837,0.3322247359838019,B+,BB-,0.03
+DRH,Diamondrock Hospitality Company,DiamondRock Hospitality Company,REIT - Hotel & Motel,Real Estate,1195531008.0,1123800064.0,0.092580006,0.33238788127632446,BBB-,BBB-,0.0045
+RHP,"Ryman Hospitality Properties, I","Ryman Hospitality Properties, Inc.",REIT - Hotel & Motel,Real Estate,4130866944.0,2644344064.0,0.0949,0.3085711630182507,BB,BB,0.009
+PLD,"Prologis, Inc.","Prologis, Inc.",REIT - Industrial,Real Estate,35310190592.0,9376112640.0,0.39646,0.26991079950609675,A,A,0.0007
+EXR,Extra Space Storage Inc,Extra Space Storage Inc.,REIT - Industrial,Real Estate,13941396480.0,3478423040.0,0.27142,0.28306184900122927,BBB+,BBB+,0.0015
+CUBE,CubeSmart,CubeSmart,REIT - Industrial,Real Estate,3505200896.0,1134690944.0,0.2886,0.25451976181949504,BBB,BBB,0.0025
+PSA,Public Storage,Public Storage,REIT - Industrial,Real Estate,10032266240.0,4871482880.0,0.39061,0.23941125977439298,A,A,0.0007
+EGP,"EastGroup Properties, Inc.","EastGroup Properties, Inc.",REIT - Industrial,Real Estate,1648396032.0,735379968.0,0.39789,0.23414502914547003,BBB+,BBB+,0.0015
+BXP,"BXP, Inc.","BXP, Inc.",REIT - Office,Real Estate,16362374144.0,3158577920.0,0.10042,0.3290783586796187,BBB,BBB,0.0025
+ARE,Alexandria Real Estate Equities,"Alexandria Real Estate Equities, Inc.",REIT - Office,Real Estate,12878605312.0,2930149120.0,-0.36141,0.3338445322354566,BBB+,BBB,0.0015
+VNO-PL,Vornado Realty Trust Pfd Ser L ,Vornado Realty Trust,REIT - Office,Real Estate,8462876160.0,1854104064.0,0.42891997,0.21325879530389624,BB+,BB+,0.0065
+SLG,SL Green Realty Corp,SL Green Realty Corp.,REIT - Office,Real Estate,6543857152.0,937372992.0,-0.16167,0.43390011360505315,BB,BB-,0.009
+KRC,Kilroy Realty Corporation,Kilroy Realty Corporation,REIT - Office,Real Estate,4716805120.0,1111875968.0,0.19593,0.3397443345801286,BBB-,BBB-,0.0045
+HPP,"Hudson Pacific Properties, Inc.","Hudson Pacific Properties, Inc.",REIT - Office,Real Estate,3756483072.0,815248000.0,-0.65038,0.5833099197314386,B,B-,0.05
+AVB,"AvalonBay Communities, Inc.","AvalonBay Communities, Inc.",REIT - Residential,Real Estate,9524757504.0,3060059904.0,0.37268,0.22197343639842582,A-,A-,0.001
+EQR,Equity Residential,Equity Residential,REIT - Residential,Real Estate,8643318784.0,3112995072.0,0.30632,0.22492542492274806,A-,A-,0.001
+ESS,"Essex Property Trust, Inc.","Essex Property Trust, Inc.",REIT - Residential,Real Estate,6857027072.0,1966022016.0,0.29132,0.2377242095072476,BBB+,BBB+,0.0015
+UDR,"UDR, Inc.","UDR, Inc.",REIT - Residential,Real Estate,5845310976.0,1766688000.0,0.27782,0.23044601697540548,BBB+,BBB+,0.0015
+MAA,Mid-America Apartment Communiti,"Mid-America Apartment Communities, Inc.",REIT - Residential,Real Estate,5680351232.0,2213555968.0,0.176,0.22167479322980563,A-,A-,0.001
+AMH,American Homes 4 Rent,American Homes 4 Rent,REIT - Residential,Real Estate,5145438208.0,1862982016.0,0.2527,0.22340513747906718,BBB,BBB,0.0025
+SUI,"Sun Communities, Inc.","Sun Communities, Inc.",REIT - Residential,Real Estate,4291699968.0,2339099904.0,0.59651,0.24904079426486803,BBB+,BBB+,0.0015
+CPT,Camden Property Trust,Camden Property Trust,REIT - Residential,Real Estate,4275068928.0,1584873984.0,0.24486999,0.22711345818135045,A-,A-,0.001
+ELS,"Equity Lifestyle Properties, In","Equity LifeStyle Properties, Inc.",REIT - Residential,Real Estate,3290608896.0,1542412032.0,0.24974,0.22010003577116466,BBB+,BBB+,0.0015
+O,Realty Income Corporation,Realty Income Corporation,REIT - Retail,Real Estate,30294552576.0,5929241088.0,0.18899,0.1894726783900721,A-,A-,0.001
+SPG,"Simon Property Group, Inc.","Simon Property Group, Inc.",REIT - Retail,Real Estate,28989048832.0,6648586240.0,0.70594,0.2659706918128754,A,A,0.0007
+UNBLF,Unibail-Rodamco SE,Unibail-Rodamco-Westfield SE,REIT - Retail,Real Estate,27259867260.132324,4116759714.7356567,0.35754,0.36903523418945716,BBB+,BBB,0.0015
+KIM,Kimco Realty Corporation (HC),Kimco Realty Corporation,REIT - Retail,Real Estate,8308660224.0,2161508096.0,0.28537,0.2593596268140874,A-,A-,0.001
+BRX,Brixmor Property Group Inc.,Brixmor Property Group Inc.,REIT - Retail,Real Estate,5546542080.0,1388903936.0,0.31986,0.24925655550435136,BBB,BBB,0.0025
+REG,Regency Centers Corporation,Regency Centers Corporation,REIT - Retail,Real Estate,5245984768.0,1650468992.0,0.33106998,0.2239122389669439,A-,A-,0.001
+FRT,Federal Realty Investment Trust,Federal Realty Investment Trust,REIT - Retail,Real Estate,4934187008.0,1312808960.0,0.38574,0.23346185255913862,BBB+,BBB+,0.0015
+WRDEF,WERELDHAVE NV,Wereldhave N.V.,REIT - Retail,Real Estate,1353330996.886261,252004427.23067474,0.33778998,0.32500257606225325,BBB,BBB,0.0025
+AMT,American Tower Corporation (REI,American Tower Corporation,REIT - Specialty,Real Estate,45131198464.0,10819300352.0,0.26806998,0.26384818744210986,BBB+,BBB+,0.0015
+CCI,Crown Castle Inc.,Crown Castle Inc.,REIT - Specialty,Real Estate,29878999040.0,4212999936.0,0.25136,0.2665040932003122,BBB,BBB,0.0025
+EQIX,"Equinix, Inc.","Equinix, Inc.",REIT - Specialty,Real Estate,23335999488.0,9525999616.0,0.14928001,0.27623659280543256,BBB+,BBB+,0.0015
+IRM,Iron Mountain Incorporated (Del,Iron Mountain Incorporated,REIT - Specialty,Real Estate,19716626432.0,7245357056.0,0.03758,0.2974394446906011,BB-,BB,0.02
+DLR,"Digital Realty Trust, Inc.","Digital Realty Trust, Inc.",REIT - Specialty,Real Estate,19452149760.0,6314048000.0,0.21823,0.28561505395275527,BBB+,BBB+,0.0015
+SBAC,SBA Communications Corporation,SBA Communications Corporation,REIT - Specialty,Real Estate,15421450240.0,2854329088.0,0.35656,0.291891915356531,BBB-,BBB-,0.0045
+UNIT,Uniti Group Inc.,Uniti Group Inc.,REIT - Specialty,Real Estate,11112999936.0,2928100096.0,0.4174,0.5399690821392268,B-,B+,0.07
+WY,Weyerhaeuser Company,Weyerhaeuser Company,REIT - Specialty,Real Estate,5448999936.0,6869000192.0,0.057800002,0.26161520000070393,BBB,BBB,0.0025
+AER,AerCap Holdings N.V.,AerCap Holdings N.V.,Rental & Leasing Services,Industrials,43125653504.0,8681363456.0,0.45222,0.32458417068729806,BBB+,BBB,0.0015
+CAR,"Avis Budget Group, Inc.","Avis Budget Group, Inc.",Rental & Leasing Services,Industrials,27672000512.0,11751999488.0,-0.056760002,0.8300233428653099,BB-,BB-,0.02
+URI,"United Rentals, Inc.","United Rentals, Inc.",Rental & Leasing Services,Industrials,15018999808.0,16364999680.0,0.15319,0.38584592461048184,BB+,BBB-,0.0065
+R,"Ryder System, Inc.","Ryder System, Inc.",Rental & Leasing Services,Industrials,8716999680.0,12659999744.0,0.03902,0.32848073608888434,BBB+,BBB+,0.0015
+DHI,"D.R. Horton, Inc.","D.R. Horton, Inc.",Residential Construction,Consumer Cyclical,6643400192.0,33348399104.0,0.09513,0.3529909229108413,BBB+,BBB+,0.0015
+LEN-B,Lennar Corporation,Lennar Corporation,Residential Construction,Consumer Cyclical,6199157248.0,32737234944.0,0.04934,0.34767213083372417,BBB,BBB,0.0025
+PHM,"PulteGroup, Inc.","PulteGroup, Inc.",Residential Construction,Consumer Cyclical,2453818112.0,16827875328.0,0.121400006,0.3462599452682669,BBB+,BBB+,0.0015
+TMHC,Taylor Morrison Home Corporatio,Taylor Morrison Home Corporation,Residential Construction,Consumer Cyclical,2414603008.0,7612553216.0,0.08771,0.37526369917332425,BB+,BB+,0.0065
+KBH,KB Home,KB Home,Residential Construction,Consumer Cyclical,1921730944.0,5921447936.0,0.059559997,0.38032853135107325,BB+,BB+,0.0065
+MTH,Meritage Homes Corporation,Meritage Homes Corporation,Residential Construction,Consumer Cyclical,1902057984.0,5616498176.0,0.06864,0.3857930587755079,BBB-,BBB-,0.0045
+BZH,"Beazer Homes USA, Inc.","Beazer Homes USA, Inc.",Residential Construction,Consumer Cyclical,1251389056.0,2110599936.0,-0.0018099999,0.5286985208249471,B,B,0.05
+TPH,"Tri Pointe Homes, Inc.","Tri Pointe Homes, Inc.",Residential Construction,Consumer Cyclical,1249508992.0,3251164928.0,0.056550004,0.3705505851514939,BB,BB,0.009
+HOV,"Hovnanian Enterprises, Inc.","Hovnanian Enterprises, Inc.",Residential Construction,Consumer Cyclical,1077022976.0,2918084096.0,0.012519999,0.6523821800095105,B+,B+,0.03
+MGM,MGM Resorts International,MGM Resorts International,Resorts & Casinos,Consumer Cyclical,31693570048.0,17715318784.0,0.010299999,0.4029701870674211,BB-,BB-,0.02
+CZR,"Caesars Entertainment, Inc.","Caesars Entertainment, Inc.",Resorts & Casinos,Consumer Cyclical,25994000384.0,11562000384.0,-0.041950002,0.522988594262092,B+,B+,0.03
+LVS,Las Vegas Sands Corp.,Las Vegas Sands Corp.,Resorts & Casinos,Consumer Cyclical,15781000192.0,13740000256.0,0.13406,0.4076153969843274,BBB,BBB,0.0025
+WYNN,"Wynn Resorts, Limited","Wynn Resorts, Limited",Resorts & Casinos,Consumer Cyclical,12159864832.0,7294288896.0,0.051420003,0.41542564998832626,BB-,BB-,0.02
+PENN,"PENN Entertainment, Inc.","PENN Entertainment, Inc.",Resorts & Casinos,Consumer Cyclical,11192999936.0,7067599872.0,-0.13543001,0.5413626175845682,B,B+,0.05
+MDEVF,Melco International Development,Melco International Development Limited,Resorts & Casinos,Consumer Cyclical,7595542409.03122,5136501504.969513,0.026300002,0.5822043530624704,BB-,BB-,0.02
+VAC,Marriott Vacations Worldwide Co,Marriott Vacations Worldwide Corporation,Resorts & Casinos,Consumer Cyclical,5647000064.0,3334000128.0,-0.10258,0.4361910503542988,B+,B+,0.03
+BYD,Boyd Gaming Corporation,Boyd Gaming Corporation,Resorts & Casinos,Consumer Cyclical,2921530112.0,4097778944.0,0.44839,0.3198055759575215,BB,BB,0.009
+HGV,Hilton Grand Vacations Inc.,Hilton Grand Vacations Inc.,Resorts & Casinos,Consumer Cyclical,7394999808.0,4633999872.0,0.03539,0.3853127309127371,BB-,BB-,0.02
+MLCO,Melco Resorts & Entertainment L,Melco Resorts & Entertainment Limited,Resorts & Casinos,Consumer Cyclical,6938469888.0,5297704960.0,0.04329,0.585445710674936,BB-,BB-,0.02
+BALY,Bally's Corporation,Bally's Corporation,Resorts & Casinos,Consumer Cyclical,6844447744.0,2823216896.0,-0.29984,0.8326400268431328,B-,B-,0.07
+MTN,"Vail Resorts, Inc.","Vail Resorts, Inc.",Resorts & Casinos,Consumer Cyclical,3257488896.0,2831425024.0,0.05539,0.31802650996907894,BB,BB,0.009
+SBUX,Starbucks Corporation,Starbucks Corporation,Restaurants,Consumer Cyclical,24408500224.0,38471598080.0,0.03888,0.31427217094219273,BBB+,BBB+,0.0015
+QSR,Restaurant Brands International,Restaurant Brands International Inc.,Restaurants,Consumer Cyclical,15683000320.0,9589000192.0,0.099589996,0.22684395802321675,BB,BB+,0.009
+YUM,"Yum! Brands, Inc.","Yum! Brands, Inc.",Restaurants,Consumer Cyclical,13144000512.0,8486000128.0,0.20481001,0.20446722576721887,BB+,BB+,0.0065
+DRI,"Darden Restaurants, Inc.","Darden Restaurants, Inc.",Restaurants,Consumer Cyclical,8156800000.0,12763799552.0,0.086619996,0.2726094258974506,BBB,BBB,0.0025
+DPZ,Domino's Pizza Inc,"Domino's Pizza, Inc.",Restaurants,Consumer Cyclical,5135773184.0,4978531840.0,0.118879996,0.2974692351662262,BBB+,BBB+,0.0015
+WEN,Wendy's Company (The),The Wendy's Company,Restaurants,Consumer Cyclical,4116592896.0,2194055936.0,0.06771,0.3086986166795822,B+,BB-,0.03
+CAKE,The Cheesecake Factory Incorpor,The Cheesecake Factory Incorporated,Restaurants,Consumer Cyclical,2141740032.0,3803441920.0,0.043390002,0.4019586284046365,A-,BBB+,0.001
+BLMN,"Bloomin' Brands, Inc.","Bloomin' Brands, Inc.",Restaurants,Consumer Cyclical,1983243008.0,3966074880.0,0.00548,0.5573075004201055,B+,B+,0.03
+EAT,"Brinker International, Inc.","Brinker International, Inc.",Restaurants,Consumer Cyclical,1748000000.0,5733499904.0,0.080740005,0.4908979904161679,BB+,BB+,0.0065
+CBRL,Cracker Barrel Old Country Stor,"Cracker Barrel Old Country Store, Inc.",Restaurants,Consumer Cyclical,1148144000.0,3337381120.0,0.00786,0.4703903424815811,BB-,BB-,0.02
+MCD,McDonald's Corporation,McDonald's Corporation,Restaurants,Consumer Cyclical,54895001600.0,27445999616.0,0.31618,0.17301395756588211,BBB+,BBB+,0.0015
+ARCO,Arcos Dorados Holdings Inc.,Arcos Dorados Holdings Inc.,Restaurants,Consumer Cyclical,2165515008.0,4817630208.0,0.048639998,0.3582895921104568,BBB-,BBB,0.0045
+MKSI,MKS Inc.,MKS Inc.,Scientific & Technical Instruments,Technology,4292000000.0,4072999936.0,0.08028,0.5029522672313428,BB,BB,0.009
+COHR,Coherent Corp.,Coherent Corp.,Scientific & Technical Instruments,Technology,3425114880.0,6602083840.0,0.07102,0.6205254480200357,BB,BB,0.009
+ITRI,"Itron, Inc.","Itron, Inc.",Scientific & Technical Instruments,Technology,1602113024.0,2347024896.0,0.12315,0.4329940878875894,BB,BB,0.009
+TRMB,Trimble Inc.,Trimble Inc.,Scientific & Technical Instruments,Technology,1412800000.0,3686599936.0,0.12375,0.3289353094545558,BBB-,BBB-,0.0045
+KEYS,Keysight Technologies Inc.,"Keysight Technologies, Inc.",Scientific & Technical Instruments,Technology,2763000064.0,6088000000.0,0.17312999,0.3266653415059603,BBB+,BBB+,0.0015
+ADT,ADT Inc.,ADT Inc.,Security & Protection Services,Industrials,7767962112.0,5139644928.0,0.12142,0.37686074117831336,BB,BB,0.009
+BCO,Brinks Company (The),The Brink's Company,Security & Protection Services,Industrials,4466500096.0,5389599744.0,0.03343,0.30995440457057183,BB+,BB+,0.0065
+GEO,Geo Group Inc (The) REIT,"The GEO Group, Inc.",Security & Protection Services,Industrials,1659895040.0,2732114944.0,0.099980004,0.5059815017799175,BB-,BB-,0.02
+ALLE,Allegion plc,Allegion plc,Security & Protection Services,Industrials,2224399872.0,4159000064.0,0.15237,0.2611774478089927,BBB,BBB,0.0025
+AMAT,"Applied Materials, Inc.","Applied Materials, Inc.",Semiconductor Equipment & Materials,Technology,7267999744.0,29024000000.0,0.29314,0.4429621110933291,A,A-,0.0007
+KLAC,KLA Corporation,KLA Corporation,Semiconductor Equipment & Materials,Technology,6145359872.0,13096660992.0,0.35661998,0.4393266421005439,A-,BBB+,0.001
+ENTG,"Entegris, Inc.","Entegris, Inc.",Semiconductor Equipment & Materials,Technology,3757499904.0,3235300096.0,0.08182,0.5191649550873314,BB,BB,0.009
+LRCX,Lam Research Corporation,Lam Research Corporation,Semiconductor Equipment & Materials,Technology,3734479104.0,21681844224.0,0.30938998,0.4653752920863001,A-,BBB+,0.001
+ASML,ASML Holding N.V. - New York Re,ASML Holding N.V.,Semiconductor Equipment & Materials,Technology,3140204365.158081,39104806964.87988,0.29713,0.42467816678619363,A+,A,0.0005
+AMKR,"Amkor Technology, Inc.","Amkor Technology, Inc.",Semiconductor Equipment & Materials,Technology,1617483008.0,7071107072.0,0.061680004,0.5243495694226965,BB,BB,0.009
+AVGO,Broadcom Inc.,Broadcom Inc.,Semiconductors,Technology,64907001856.0,75464998912.0,0.38848,0.43059550811648856,A-,A-,0.001
+INTC,Intel Corporation,Intel Corporation,Semiconductors,Technology,45030998016.0,53762998272.0,-0.05904,0.5211421261763,BBB,BBB-,0.0025
+QCOM,QUALCOMM Incorporated,QUALCOMM Incorporated,Semiconductors,Technology,15269999616.0,44486000640.0,0.22308001,0.4111660316727615,A,A,0.0007
+TXN,Texas Instruments Incorporated,Texas Instruments Incorporated,Semiconductors,Technology,14049999872.0,18438000640.0,0.29108,0.3222817831504735,A+,A,0.0005
+NVDA,NVIDIA Corporation,NVIDIA Corporation,Semiconductors,Technology,12814000128.0,253491003392.0,0.62966,0.5140540055996577,AA,AA-,0.0003
+NXPI,NXP Semiconductors N.V.,NXP Semiconductors N.V.,Semiconductors,Technology,11724000256.0,12615000064.0,0.21031,0.4098823643704457,BBB+,BBB+,0.0015
+IFNNY,Infineon Technologies AG,Infineon Technologies AG,Semiconductors,Technology,9626277131.345093,17552229309.266357,0.072340004,0.42270499518679494,BBB+,BBB+,0.0015
+ADI,"Analog Devices, Inc.","Analog Devices, Inc.",Semiconductors,Technology,8708730880.0,12740193280.0,0.26007998,0.3298936946819962,A,A-,0.0007
+ASX,"ASE Technology Holding Co., Ltd","ASE Technology Holding Co., Ltd.",Semiconductors,Technology,8118980854.576457,21279390450.316605,0.07043,0.40134983364526283,BBB,BBB+,0.0025
+RNECY,Renesas Electronics Corp,Renesas Electronics Corporation,Semiconductors,Technology,7521730801.156864,8693194218.149685,-0.00691,0.4763654867669854,BBB,BBB-,0.0025
+MCHP,Microchip Technology Incorporat,Microchip Technology Incorporated,Semiconductors,Technology,5642200064.0,4713099776.0,0.048800003,0.4392835840063307,BBB,BBB,0.0025
+MRVL,"Marvell Technology, Inc.","Marvell Technology, Inc.",Semiconductors,Technology,5277199872.0,8717100032.0,0.28986,0.6107843495555586,BBB,BBB-,0.0025
+AMD,"Advanced Micro Devices, Inc.","Advanced Micro Devices, Inc.",Semiconductors,Technology,3871000064.0,37454000128.0,0.13374,0.5529085140292472,A,A-,0.0007
+ON,ON Semiconductor Corporation,ON Semiconductor Corporation,Semiconductors,Technology,3245799936.0,6063000064.0,0.09462,0.5331010274195183,BB+,BB+,0.0065
+STM,STMicroelectronics N.V.,STMicroelectronics N.V.,Semiconductors,Technology,2783000064.0,12378000384.0,0.011879999,0.4511600126058753,BBB+,BBB,0.0015
+UMC,United Microelectronics Corpora,United Microelectronics Corporation,Semiconductors,Technology,2411689420.1470337,7635503189.167352,0.20816,0.3947521836032945,BBB+,BBB+,0.0015
+QRVO,"Qorvo, Inc.","Qorvo, Inc.",Semiconductors,Technology,1606237056.0,3678516992.0,0.09215,0.42870566559761736,BBB-,BBB-,0.0045
+SWKS,"Skyworks Solutions, Inc.","Skyworks Solutions, Inc.",Semiconductors,Technology,1189600000.0,4044300032.0,0.08931,0.411373731660737,BBB-,BBB-,0.0045
+CRM,"Salesforce, Inc.","Salesforce, Inc.",Software - Application,Technology,42547998720.0,42829000704.0,0.18733,0.3730485986446606,A+,A,0.0005
+ROP,"Roper Technologies, Inc.","Roper Technologies, Inc.",Software - Application,Technology,10464000000.0,8114999808.0,0.21123,0.2147760571242126,BBB+,BBB+,0.0015
+ADBE,Adobe Inc.,Adobe Inc.,Software - Application,Technology,7064999936.0,25198000128.0,0.28689,0.3701536275351707,A+,A,0.0005
+OTEX,Open Text Corporation,Open Text Corporation,Software - Application,Technology,6415261184.0,5207911936.0,0.09912,0.31521130932599567,BB+,BBB-,0.0065
+PAYX,"Paychex, Inc.","Paychex, Inc.",Software - Application,Technology,5013400064.0,3968000000.0,0.26633,0.2384113252377903,BBB+,BBB+,0.0015
+WDAY,"Workday, Inc.","Workday, Inc.",Software - Application,Technology,3804999936.0,9854000128.0,0.08595,0.3894591089791352,BBB+,BBB,0.0015
+CDNS,"Cadence Design Systems, Inc.","Cadence Design Systems, Inc.",Software - Application,Technology,3083354112.0,5528612864.0,0.21180001,0.36098769132582575,BBB+,BBB+,0.0015
+ADSK,"Autodesk, Inc.","Autodesk, Inc.",Software - Application,Technology,2724000000.0,7506999808.0,0.19488001,0.3539775058097873,BBB+,BBB+,0.0015
+NOW,"ServiceNow, Inc.","ServiceNow, Inc.",Software - Application,Technology,2431000064.0,13959999488.0,0.12586,0.43558801314508305,A,A-,0.0007
+PTC,PTC Inc.,PTC Inc.,Software - Application,Technology,1381052032.0,2997860096.0,0.41575,0.3064969786929961,BB+,BB+,0.0065
+TEAM,Atlassian Corporation,Atlassian Corporation,Software - Application,Technology,1243017984.0,6190182912.0,-0.03502,0.6069415227078991,BBB,BB+,0.0025
+ESTC,Elastic N.V.,Elastic N.V.,Software - Application,Technology,591563008.0,1739330944.0,0.21144,0.5865419422762606,BB,BB+,0.009
+MSFT,Microsoft Corporation,Microsoft Corporation,Software - Infrastructure,Technology,125431996416.0,318272995328.0,0.39341998,0.2668423434537382,AAA,AA,0.0001
+SNPS,"Synopsys, Inc.","Synopsys, Inc.",Software - Infrastructure,Technology,10841960448.0,8679379968.0,0.089090005,0.42411698634955924,BBB,BBB,0.0025
+GEN,Gen Digital Inc.,Gen Digital Inc.,Software - Infrastructure,Technology,8259999744.0,5000000000.0,0.19459999,0.313286919345578,BB,BB,0.009
+AKAM,"Akamai Technologies, Inc.","Akamai Technologies, Inc.",Software - Infrastructure,Technology,5867704832.0,4266646016.0,0.102,0.3683713853398647,BBB-,BBB-,0.0045
+WEX,WEX Inc.,WEX Inc.,Software - Infrastructure,Technology,5237100032.0,2697999872.0,0.11501,0.3725902870780306,BB-,BB-,0.02
+SABR,Sabre Corporation,Sabre Corporation,Software - Infrastructure,Technology,4266260992.0,2829182976.0,0.17581,0.758100316134353,B-,B,0.07
+GDDY,GoDaddy Inc.,GoDaddy Inc.,Software - Infrastructure,Technology,3848100096.0,5023699968.0,0.1732,0.33156892943912414,BB,BB,0.009
+NTAP,"NetApp, Inc.","NetApp, Inc.",Software - Infrastructure,Technology,2732999936.0,6925000192.0,0.18426001,0.33539527685629106,BBB+,BBB+,0.0015
+DOX,Amdocs Limited,Amdocs Limited,Software - Infrastructure,Technology,1067795008.0,4622573056.0,0.11805,0.20706206081153858,BBB,BBB,0.0025
+ACIW,"ACI Worldwide, Inc.","ACI Worldwide, Inc.",Software - Infrastructure,Technology,854988032.0,1790966016.0,0.11507,0.352506619390316,BB+,BB+,0.0065
+FTNT,"Fortinet, Inc.","Fortinet, Inc.",Software - Infrastructure,Technology,567200000.0,7109499904.0,0.27491,0.44560813764168733,BBB+,BBB,0.0015
+GPN,Global Payments Inc.,Global Payments Inc.,Specialty Business Services,Industrials,23587248128.0,8855241728.0,-0.07967,0.3691570525035868,BBB-,BBB-,0.0045
+ARMK,Aramark,Aramark,Specialty Business Services,Industrials,6424145920.0,19413805056.0,0.01839,0.29003921272557864,BB,BB+,0.009
+RBA,"RB Global, Inc.","RB Global, Inc.",Specialty Business Services,Industrials,4440399872.0,4716700160.0,0.09551,0.29634844391614795,BB+,BB+,0.0065
+CTAS,Cintas Corporation,Cintas Corporation,Specialty Business Services,Industrials,2918187008.0,11027210240.0,0.17568001,0.22659457062942712,A-,A-,0.001
+TRI,Thomson Reuters Corp,Thomson Reuters Corporation,Specialty Business Services,Industrials,2699000064.0,7663000064.0,0.19927,0.26152544686828805,BBB+,BBB,0.0015
+CMPR,Cimpress PLC,Cimpress plc,Specialty Business Services,Industrials,1745746048.0,3661170944.0,0.01243,0.529900244767642,BB-,BB+,0.02
+MMS,"Maximus, Inc.","Maximus, Inc.",Specialty Business Services,Industrials,1627986048.0,5317828096.0,0.07019,0.2776185287300152,BB+,BB+,0.0065
+BV,"BrightView Holdings, Inc.","BrightView Holdings, Inc.",Specialty Business Services,Industrials,902600000.0,2728699904.0,0.01704,0.40558789298356823,B,B+,0.05
+LIN,Linde plc,Linde plc,Specialty Chemicals,Basic Materials,26317000704.0,34654998528.0,0.20436001,0.20794693001213604,A,A,0.0007
+APD,"Air Products and Chemicals, Inc","Air Products and Chemicals, Inc.",Specialty Chemicals,Basic Materials,18442199040.0,12463899648.0,0.16906999,0.26279923572529235,A,A-,0.0007
+SHW,Sherwin-Williams Company (The),The Sherwin-Williams Company,Specialty Chemicals,Basic Materials,14601400320.0,23935500288.0,0.1086,0.26279807521269966,BBB+,BBB+,0.0015
+LYB,LyondellBasell Industries NV,LyondellBasell Industries N.V.,Specialty Chemicals,Basic Materials,14357000192.0,29673000960.0,-0.02686,0.32928438767735957,BBB-,BBB,0.0045
+ECL,Ecolab Inc.,Ecolab Inc.,Specialty Chemicals,Basic Materials,9266499584.0,16452299776.0,0.12798999,0.2391234287989141,A-,A-,0.001
+NPCPF,"Nippon Paint Holdings Co., Ltd.","Nippon Paint Holdings Co., Ltd.",Specialty Chemicals,Basic Materials,8871618022.863157,11602250743.321981,0.10524,2.2823929351375076,A,A-,0.0007
+PPG,"PPG Industries, Inc.","PPG Industries, Inc.",Specialty Chemicals,Basic Materials,7736999936.0,16120999936.0,0.09832,0.2766599418382346,BBB+,BBB+,0.0015
+AKZOY,Akzo Nobel N.V.,Akzo Nobel N.V.,Specialty Chemicals,Basic Materials,7091458113.934814,11526230391.58252,0.062529996,0.3067881271904913,BBB,BBB+,0.0025
+SSL,Sasol Ltd.,Sasol Limited,Specialty Chemicals,Basic Materials,6822250597.195966,15406917627.459366,0.00966,0.5139460206771413,BB+,BB+,0.0065
+IFF,International Flavors & Fragran,International Flavors & Fragrances Inc.,Specialty Chemicals,Basic Materials,6467999744.0,10787999744.0,0.076570004,0.32298749619464645,BBB,BBB,0.0025
+WLK,Westlake Corporation,Westlake Corporation,Specialty Chemicals,Basic Materials,6380000256.0,10976000000.0,-0.14914,0.3689354638195098,BBB,BBB,0.0025
+PTCAY,CHANDRA ASRI PACIFIC TBK UNSPON,PT Chandra Asri Pacific Tbk,Specialty Chemicals,Basic Materials,5683763200.0,8801653760.0,0.14337,1.0781485371412138,B+,BB+,0.03
+EMN,Eastman Chemical Company,Eastman Chemical Company,Specialty Chemicals,Basic Materials,5454000128.0,8638999552.0,0.04619,0.3247126205485114,BBB,BBB,0.0025
+ARKAY,Arkema,Arkema S.A.,Specialty Chemicals,Basic Materials,4960422655.505493,10293755554.3042,0.0046200003,0.35994024721611656,BBB+,BBB,0.0015
+CC,Chemours Company (The),The Chemours Company,Specialty Chemicals,Basic Materials,4392999936.0,5821000192.0,-0.07043,0.5619173263661398,BB-,BB-,0.02
+NVZMY,NOVONESIS A S,Novozymes A/S,Specialty Chemicals,Basic Materials,3728296341.9144897,4873839625.986084,0.1421,0.27962135893079904,A-,A-,0.001
+DD,"DuPont de Nemours, Inc.","DuPont de Nemours, Inc.",Specialty Chemicals,Basic Materials,3216999936.0,6918000128.0,-0.00419,0.30148881670983235,BBB+,BBB+,0.0015
+AXTA,Axalta Coating Systems Ltd.,Axalta Coating Systems Ltd.,Specialty Chemicals,Basic Materials,3147000064.0,5109000192.0,0.072230004,0.30435488594813265,BB+,BB+,0.0065
+SYIEF,Symrise Ag,Symrise AG,Specialty Chemicals,Basic Materials,3052650936.352417,5721080802.703369,0.050580002,0.3294935142429893,BBB+,BBB,0.0015
+ESI,Element Solutions Inc.,Element Solutions Inc,Specialty Chemicals,Basic Materials,2161299968.0,2797499904.0,0.053150002,0.34545237569319587,BB+,BB+,0.0065
+ALB,Albemarle Corporation,Albemarle Corporation,Specialty Chemicals,Basic Materials,2005991040.0,5494582784.0,-0.042379998,0.5490875683694132,BBB-,BBB-,0.0045
+ASH,Ashland Inc.,Ashland Inc.,Specialty Chemicals,Basic Materials,1478000000.0,1808000000.0,-0.39049,0.3135236144477475,BB,BB,0.009
+CBT,Cabot Corporation,Cabot Corporation,Specialty Chemicals,Basic Materials,1311000064.0,3575000064.0,0.07972,0.33395356461638154,BBB,BBB,0.0025
+OEC,Orion S.A.,Orion S.A.,Specialty Chemicals,Basic Materials,1146899968.0,1788499968.0,-0.04982,0.4820362209675519,B+,BB-,0.03
+MTX,Minerals Technologies Inc.,Minerals Technologies Inc.,Specialty Chemicals,Basic Materials,966200000.0,2127699968.0,0.07604,0.3032365216497436,BB,BB,0.009
+KRO,Kronos Worldwide Inc,"Kronos Worldwide, Inc.",Specialty Chemicals,Basic Materials,621500032.0,1879399936.0,-0.07119,0.4359931010756497,CCC+,B,0.1
+AIQUY,L'Air Liquide SA,L'Air Liquide S.A.,Specialty Chemicals,Basic Materials,15843315163.384766,31267643647.556152,0.13058,0.22562273462711638,A,A,0.0007
+SXYAY,SIKA AG,Sika AG,Specialty Chemicals,Basic Materials,6983140776.333064,14113830241.51309,0.0932,0.29928405470672764,A-,BBB+,0.001
+GVDNY,Givaudan SA,Givaudan SA,Specialty Chemicals,Basic Materials,5564235550.845772,9414847834.220924,0.14333999,0.25003107239844785,A-,BBB+,0.001
+SIEGY,Siemens AG,Siemens Aktiengesellschaft,Specialty Industrial Machinery,Industrials,62860956385.64453,92501164961.2539,0.09688,0.31752359368446675,AA-,A,0.0004
+ETN,"Eaton Corporation, PLC",Eaton Corporation plc,Specialty Industrial Machinery,Industrials,21833000960.0,28522000384.0,0.13986,0.3042514097744848,A-,A-,0.001
+EMR,Emerson Electric Company,Emerson Electric Co.,Specialty Industrial Machinery,Industrials,14056999936.0,18315999232.0,0.13354,0.2736374609688185,A,A,0.0007
+PH,Parker-Hannifin Corporation,Parker-Hannifin Corporation,Specialty Industrial Machinery,Industrials,9582000128.0,20987000832.0,0.16582,0.28604388960359567,BBB+,BBB+,0.0015
+ITW,Illinois Tool Works Inc.,Illinois Tool Works Inc.,Specialty Industrial Machinery,Industrials,9148000256.0,16220999680.0,0.19320999,0.21133474113808534,A+,A,0.0005
+CMI,Cummins Inc.,Cummins Inc.,Specialty Industrial Machinery,Industrials,8240000000.0,33894000640.0,0.07886,0.28179186695122227,A,A,0.0007
+IR,Ingersoll Rand Inc.,Ingersoll Rand Inc.,Specialty Industrial Machinery,Industrials,4951199744.0,7781300224.0,0.075440004,0.3023539073630457,BBB,BBB,0.0025
+ROK,"Rockwell Automation, Inc.","Rockwell Automation, Inc.",Specialty Industrial Machinery,Industrials,4054000128.0,8803999744.0,0.12358,0.3203199846578681,A-,A-,0.001
+ITT,ITT Inc.,ITT Inc.,Specialty Industrial Machinery,Industrials,3964999936.0,4237400064.0,0.10799,0.29188434738262375,BBB,BBB,0.0025
+GTLS,"Chart Industries, Inc.","Chart Industries, Inc.",Specialty Industrial Machinery,Industrials,3902799872.0,4147300096.0,-0.00625,0.5410883798532252,BB-,BB-,0.02
+DOV,Dover Corporation,Dover Corporation,Specialty Industrial Machinery,Industrials,3290113024.0,8280135168.0,0.13304,0.24855907723429715,BBB+,BBB+,0.0015
+PNR,Pentair plc.,Pentair plc,Specialty Industrial Machinery,Industrials,2081600000.0,4202299904.0,0.15975,0.2889988799079657,BBB-,BBB,0.0045
+XYL,Xylem Inc.,Xylem Inc.,Specialty Industrial Machinery,Industrials,2060999936.0,9091000320.0,0.10791001,0.2615961090303723,BBB,BBB,0.0025
+NDSN,Nordson Corporation,Nordson Corporation,Specialty Industrial Machinery,Industrials,1973748992.0,2903636992.0,0.18188,0.24941003097159878,BBB,BBB,0.0025
+IEX,IDEX Corporation,IDEX Corporation,Specialty Industrial Machinery,Industrials,1899299968.0,3530099968.0,0.14382,0.24170712164689334,BBB,BBB,0.0025
+FLS,Flowserve Corporation,Flowserve Corporation,Specialty Industrial Machinery,Industrials,1890324992.0,4652985856.0,0.07609,0.3561287171961077,BBB-,BBB-,0.0045
+GNRC,Generac Holdlings Inc.,Generac Holdings Inc.,Specialty Industrial Machinery,Industrials,1393465984.0,4326390784.0,0.04368,0.526601338726514,BB+,BB+,0.0065
+NPO,Enpro Inc.,Enpro Inc.,Specialty Industrial Machinery,Industrials,617800000.0,1173100032.0,0.037,0.34945546041594416,BB,BB,0.009
+MWA,MUELLER WATER PRODUCTS,"Mueller Water Products, Inc.",Specialty Industrial Machinery,Industrials,452400000.0,1463699968.0,0.1417,0.305620166261416,BB+,BB+,0.0065
+TNC,Tennant Company,Tennant Company,Specialty Industrial Machinery,Industrials,392500000.0,1211399936.0,0.025510002,0.29920529567095366,BB,BB,0.009
+ANCTF,Alimentation Couche-Tard Inc.,Alimentation Couche-Tard Inc.,Specialty Retail,Consumer Cyclical,9043399680.0,73289203712.0,0.03711,0.25550641271776786,BBB+,BBB+,0.0015
+DKS,Dick's Sporting Goods Inc,"DICK'S Sporting Goods, Inc.",Specialty Retail,Consumer Cyclical,7789426176.0,19204947968.0,0.04711,0.4375092795581834,BBB,BBB-,0.0025
+TSCO,Tractor Supply Company,Tractor Supply Company,Specialty Retail,Consumer Cyclical,6408778240.0,15649139712.0,0.06909,0.2907088567936551,BBB,BBB,0.0025
+BBY,"Best Buy Co., Inc.","Best Buy Co., Inc.",Specialty Retail,Consumer Cyclical,4134000128.0,41860001792.0,0.027309999,0.37739897742275447,BBB+,BBB+,0.0015
+RH,RH,RH,Specialty Retail,Consumer Cyclical,4019091968.0,3425912064.0,0.030079998,0.6263110992980913,B,B+,0.05
+MTTRY,Ceconomy AG,Ceconomy AG,Specialty Retail,Consumer Cyclical,3125580335.0079956,27069407532.98047,-0.00257,0.9271450934961333,BB,BB+,0.009
+MUSA,Murphy USA Inc.,Murphy USA Inc.,Specialty Retail,Consumer Cyclical,2715599872.0,17298599936.0,0.03201,0.3055488377248916,BB+,BBB-,0.0065
+EYE,"National Vision Holdings, Inc.","National Vision Holdings, Inc.",Specialty Retail,Consumer Cyclical,692126976.0,2021043968.0,0.02305,0.5496075112593828,BB,BB-,0.009
+DFRYF,AVOLTA AG,Avolta AG,Specialty Retail,Consumer Cyclical,14428455666.757631,17618818662.748844,0.01423,0.47346929462451476,BB+,BBB-,0.0065
+BBWI,"Bath & Body Works, Inc.","Bath & Body Works, Inc.",Specialty Retail,Consumer Cyclical,4712999936.0,7245000192.0,0.10035,0.5069477560066766,BB+,BB+,0.0065
+FIVE,"Five Below, Inc.","Five Below, Inc.",Specialty Retail,Consumer Cyclical,1998708992.0,5079221760.0,0.086739995,0.4882438092011726,B+,BB-,0.03
+ASO,"Academy Sports and Outdoors, In","Academy Sports and Outdoors, Inc.",Specialty Retail,Consumer Cyclical,1950910976.0,6144008192.0,0.0624,0.46024747448122627,BB+,BB+,0.0065
+MAN,ManpowerGroup,ManpowerGroup Inc.,Staffing & Employment Services,Industrials,1538899968.0,18377199616.0,-0.00089,0.3711940698520267,BBB-,BBB-,0.0045
+KFY,Korn Ferry,Korn Ferry,Staffing & Employment Services,Industrials,564547008.0,2859745024.0,0.0939,0.29912715734260253,BB+,BB+,0.0065
+RANJY,Randstad NV,Randstad N.V.,Staffing & Employment Services,Industrials,2256267477.0355225,26617920499.961914,0.01238,0.3163364204623358,BBB+,BBB-,0.0015
+AHEXY,Adecco Group AG,Adecco Group AG,Staffing & Employment Services,Industrials,3867223885.536194,26888348734.615234,0.01312,0.3493703061481802,BBB,BBB,0.0025
+TNET,"TriNet Group, Inc.","TriNet Group, Inc.",Staffing & Employment Services,Industrials,946000000.0,4880999936.0,0.03258,0.37029232472099416,BB,BB,0.009
+MT,Arcelor Mittal NY Registry Shar,ArcelorMittal S.A.,Steel,Basic Materials,13683000320.0,62010998784.0,0.047119997,0.3974888309934836,BBB,BBB-,0.0025
+CLF,Cleveland-Cliffs Inc.,Cleveland-Cliffs Inc.,Steel,Basic Materials,7784000000.0,18902999040.0,-0.064380005,0.5906853736317207,B+,BB-,0.03
+STLD,"Steel Dynamics, Inc.","Steel Dynamics, Inc.",Steel,Basic Materials,4200793088.0,19012243456.0,0.07216,0.37959403210236387,BBB,BBB,0.0025
+RS,"Reliance, Inc.","Reliance, Inc.",Steel,Basic Materials,2028999936.0,14835600384.0,0.054229997,0.2793251331692182,A-,BBB+,0.001
+BLSFF,"Bluescope Steel, Ltd.",BlueScope Steel Limited,Steel,Basic Materials,764451712.1987305,11767710702.777344,0.01779,0.37503941974250415,BBB-,BBB-,0.0045
+VZ,Verizon Communications Inc.,Verizon Communications Inc.,Telecom Services,Communication Services,200921006080.0,139146002432.0,0.12462,0.21647271189081027,BBB+,A-,0.0015
+DTEGY,Deutsche Telekom AG,Deutsche Telekom AG,Telecom Services,Communication Services,172898098102.28906,141534355807.47266,0.07222,0.21434354988841103,A-,A,0.001
+T,AT&T Inc.,AT&T Inc.,Telecom Services,Communication Services,159750995968.0,126527995904.0,0.16938,0.24088253514682337,BBB,BBB+,0.0025
+TMUS,"T-Mobile US, Inc.","T-Mobile US, Inc.",Telecom Services,Communication Services,122134003712.0,90529996800.0,0.116459996,0.23961736909182027,BBB+,A-,0.0015
+CHTR,"Charter Communications, Inc.","Charter Communications, Inc.",Telecom Services,Communication Services,96822001664.0,54635999232.0,0.09029,0.4009466232473568,BB+,BBB,0.0065
+CMCSA,Comcast Corporation,Comcast Corporation,Telecom Services,Communication Services,94611996672.0,125277003776.0,0.15004,0.27028560334977203,A-,A,0.001
+RCI,"Rogers Communication, Inc.",Rogers Communications Inc.,Telecom Services,Communication Services,32033946850.943287,15885772624.286512,0.3174,0.22458166710370353,BBB-,BBB,0.0045
+BCE,"BCE, Inc.",BCE Inc.,Telecom Services,Communication Services,30716210454.464516,17664682055.362183,0.26075,0.19061720770557217,BBB,BBB+,0.0025
+TIGO,Millicom International Cellular,Millicom International Cellular S.A.,Telecom Services,Communication Services,11886000128.0,6435999744.0,0.19142,0.39976806070536947,BB,BB+,0.009
+TELNY,Telenor ASA,Telenor ASA,Telecom Services,Communication Services,10192064492.857328,8010180720.555886,0.17101,0.2284539817590516,A-,A-,0.001
+LBTYA,Liberty Global Ltd.,Liberty Global Ltd.,Telecom Services,Communication Services,9375599616.0,4981899776.0,-1.09657,0.30896249852695823,BB-,BB+,0.02
+SNGNF,Singapore Telecommunications Lt,Singapore Telecommunications Limited,Telecom Services,Communication Services,9108044685.917515,11121630458.66692,0.39312,0.3220583298415744,A,BBB+,0.0007
+BGAOY,Proximus Group,Proximus PLC,Telecom Services,Communication Services,5915738264.428467,7118152710.834473,0.06261,0.4443505571209784,BBB+,BBB,0.0015
+ZONNF,Nos SGPS SA,"NOS, S.G.P.S., S.A.",Telecom Services,Communication Services,1830489785.5482178,2161074753.664978,0.13364,0.32677887149987245,BBB,BBB,0.0025
+ELMUF,ELISA OYJ,Elisa Oyj,Telecom Services,Communication Services,1812790249.270752,2611072613.008484,0.15264,0.19752172553376202,BBB+,BBB+,0.0015
+SPKKY,Spark New Zealand Limited,Spark New Zealand Limited,Telecom Services,Communication Services,1352944694.3652344,2160742517.317505,0.07807,0.22861068094951673,A-,BB+,0.001
+CHT,"Chunghwa Telecom Co., Ltd.","Chunghwa Telecom Co., Ltd.",Telecom Services,Communication Services,1260832289.073528,7621619817.380535,0.16239999,0.13179945753409128,AA,BBB+,0.0003
+TDS,"Telephone and Data Systems, Inc","Telephone and Data Systems, Inc.",Telecom Services,Communication Services,1254931968.0,1247224064.0,0.104940005,0.5633094032424197,BBB-,BB+,0.0045
+HLTOY,Hellenic Telecommunications Org,Hellenic Telecommunications Organization S.A.,Telecom Services,Communication Services,1228992571.621582,4067780994.606018,0.13992,0.3880189099048752,A-,A-,0.001
+PM,Philip Morris International Inc,Philip Morris International Inc.,Tobacco,Consumer Defensive,51975000064.0,41493000192.0,0.26742,0.22726864329689483,A-,A-,0.001
+BTI,British American Tobacco  Indus,British American Tobacco p.l.c.,Tobacco,Consumer Defensive,47101647275.572266,34396155266.326416,0.30316,0.21253184017379212,BBB+,A,0.0015
+MO,"Altria Group, Inc.","Altria Group, Inc.",Tobacco,Consumer Defensive,24601999360.0,20377999360.0,0.39518002,0.2082684861396506,BBB+,BBB+,0.0015
+IMBBY,Imperial Brands PLC,Imperial Brands PLC,Tobacco,Consumer Defensive,15085420154.571533,26063716653.36084,0.08956,0.21063782971825465,BBB,A-,0.0025
+JAPAF,Japan Tobacco,Japan Tobacco Inc.,Tobacco,Consumer Defensive,12403760087.17608,22406769455.084324,0.15314001,0.3983527925335798,A,A+,0.0007
+UVV,Universal Corporation,Universal Corporation,Tobacco,Consumer Defensive,939822016.0,2924470016.0,0.01116,0.24717477813934996,BBB-,BBB-,0.0045
+SWK,"Stanley Black & Decker, Inc.","Stanley Black & Decker, Inc.",Tools & Accessories,Industrials,6966499840.0,15232199680.0,0.024360001,0.3780963480211275,BBB+,BBB,0.0015
+TKR,Timken Company (The),The Timken Company,Tools & Accessories,Industrials,2203200000.0,4672799744.0,0.06598,0.32911538911265675,BBB-,BBB-,0.0045
+LECO,"Lincoln Electric Holdings, Inc.","Lincoln Electric Holdings, Inc.",Tools & Accessories,Industrials,1364840960.0,4350048768.0,0.123780005,0.2664385304712423,AA,A+,0.0003
+SNA,Snap-On Incorporated,Snap-on Incorporated,Tools & Accessories,Industrials,1300199936.0,5221199872.0,0.19601,0.23898996285503665,A-,A-,0.001
+TTC,Toro Company (The),The Toro Company,Tools & Accessories,Industrials,1136999936.0,4658500096.0,0.07294,0.2850241069823908,BBB,BBB,0.0025
+KMT,Kennametal Inc.,Kennametal Inc.,Tools & Accessories,Industrials,659568000.0,2136530944.0,0.06412,0.3706397283031829,BBB,BBB,0.0025
+RCL,Royal Caribbean Cruises Ltd.,Royal Caribbean Cruises Ltd.,Travel Services,Consumer Cyclical,21792000000.0,18388000768.0,0.24358,0.48435885166294046,BBB,BBB,0.0025
+NCLH,Norwegian Cruise Line Holdings ,Norwegian Cruise Line Holdings Ltd.,Travel Services,Consumer Cyclical,16082653184.0,10031259648.0,0.05664,0.5782159877349237,B+,BB-,0.03
+TUIFF,TUI AG,TUI AG,Travel Services,Consumer Cyclical,5190111353.191406,28045846707.995605,0.02905,0.7284312667143875,BB-,BBB,0.02
+EXPE,"Expedia Group, Inc.","Expedia Group, Inc.",Travel Services,Consumer Cyclical,4710000128.0,15171000320.0,0.098079994,0.4585474091150733,BBB,BBB,0.0025
+CCL,Carnival Corporation Ltd.,Carnival Corporation Ltd.,Travel Services,Consumer Cyclical,26606999552.0,26976999424.0,0.11476,0.5575424286217272,BBB-,BBB,0.0045
+BKNG,Booking Holdings Inc. Common St,Booking Holdings Inc.,Travel Services,Consumer Cyclical,19175999488.0,27687000064.0,0.22227,0.32373779202022723,A-,A-,0.001
+TNL,Travel   Leisure Co.,Travel + Leisure Co.,Travel Services,Consumer Cyclical,5918000128.0,4048000000.0,0.0583,0.3721356884932788,BB-,BB-,0.02
+VIK,Viking Holdings Ltd,Viking Holdings Ltd,Travel Services,Consumer Cyclical,5828802048.0,6658103808.0,0.18003,0.4066845483479355,BB+,BB+,0.0065
+ABNB,"Airbnb, Inc.","Airbnb, Inc.",Travel Services,Consumer Cyclical,2534000128.0,12647000064.0,0.19902,0.438648079150871,A-,BBB+,0.001
+GBTG,"Global Business Travel Group, I","Global Business Travel Group, Inc.",Travel Services,Consumer Cyclical,1644000000.0,2936999936.0,0.02928,0.47890171823820826,BB-,BB,0.02
+TRIP,"TripAdvisor, Inc.","Tripadvisor, Inc.",Travel Services,Consumer Cyclical,1246099968.0,1875200000.0,0.00992,0.5216119033872432,BB-,B+,0.02
+LIND,Lindblad Expeditions Holdings I,"Lindblad Expeditions Holdings, Inc.",Travel Services,Consumer Cyclical,672147968.0,799310976.0,-0.0305,0.6602999028761717,B+,B,0.03
+EONGY,E.ON SE,E.ON SE,Utilities - Diversified,Utilities,50196148726.91211,89411565760.09961,0.04459,0.24667578592562742,BBB+,A-,0.0015
+SRE,DBA Sempra,Sempra,Utilities - Diversified,Utilities,36432998400.0,13555000320.0,0.1443,0.23193408954387396,BBB+,BBB+,0.0015
+AES,The AES Corporation,The AES Corporation,Utilities - Diversified,Utilities,31804000256.0,12487000064.0,0.10819,0.3779568455874133,BBB-,BBB,0.0045
+RWEOY,RWE AG,RWE Aktiengesellschaft,Utilities - Diversified,Utilities,28474930769.126953,18877669943.20044,0.1451,0.27968902984905547,BBB-,BBB+,0.0045
+CHUEF,Chubu Electric Power,"Chubu Electric Power Company, Incorporated",Utilities - Diversified,Utilities,18319526109.749207,22133844119.978626,0.06424,0.3455645524766987,AA+,AA-,0.0002
+AQN,Algonquin Power & Utilities Cor,Algonquin Power & Utilities Corp.,Utilities - Diversified,Utilities,6716899840.0,2533600000.0,0.06718,0.30958010808474146,BBB,BBB-,0.0025
+NRG,"NRG Energy, Inc.","NRG Energy, Inc.",Utilities - Independent Power Producers,Utilities,23357999104.0,32384000000.0,0.00738,0.3994968471658047,BBB-,BB+,0.0045
+TAC,TransAlta Corporation,TransAlta Corporation,Utilities - Independent Power Producers,Utilities,3191025430.440471,1581570278.0447736,-0.077309996,0.35348478405594336,BB+,BB+,0.0065
+CEG,Constellation Energy Corporatio,Constellation Energy Corporation,Utilities - Independent Power Producers,Utilities,22466000896.0,29866999808.0,0.12693,0.49137115413292076,BBB+,BBB+,0.0015
+VST,Vistra Corp.,Vistra Corp.,Utilities - Independent Power Producers,Utilities,19925999616.0,19445000192.0,0.11525,0.4853332250676465,BBB-,BBB-,0.0045
+TLN,Talen Energy Corporation,Talen Energy Corporation,Utilities - Independent Power Producers,Utilities,6817999872.0,3236000000.0,-0.00649,0.5017251780432361,BB-,BB-,0.02
+NEE,"NextEra Energy, Inc.","NextEra Energy, Inc.",Utilities - Regulated Electric,Utilities,104403001344.0,27865999360.0,0.29369,0.2704959308012833,A-,A-,0.001
+DUK,Duke Energy Corporation (Holdin,Duke Energy Corporation,Utilities - Regulated Electric,Utilities,91208998912.0,32718999552.0,0.15706,0.17864420382374205,BBB+,BBB+,0.0015
+SO,Southern Company (The),The Southern Company,Utilities - Regulated Electric,Utilities,76004999168.0,30175000576.0,0.14458999,0.18660086345090196,BBB+,BBB+,0.0015
+NGG,"National Grid Transco, PLC Nati",National Grid plc,Utilities - Regulated Electric,Utilities,64071402991.74756,23754968998.566895,0.18324,0.22306462978302016,BBB+,A-,0.0015
+PCG,Pacific Gas & Electric Co.,PG&E Corporation,Utilities - Regulated Electric,Utilities,62940999680.0,25833000960.0,0.110089995,0.2810950129540325,BB+,BBB,0.0065
+D,"Dominion Energy, Inc.","Dominion Energy, Inc.",Utilities - Regulated Electric,Utilities,52214001664.0,17449000960.0,0.16929,0.2287018801913959,BBB+,BBB+,0.0015
+AEP,American Electric Power Company,"American Electric Power Company, Inc.",Utilities - Regulated Electric,Utilities,51808002048.0,22432999424.0,0.16289,0.20020006831511752,BBB+,BBB+,0.0015
+EXC,Exelon Corporation,Exelon Corporation,Utilities - Regulated Electric,Utilities,51241000960.0,24785999872.0,0.11212,0.2071899858207725,A-,A-,0.001
+EIX,Edison International,Edison International,Utilities - Regulated Electric,Utilities,42696998912.0,19608999936.0,0.18124,0.256320884924135,BBB-,BBB,0.0045
+XEL,Xcel Energy Inc.,Xcel Energy Inc.,Utilities - Regulated Electric,Utilities,39243001856.0,14784000000.0,0.14144,0.20846735881778075,BBB+,BBB+,0.0015
+ETR,Entergy Corporation,Entergy Corporation,Utilities - Regulated Electric,Utilities,34058442752.0,13287438336.0,0.13414,0.225085313556371,BBB+,BBB+,0.0015
+ES,Eversource Energy (D/B/A),Eversource Energy,Utilities - Regulated Electric,Utilities,30339694592.0,13933251584.0,0.12549,0.24080038448999588,BBB+,BBB+,0.0015
+ED,"Consolidated Edison, Inc.","Consolidated Edison, Inc.",Utilities - Regulated Electric,Utilities,27177000960.0,17215000576.0,0.12524,0.18795956244578396,B-,BB+,0.07
+DTE,DTE Energy Company,DTE Energy Company,Utilities - Regulated Electric,Utilities,26972000256.0,16515000320.0,0.07654,0.18883024306057888,BBB,BBB,0.0025
+CNP,"CenterPoint Energy, Inc (Holdin","CenterPoint Energy, Inc.",Utilities - Regulated Electric,Utilities,24682999808.0,9411999744.0,0.11379,0.19758953104551738,BBB,BBB,0.0025
+PEG,Public Service Enterprise Group,Public Service Enterprise Group Incorporated,Utilities - Regulated Electric,Utilities,24398999552.0,12794000384.0,0.17688,0.20501933177226256,BBB+,BBB+,0.0015
+WEC,"WEC Energy Group, Inc.","WEC Energy Group, Inc.",Utilities - Regulated Electric,Utilities,22317799424.0,10084800512.0,0.16239001,0.19052425943150653,A-,A-,0.001
+AEE,Ameren Corporation,Ameren Corporation,Utilities - Regulated Electric,Utilities,21304000512.0,8544999936.0,0.17834999,0.19324415557670682,BBB+,BBB+,0.0015
+PPL,PPL Corporation,PPL Corporation,Utilities - Regulated Electric,Utilities,20292999168.0,9312000000.0,0.13091,0.18778593361758042,A-,A-,0.001
+CMS,CMS Energy Corporation,CMS Energy Corporation,Utilities - Regulated Electric,Utilities,19081000960.0,8821999616.0,0.12548,0.1899164848361966,BBB+,BBB+,0.0015
+TEZNY,Terna Rete Elettrica Nazionale ,Terna S.p.A.,Utilities - Regulated Electric,Utilities,17960886851.680176,4754990968.7595215,0.2716,0.21780772060582074,A-,A-,0.001
+PNW,Pinnacle West Capital Corporati,Pinnacle West Capital Corporation,Utilities - Regulated Electric,Utilities,15143285760.0,5457255936.0,0.11986,0.20422757831158359,BBB,BBB,0.0025
+CMS-PB,CMS Energy Corporation Preferre,Consumers Energy Company,Utilities - Regulated Electric,Utilities,13761000448.0,8396000256.0,0.13447,0.22682575237969488,A-,A-,0.001
+ELEZY,Endesa S.A.,"Endesa, S.A.",Utilities - Regulated Electric,Utilities,13431987625.995605,24319869994.748535,0.111669995,0.3131068242032512,BBB+,BBB+,0.0015
+LNT,Alliant Energy Corporation,Alliant Energy Corporation,Utilities - Regulated Electric,Utilities,11840000000.0,4417999872.0,0.18583,0.19779813223500706,BBB+,BBB+,0.0015
+CLPHY,CLP Holdings Ltd.,CLP Holdings Limited,Utilities - Regulated Electric,Utilities,8049857888.05076,11234954170.396097,0.121190004,0.18692192132815397,A,A-,0.0007
+OGE,OGE Energy Corp,OGE Energy Corp.,Utilities - Regulated Electric,Utilities,5862000128.0,3264999936.0,0.14034,0.18849047015358522,BBB+,BBB+,0.0015
+POR,Portland General Electric Co,Portland General Electric Company,Utilities - Regulated Electric,Utilities,5336999936.0,3527000064.0,0.07117,0.20887214717548885,BBB+,BBB+,0.0015
+IDA,"IDACORP, Inc.","IDACORP, Inc.",Utilities - Regulated Electric,Utilities,4009299968.0,1783952000.0,0.18599,0.19284893761265703,BBB,BBB,0.0025
+NWE,"NorthWestern Energy Group, Inc.","NorthWestern Energy Group, Inc.",Utilities - Regulated Electric,Utilities,3442790912.0,1641499008.0,0.102110006,0.21424320438270092,BBB,BBB,0.0025
+HE,"Hawaiian Electric Industries, I","Hawaiian Electric Industries, Inc.",Utilities - Regulated Electric,Utilities,2946522880.0,3089273088.0,0.041079998,0.5374545213259749,B+,B+,0.03
+NI,NiSource Inc,NiSource Inc.,Utilities - Regulated Gas,Utilities,16806800384.0,6822099968.0,0.14097999,0.201165329398156,BBB+,BBB+,0.0015
+ATO,Atmos Energy Corporation,Atmos Energy Corporation,Utilities - Regulated Gas,Utilities,9629233152.0,4881241088.0,0.27579,0.1859344894792825,A-,A-,0.001
+UGI,UGI Corporation,UGI Corporation,Utilities - Regulated Gas,Utilities,7040999936.0,7359000064.0,0.0871,0.27989538977521267,BBB,BBB,0.0025
+BKH,Black Hills Corporation,Black Hills Corporation,Utilities - Regulated Gas,Utilities,4654700032.0,2285499904.0,0.12614,0.22526610053262333,BBB+,BBB+,0.0015
+SWX,"Southwest Gas Holdings, Inc.","Southwest Gas Holdings, Inc.",Utilities - Regulated Gas,Utilities,3508929024.0,1779083008.0,0.26099002,0.25470902988950994,BBB+,BBB+,0.0015
+OGS,"ONE Gas, Inc.","ONE Gas, Inc.",Utilities - Regulated Gas,Utilities,3381221888.0,2323949056.0,0.11768,0.23907618282909487,A-,A-,0.001
+NWN,Northwest Natural Holding Compa,Northwest Natural Holding Company,Utilities - Regulated Gas,Utilities,2682576896.0,1285481984.0,0.0956,0.22971834447851933,A-,A-,0.001
+AWK,"American Water Works Company, I","American Water Works Company, Inc.",Utilities - Regulated Water,Utilities,15708999680.0,5205000192.0,0.21172,0.22929711341153564,A,A,0.0007
+UUGRY,United Utilities Group PLC,United Utilities Group PLC,Utilities - Regulated Water,Utilities,15432739304.011108,3513887574.175476,0.22429001,0.24365808572159625,BBB+,BBB,0.0015
+CWAFF,CHINA WATER AFFAIR GROUP LTD,China Water Affairs Group Limited,Utilities - Regulated Water,Utilities,3304757745.790712,1389554778.187216,0.08178,0.3294911299663032,BB+,BB,0.0065
+AWAEF,SIIC ENVIRONMENT HOLDINGS LTD,SIIC Environment Holdings Ltd.,Utilities - Regulated Water,Utilities,3213446845.5203047,1046811373.2834126,0.08631,0.43644489207813314,BBB-,BBB-,0.0045
+WTRG,"Essential Utilities, Inc.","Essential Utilities, Inc.",Utilities - Regulated Water,Utilities,8455683072.0,2552748032.0,0.21819,0.22393528599367696,A-,A-,0.001
+BEP,Brookfield Renewable Partners L,Brookfield Renewable Partners L.P.,Utilities - Renewable,Utilities,37394001920.0,6341000192.0,0.00347,0.3088377616419023,BBB+,BBB-,0.0015
+TEPCY,"Tohoku Electric Power Co., Inc.","Tohoku Electric Power Company, Incorporated",Utilities - Renewable,Utilities,19384317474.86564,14808281573.687838,0.03582,0.23198167956838248,A-,A-,0.001
+FOJCY,Fortum Oyj,Fortum Oyj,Utilities - Renewable,Utilities,4654131838.534058,6196610919.078857,0.15415,0.48653819985672053,BBB+,BBB,0.0015
+OEZVY,Verbund AG,VERBUND AG,Utilities - Renewable,Utilities,2415970360.183716,8909778391.226318,0.17749001,0.48680330067609084,A,BBB+,0.0007
+AXIA,AXIA Energia,AXIA Energia SA,Utilities - Renewable,Utilities,15493567282.780575,8614153537.963718,0.21893999,0.3936041071032206,BB,BB+,0.009
+WM,"Waste Management, Inc.","Waste Management, Inc.",Waste Management,Industrials,22890999808.0,25412999168.0,0.10994001,0.186509464290261,A-,A-,0.001
+RSG,"Republic Services, Inc.","Republic Services, Inc.",Waste Management,Industrials,14087000064.0,16695000064.0,0.12991999,0.18207662806887945,A-,A-,0.001
+WCN,"Waste Connections, Inc.","Waste Connections, Inc.",Waste Management,Industrials,9435247616.0,9609369600.0,0.10973,0.1940024829193131,A-,BBB,0.001
+CLH,"Clean Harbors, Inc.","Clean Harbors, Inc.",Waste Management,Industrials,3232133120.0,6058423808.0,0.06528,0.2871330508632142,BB+,BB+,0.0065
+CWST,"Casella Waste Systems, Inc.","Casella Waste Systems, Inc.",Waste Management,Industrials,1242125056.0,1877068032.0,0.0038,0.27288287930200933,BB,BB,0.009
