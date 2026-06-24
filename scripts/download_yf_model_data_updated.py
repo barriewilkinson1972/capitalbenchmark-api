@@ -30,7 +30,7 @@ import yfinance as yf
 # -----------------------------------------------------------------------------
 # Paths
 # -----------------------------------------------------------------------------
-INPUT_PATH = "market_data/model_universe.csv"
+INPUT_PATH = "market_data/yf_company_info.parquet"
 MARKET_DATA_DIR = Path("market_data")
 
 OUT_RAW = MARKET_DATA_DIR / "yf_fundamentals_raw.parquet"
@@ -407,7 +407,7 @@ def make_vol_metrics(log_returns: pd.DataFrame) -> pd.DataFrame:
 # Main runner
 # -----------------------------------------------------------------------------
 def main():
-    universe = pd.read_csv(INPUT_PATH, encoding = "latin1")
+    universe = pd.read_parquet(INPUT_PATH)
 
     # Change this if your ticker column has a different name.
     symbols = universe["symbol"].dropna().unique().tolist()

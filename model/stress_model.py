@@ -1,79 +1,48 @@
-"""Stress model utilities for the Capital Benchmark Flask API.
-
-The API-facing function is ``run_stress``. It returns a Bubble-friendly JSON
-object containing:
-
-- scenario inputs
-- portfolio summary metrics
-- unconditional vs conditional loss-distribution bins
-- top stressed industries
-- download metadata
-- model metadata
-
-This patched version uses obligor-level PD and EAD data from
-``market_data/obligor_data.parquet`` instead of generic portfolio-wide
-``pd_base`` and ``ead`` assumptions.
-
-Required obligor inputs
------------------------
-The obligor file must contain:
-
-- an industry field: ``Industry`` or ``industry``
-- an obligor PD field, using one of:
-  ``pd``, ``base_pd``, ``agency_pd``, ``pd_estimate``, ``one_year_pd``,
-  ``annual_pd``, ``default_probability``
-- an EAD/debt field, using one of:
-  ``ead``, ``ead_usd``, ``totalDebt_usd``, ``debt_usd``
-
-Useful optional fields:
-
-- ``symbol`` / ``Symbol``
-- ``Agency Rating``
-- ``cb_rating``
-- ``shortName`` / ``longName``
-- ``sector`` / ``country``
-
-PD convention
--------------
-PDs should be stored as decimals, e.g. 0.01 for 1%. If the maximum PD value
-is greater than 1, the model assumes the column was supplied in percentage
-points and divides by 100.
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
 
+# -----------------------------------------------------------------------------
+# File locations
+# -----------------------------------------------------------------------------
+
 PORTFOLIO_PATH = "market_data/obligor_data.csv"
 LOADINGS_PATH = "data/industry_factor_loadings.parquet"
 INDUSTRY_CORR_PATH = "data/industry_corr_clean.parquet"
 
-MODEL_VERSION = "1.0.0"
-MODEL_NAME = "obligor_pd_ead_two_factor_vasicek_with_industry_mc"
+MODEL_VERSION = "2.0.0"
+MODEL_NAME = "obligor_pd_ead_three_factor_vasicek_with_industry_mc"
 
-PD_CANDIDATE_COLUMNS = [
-    "Agency pd"]
+# Explicit obligor-level model inputs from the new obligor dataset.
+PD_COLUMN = "CB pd"
+EAD_COLUMN = "totalDebt_usd"
+INDUSTRY_COLUMN = "industry"
 
-EAD_CANDIDATE_COLUMNS = [
-
-    "totalDebt_usd"]
+FACTOR_COLUMNS = ["rho_Market", "rho_Technology", "rho_Commodity"]
+FACTOR_NAMES = ["market", "technology", "commodity"]
 
 
 @dataclass(frozen=True)
 class StressConfig:
-    """Runtime configuration for the stress simulation."""
+    """Runtime configuration for the Monte Carlo loss simulation."""
 
-    n_sims: int = 1000
+    n_sims: int = 10_000
     n_bins: int = 40
     asset_rho: float = 0.20
     random_seed: int = 42
     top_n: int = 10
+
+
+# -----------------------------------------------------------------------------
+# Generic helpers
+# -----------------------------------------------------------------------------
 
 
 def _to_float(value: Any, default: float) -> float:
@@ -84,6 +53,7 @@ def _to_float(value: Any, default: float) -> float:
         return float(default)
 
 
+
 def _to_int(value: Any, default: int) -> int:
     """Safely coerce API query parameters to ints."""
     try:
@@ -92,174 +62,240 @@ def _to_int(value: Any, default: int) -> int:
         return int(default)
 
 
-def _first_existing_column(df: pd.DataFrame, candidates: List[str]) -> Optional[str]:
-    """Return the first candidate column present in a DataFrame."""
-    for col in candidates:
-        if col in df.columns:
-            return col
-    return None
+
+def _clean_text_series(s: pd.Series) -> pd.Series:
+    """Normalize text keys used for joins."""
+    return s.astype(str).str.strip()
 
 
-def _standardise_obligor_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Standardise core obligor column names used internally."""
-    df = df.copy()
 
-    if "Industry" not in df.columns and "industry" in df.columns:
-        df = df.rename(columns={"industry": "Industry"})
+def _required_columns(df: pd.DataFrame, columns: List[str], name: str) -> None:
+    missing = [c for c in columns if c not in df.columns]
+    if missing:
+        raise ValueError(f"{name} is missing required columns: {missing}")
 
-    if "Symbol" not in df.columns and "symbol" in df.columns:
-        df = df.rename(columns={"symbol": "Symbol"})
 
-    if "Industry" not in df.columns:
-        raise ValueError(
-            "obligor data must contain an industry column named 'Industry' or 'industry'"
+# -----------------------------------------------------------------------------
+# Input loading and schema normalisation
+# -----------------------------------------------------------------------------
+
+
+def _read_table(path: str | Path) -> pd.DataFrame:
+    """Read CSV or parquet based on file suffix."""
+    path = Path(path)
+    suffix = path.suffix.lower()
+
+    if suffix == ".csv":
+        return pd.read_csv(path)
+    if suffix in {".parquet", ".pq"}:
+        return pd.read_parquet(path)
+
+    raise ValueError(f"Unsupported file type for {path}")
+
+
+
+def _normalise_loadings(loadings: pd.DataFrame) -> pd.DataFrame:
+    """Return industry loadings with canonical column names and one row per industry."""
+    loadings = loadings.copy()
+
+    # Some saved parquet files may have industry as the index rather than a column.
+    if INDUSTRY_COLUMN not in loadings.columns:
+        if loadings.index.name == INDUSTRY_COLUMN or loadings.index.name is not None:
+            loadings = loadings.reset_index()
+        else:
+            loadings = loadings.reset_index().rename(columns={"index": INDUSTRY_COLUMN})
+
+    rename_map = {
+        "Industry": INDUSTRY_COLUMN,
+        "rho_market": "rho_Market",
+        "rho_technology": "rho_Technology",
+        "rho_tech": "rho_Technology",
+        "rho_commodity": "rho_Commodity",
+    }
+    loadings = loadings.rename(columns=rename_map)
+
+    _required_columns(loadings, [INDUSTRY_COLUMN, *FACTOR_COLUMNS], "industry factor loadings")
+
+    loadings[INDUSTRY_COLUMN] = _clean_text_series(loadings[INDUSTRY_COLUMN])
+
+    for col in FACTOR_COLUMNS:
+        loadings[col] = pd.to_numeric(loadings[col], errors="coerce").fillna(0.0)
+
+    if "residual_rho" not in loadings.columns:
+        rho_sq = (loadings[FACTOR_COLUMNS] ** 2).sum(axis=1).clip(0.0, 0.999999)
+        loadings["residual_rho"] = np.sqrt(1.0 - rho_sq)
+    else:
+        loadings["residual_rho"] = pd.to_numeric(
+            loadings["residual_rho"], errors="coerce"
         )
+        missing_residual = loadings["residual_rho"].isna()
+        if missing_residual.any():
+            rho_sq = (loadings.loc[missing_residual, FACTOR_COLUMNS] ** 2).sum(axis=1)
+            loadings.loc[missing_residual, "residual_rho"] = np.sqrt(
+                1.0 - rho_sq.clip(0.0, 0.999999)
+            )
 
-    df["Industry"] = df["Industry"].astype(str).str.strip()
+    # Numerical safety for the conditional PD denominator.
+    loadings["residual_rho"] = loadings["residual_rho"].clip(lower=1e-6)
 
-    if "Symbol" in df.columns:
-        df["Symbol"] = df["Symbol"].astype(str).str.strip().str.upper()
+    # If duplicate industries exist, keep the first. This mirrors the old lookup behaviour.
+    loadings = loadings.drop_duplicates(subset=[INDUSTRY_COLUMN], keep="first")
 
-    return df
+    return loadings[[INDUSTRY_COLUMN, *FACTOR_COLUMNS, "residual_rho"]]
+
+
+
+def _normalise_industry_corr(industry_corr: Optional[pd.DataFrame]) -> Optional[pd.DataFrame]:
+    """Normalize optional industry correlation matrix labels."""
+    if industry_corr is None:
+        return None
+
+    corr = industry_corr.copy()
+
+    # Parquet can sometimes preserve a named index cleanly; CSV-style tables may
+    # include an unnamed first column. Handle both cases defensively.
+    unnamed_cols = [c for c in corr.columns if str(c).startswith("Unnamed")]
+    if unnamed_cols:
+        corr = corr.set_index(unnamed_cols[0])
+
+    corr.index = corr.index.astype(str).str.strip()
+    corr.columns = corr.columns.astype(str).str.strip()
+    corr = corr.apply(pd.to_numeric, errors="coerce")
+
+    return corr
+
 
 
 def _load_inputs(
     portfolio_path: str = PORTFOLIO_PATH,
     loadings_path: str = LOADINGS_PATH,
     industry_corr_path: str = INDUSTRY_CORR_PATH,
-) -> tuple[pd.DataFrame, pd.DataFrame, Optional[pd.DataFrame]]:
-    """Load obligors, industry factor loadings, and optional industry correlation."""
+) -> Tuple[pd.DataFrame, pd.DataFrame, Optional[pd.DataFrame]]:
+    """Load obligors, three-factor industry loadings, and optional industry correlation."""
     portfolio = pd.read_csv(portfolio_path)
-    portfolio = _standardise_obligor_columns(portfolio)
+    loadings = _normalise_loadings(_read_table(loadings_path))
 
-    loadings = pd.read_parquet(loadings_path)
-
-    if "Industry" not in loadings.columns:
-        loadings = loadings.reset_index()
-
-    if "Industry" not in loadings.columns:
-        raise ValueError("loadings data must contain an 'Industry' column or index")
-
-    loadings["Industry"] = loadings["Industry"].astype(str).str.strip()
-
-    industry_corr: Optional[pd.DataFrame]
     try:
-        industry_corr = pd.read_parquet(industry_corr_path)
+        industry_corr = _normalise_industry_corr(_read_table(industry_corr_path))
     except FileNotFoundError:
         industry_corr = None
 
     return portfolio, loadings, industry_corr
 
 
+# -----------------------------------------------------------------------------
+# Obligor-level PD stress transformation
+# -----------------------------------------------------------------------------
+
+
 def _prepare_obligors(
     portfolio: pd.DataFrame,
     loadings: pd.DataFrame,
-    oil: float,
-    ai: float,
+    market: float,
+    technology: float,
+    commodity: float,
     lgd: float,
     obligors: Optional[int] = None,
 ) -> pd.DataFrame:
     """Create obligor-level base and stressed PDs using supplied PD and EAD."""
-    df = _standardise_obligor_columns(portfolio)
+    df = portfolio.copy()
 
-    # Optional API input: sample a subset while keeping the industry mix roughly intact.
-    # This is useful for demos/performance testing, not for production runs.
-    if obligors is not None and obligors > 0 and obligors != len(df):
-        replace = obligors > len(df)
-        df = df.sample(n=obligors, replace=replace, random_state=42).reset_index(drop=True)
+    _required_columns(
+        df,
+        ["symbol", "company_name", INDUSTRY_COLUMN, PD_COLUMN, EAD_COLUMN],
+        "obligor portfolio",
+    )
 
-    pd_col = _first_existing_column(df, PD_CANDIDATE_COLUMNS)
-    if pd_col is None:
-        raise ValueError(
-            "obligor data must contain a PD column. Expected one of: "
-            f"{PD_CANDIDATE_COLUMNS}"
-        )
+    df[INDUSTRY_COLUMN] = _clean_text_series(df[INDUSTRY_COLUMN])
+    df["base_pd"] = pd.to_numeric(df[PD_COLUMN], errors="coerce")
+    df["ead"] = pd.to_numeric(df[EAD_COLUMN], errors="coerce")
 
-    ead_col = _first_existing_column(df, EAD_CANDIDATE_COLUMNS)
-    if ead_col is None:
-        raise ValueError(
-            "obligor data must contain an EAD/debt column. Expected one of: "
-            f"{EAD_CANDIDATE_COLUMNS}"
-        )
+    df = df.dropna(subset=[INDUSTRY_COLUMN, "base_pd", "ead"])
+    df = df[df["ead"] > 0].copy()
 
-    df["base_pd"] = pd.to_numeric(df[pd_col], errors="coerce")
-
-    # If PDs were supplied as percentages rather than decimals, convert to decimals.
-    if df["base_pd"].dropna().max() is not None and df["base_pd"].dropna().max() > 1.0:
-        df["base_pd"] = df["base_pd"] / 100.0
-
-    df["ead"] = pd.to_numeric(df[ead_col], errors="coerce")
-
-    bad_pd = df["base_pd"].isna() | (df["base_pd"] <= 0) | (df["base_pd"] >= 1)
-    bad_ead = df["ead"].isna() | (df["ead"] < 0)
-
-    if bad_pd.any():
-        examples = df.loc[bad_pd, [c for c in ["Symbol", "Industry", pd_col] if c in df.columns]].head(10)
-        raise ValueError(
-            f"Invalid/missing obligor PDs in column '{pd_col}' for {int(bad_pd.sum())} rows. "
-            f"Examples: {examples.to_dict(orient='records')}"
-        )
-
-    if bad_ead.any():
-        examples = df.loc[bad_ead, [c for c in ["Symbol", "Industry", ead_col] if c in df.columns]].head(10)
-        raise ValueError(
-            f"Invalid/missing EAD/debt values in column '{ead_col}' for {int(bad_ead.sum())} rows. "
-            f"Examples: {examples.to_dict(orient='records')}"
-        )
+    # Optional portfolio-size control for demo/API speed. Use largest EAD names
+    # rather than arbitrary first rows.
+    if obligors is not None:
+        obligors = int(obligors)
+        if obligors > 0 and obligors < len(df):
+            df = df.sort_values("ead", ascending=False).head(obligors).copy()
 
     df["base_pd"] = df["base_pd"].clip(1e-8, 1.0 - 1e-8)
     df["ead"] = df["ead"].clip(lower=0.0)
     df["lgd"] = float(lgd)
 
-    loadings = loadings.copy()
-    required_cols = {"Industry", "oil_corr", "ai_corr"}
-    missing = required_cols.difference(loadings.columns)
-    if missing:
-        raise ValueError(f"loadings data missing required columns: {sorted(missing)}")
+    loadings_idx = loadings.set_index(INDUSTRY_COLUMN)
 
-    loadings = loadings.set_index("Industry")
+    for col in FACTOR_COLUMNS:
+        df[col] = df[INDUSTRY_COLUMN].map(loadings_idx[col]).fillna(0.0).astype(float)
 
-    df["oil_corr"] = df["Industry"].map(loadings["oil_corr"]).fillna(0.0).astype(float)
-    df["ai_corr"] = df["Industry"].map(loadings["ai_corr"]).fillna(0.0).astype(float)
+    df["residual_rho"] = (
+        df[INDUSTRY_COLUMN]
+        .map(loadings_idx["residual_rho"])
+        .fillna(1.0)
+        .astype(float)
+        .clip(lower=1e-6)
+    )
 
-    # Sign convention: positive oil means a positive oil-price shock; negative AI
-    # means AI optimism reversal. Negative factor impact is bad for credit.
-    factor_impact = df["oil_corr"] * float(oil) + df["ai_corr"] * float(ai)
+    # Conditional Vasicek PD transformation.
+    # Positive factor shock is good for industries with positive loading and bad
+    # for industries with negative loading. Negative market shock therefore raises
+    # PDs for industries with positive market exposure.
+    factor_impact = (
+        df["rho_Market"] * float(market)
+        + df["rho_Technology"] * float(technology)
+        + df["rho_Commodity"] * float(commodity)
+    )
 
-    r2 = (df["oil_corr"] ** 2 + df["ai_corr"] ** 2).clip(0.0, 0.999)
-    residual_vol = np.sqrt(1.0 - r2)
-    threshold = norm.ppf(df["base_pd"].clip(1e-8, 1.0 - 1e-8))
+    threshold = norm.ppf(df["base_pd"].to_numpy())
+    residual = df["residual_rho"].to_numpy()
 
-    df["stressed_pd"] = norm.cdf((threshold - factor_impact) / residual_vol)
+    df["stressed_pd"] = norm.cdf((threshold - factor_impact.to_numpy()) / residual)
+    df["stressed_pd"] = df["stressed_pd"].clip(1e-8, 1.0 - 1e-8)
+
     df["pd_change"] = df["stressed_pd"] - df["base_pd"]
-    df["pd_multiple"] = np.where(df["base_pd"] > 0, df["stressed_pd"] / df["base_pd"], np.nan)
+    df["pd_multiple"] = np.where(
+        df["base_pd"] > 0,
+        df["stressed_pd"] / df["base_pd"],
+        np.nan,
+    )
 
     df["base_expected_loss"] = df["base_pd"] * df["lgd"] * df["ead"]
     df["stressed_expected_loss"] = df["stressed_pd"] * df["lgd"] * df["ead"]
+    df["expected_loss_change"] = df["stressed_expected_loss"] - df["base_expected_loss"]
 
-    df.attrs["pd_column"] = pd_col
-    df.attrs["ead_column"] = ead_col
+    df.attrs["pd_column"] = PD_COLUMN
+    df.attrs["ead_column"] = EAD_COLUMN
 
     return df
+
+
+# -----------------------------------------------------------------------------
+# Monte Carlo loss distribution
+# -----------------------------------------------------------------------------
 
 
 def _industry_correlation_matrix(
     industries: List[str], industry_corr: Optional[pd.DataFrame]
 ) -> np.ndarray:
-    """Return a PSD-ish industry correlation matrix aligned to the portfolio."""
+    """Return a PSD industry correlation matrix aligned to the current portfolio."""
     n = len(industries)
+    if n == 0:
+        return np.empty((0, 0))
+
     if industry_corr is None:
         return np.eye(n)
 
     corr = industry_corr.copy()
-    corr.index = corr.index.astype(str)
-    corr.columns = corr.columns.astype(str)
+    corr.index = corr.index.astype(str).str.strip()
+    corr.columns = corr.columns.astype(str).str.strip()
 
     aligned = corr.reindex(index=industries, columns=industries).fillna(0.0)
 
     matrix = aligned.to_numpy(copy=True).astype(float)
     np.fill_diagonal(matrix, 1.0)
 
+    # Symmetrise and repair to positive semi-definite.
     matrix = (matrix + matrix.T) / 2.0
 
     eigvals, eigvecs = np.linalg.eigh(matrix)
@@ -273,23 +309,27 @@ def _industry_correlation_matrix(
     return matrix
 
 
+
 def _simulate_losses(
     df: pd.DataFrame,
     industry_corr: Optional[pd.DataFrame],
     config: StressConfig,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """Simulate unconditional and conditional portfolio loss distributions.
 
     The unconditional distribution uses obligor-level base PDs. The conditional
-    distribution uses oil/AI stressed PDs. Both distributions retain the same
-    residual stochastic structure: an industry systematic factor plus obligor
-    idiosyncratic epsilon.
+    distribution uses the three-factor stressed PDs. Both retain the same residual
+    stochastic structure: an industry systematic factor plus obligor idiosyncratic
+    epsilon.
     """
+    if df.empty:
+        return np.array([0.0]), np.array([0.0])
+
     rng = np.random.default_rng(config.random_seed)
 
-    industries = sorted(df["Industry"].astype(str).unique().tolist())
+    industries = sorted(df[INDUSTRY_COLUMN].astype(str).unique().tolist())
     industry_to_idx = {industry: i for i, industry in enumerate(industries)}
-    industry_idx = df["Industry"].astype(str).map(industry_to_idx).to_numpy()
+    industry_idx = df[INDUSTRY_COLUMN].astype(str).map(industry_to_idx).to_numpy()
 
     corr_matrix = _industry_correlation_matrix(industries, industry_corr)
 
@@ -314,6 +354,7 @@ def _simulate_losses(
     conditional_losses = (latent < stressed_threshold) @ loss_given_default
 
     return unconditional_losses, conditional_losses
+
 
 
 def _bin_loss_distributions(
@@ -346,6 +387,7 @@ def _bin_loss_distributions(
     return rows
 
 
+
 def _loss_percentiles(losses: np.ndarray) -> Dict[str, float]:
     """Common loss-distribution summary metrics."""
     return {
@@ -355,6 +397,11 @@ def _loss_percentiles(losses: np.ndarray) -> Dict[str, float]:
         "p99": float(np.percentile(losses, 99)),
         "max": float(np.max(losses)),
     }
+
+
+# -----------------------------------------------------------------------------
+# Aggregation helpers
+# -----------------------------------------------------------------------------
 
 
 def _weighted_average(values: pd.Series, weights: pd.Series) -> float:
@@ -367,36 +414,39 @@ def _weighted_average(values: pd.Series, weights: pd.Series) -> float:
     return float(np.average(v[valid], weights=w[valid]))
 
 
+
 def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
     """Aggregate industry-level stress results."""
-    industry = (
-        df.groupby("Industry")
-        .apply(
-            lambda g: pd.Series(
-                {
-                    "obligors": int(len(g)),
-                    "ead": float(g["ead"].sum()),
-                    "base_pd": _weighted_average(g["base_pd"], g["ead"]),
-                    "stressed_pd": _weighted_average(g["stressed_pd"], g["ead"]),
-                    "base_expected_loss": float(g["base_expected_loss"].sum()),
-                    "expected_loss": float(g["stressed_expected_loss"].sum()),
-                    "oil_corr": float(g["oil_corr"].mean()),
-                    "ai_corr": float(g["ai_corr"].mean()),
-                }
-            ),
-            include_groups=False,
-        )
-        .reset_index()
-        .rename(columns={"Industry": "industry"})
-    )
+    grouped = []
 
-    industry["pd_change"] = industry["stressed_pd"] - industry["base_pd"]
-    industry["pd_multiple"] = np.where(
-        industry["base_pd"] > 0,
-        industry["stressed_pd"] / industry["base_pd"],
+    for industry, g in df.groupby(INDUSTRY_COLUMN):
+        grouped.append(
+            {
+                "industry": industry,
+                "obligors": int(len(g)),
+                "ead": float(g["ead"].sum()),
+                "base_pd": _weighted_average(g["base_pd"], g["ead"]),
+                "stressed_pd": _weighted_average(g["stressed_pd"], g["ead"]),
+                "base_expected_loss": float(g["base_expected_loss"].sum()),
+                "expected_loss": float(g["stressed_expected_loss"].sum()),
+                "expected_loss_change": float(g["expected_loss_change"].sum()),
+                "rho_Market": float(g["rho_Market"].mean()),
+                "rho_Technology": float(g["rho_Technology"].mean()),
+                "rho_Commodity": float(g["rho_Commodity"].mean()),
+                "residual_rho": float(g["residual_rho"].mean()),
+            }
+        )
+
+    industry_df = pd.DataFrame(grouped)
+    if industry_df.empty:
+        return []
+
+    industry_df["pd_change"] = industry_df["stressed_pd"] - industry_df["base_pd"]
+    industry_df["pd_multiple"] = np.where(
+        industry_df["base_pd"] > 0,
+        industry_df["stressed_pd"] / industry_df["base_pd"],
         np.nan,
     )
-    industry["expected_loss_change"] = industry["expected_loss"] - industry["base_expected_loss"]
 
     cols = [
         "industry",
@@ -409,12 +459,14 @@ def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         "base_expected_loss",
         "expected_loss",
         "expected_loss_change",
-        "oil_corr",
-        "ai_corr",
+        "rho_Market",
+        "rho_Technology",
+        "rho_Commodity",
+        "residual_rho",
     ]
 
     return (
-        industry[cols]
+        industry_df[cols]
         .sort_values("expected_loss", ascending=False)
         .head(int(top_n))
         .replace({np.nan: None})
@@ -422,15 +474,17 @@ def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
     )
 
 
+
 def _top_obligors(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
     """Return top obligors by stressed expected loss for debugging/download UI."""
     display_cols = [
-        "Symbol",
-        "shortName",
-        "longName",
+        "symbol",
+        "company_name",
         "Agency Rating",
         "cb_rating",
-        "Industry",
+        "is_rated_obligor",
+        INDUSTRY_COLUMN,
+        "sector",
         "country",
         "ead",
         "base_pd",
@@ -439,6 +493,11 @@ def _top_obligors(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         "pd_multiple",
         "base_expected_loss",
         "stressed_expected_loss",
+        "expected_loss_change",
+        "rho_Market",
+        "rho_Technology",
+        "rho_Commodity",
+        "residual_rho",
     ]
     cols = [c for c in display_cols if c in df.columns]
 
@@ -446,47 +505,59 @@ def _top_obligors(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         df[cols]
         .sort_values("stressed_expected_loss", ascending=False)
         .head(int(top_n))
-        .rename(columns={"Symbol": "symbol", "Industry": "industry"})
         .replace({np.nan: None})
         .to_dict(orient="records")
     )
 
 
+# -----------------------------------------------------------------------------
+# Public API entrypoint
+# -----------------------------------------------------------------------------
+
+
 def run_stress(
-    oil: float = 0.0,
-    ai: float = 0.0,
+    market: float = 0.0,
+    technology: float = 0.0,
+    commodity: float = 0.0,
     lgd: float = 0.45,
     obligors: Optional[int] = None,
-    n_sims: int = 10_000,
+    n_sims: int = 1000,
     n_bins: int = 40,
     asset_rho: float = 0.20,
     random_seed: int = 42,
-    include_legacy_fields: bool = True,
 ) -> Dict[str, Any]:
-    """Run the stress scenario and return the API JSON response.
+    """Run the three-factor credit stress scenario and return API-ready JSON.
 
-    PD and EAD are read from the obligor data. ``lgd`` remains a scenario/API
-    parameter because users may reasonably want to sensitivity-test recovery
-    assumptions.
+    Factor shocks are supplied in standard-deviation units:
+
+    * market: broad market / credit-risk factor
+    * technology: technology infrastructure factor
+    * commodity: commodity producer factor
+
+    PD and EAD are read directly from the obligor dataset using ``CB pd`` and
+    ``totalDebt_usd``. LGD remains a scenario/API parameter.
     """
-    oil = _to_float(oil, 0.0)
-    ai = _to_float(ai, 0.0)
+    market = _to_float(market, 0.0)
+    technology = _to_float(technology, 0.0)
+    commodity = _to_float(commodity, 0.0)
     lgd = _to_float(lgd, 0.45)
-    n_sims = _to_int(n_sims, 10_000)
+    n_sims = _to_int(n_sims, 1000)
     n_bins = _to_int(n_bins, 40)
     random_seed = _to_int(random_seed, 42)
     asset_rho = _to_float(asset_rho, 0.20)
 
     lgd = float(np.clip(lgd, 0.0, 1.0))
-    n_sims = int(np.clip(n_sims, 100, 100_000))
+    n_sims = int(np.clip(n_sims, 100, 10000))
     n_bins = int(np.clip(n_bins, 5, 100))
 
     portfolio, loadings, industry_corr = _load_inputs()
+
     df = _prepare_obligors(
         portfolio=portfolio,
         loadings=loadings,
-        oil=oil,
-        ai=ai,
+        market=market,
+        technology=technology,
+        commodity=commodity,
         lgd=lgd,
         obligors=obligors,
     )
@@ -519,8 +590,9 @@ def run_stress(
 
     response: Dict[str, Any] = {
         "scenario": {
-            "oil": float(oil),
-            "ai": float(ai),
+            "market": float(market),
+            "technology": float(technology),
+            "commodity": float(commodity),
             "lgd": float(lgd),
             "obligors": int(len(df)),
             "requested_obligors": int(obligors) if obligors is not None else None,
@@ -557,7 +629,7 @@ def run_stress(
         "model_info": {
             "model": MODEL_NAME,
             "version": MODEL_VERSION,
-            "factors": ["oil", "ai"],
+            "factors": FACTOR_NAMES,
             "portfolio_path": PORTFOLIO_PATH,
             "loadings_path": LOADINGS_PATH,
             "industry_corr_path": INDUSTRY_CORR_PATH,
@@ -565,21 +637,15 @@ def run_stress(
             "ead_column": df.attrs.get("ead_column"),
             "pd_is_obligor_level": True,
             "ead_is_obligor_level": True,
+            "loading_columns": FACTOR_COLUMNS,
         },
+        # Flat aliases for simpler Bubble/API bindings.
+        "market": float(market),
+        "technology": float(technology),
+        "commodity": float(commodity),
+        "portfolio_pd": stressed_portfolio_pd,
+        "portfolio_pd_percent": stressed_portfolio_pd * 100.0,
+        "expected_loss": stressed_expected_loss,
     }
-
-    # Backward compatibility for existing Bubble bindings.
-    # These fields now use EAD-weighted obligor-level PDs and debt/EAD, not
-    # generic flat demo inputs.
-    if include_legacy_fields:
-        response.update(
-            {
-                "oil": float(oil),
-                "ai": float(ai),
-                "portfolio_pd": stressed_portfolio_pd,
-                "portfolio_pd_percent": stressed_portfolio_pd * 100.0,
-                "expected_loss": stressed_expected_loss,
-            }
-        )
 
     return response
