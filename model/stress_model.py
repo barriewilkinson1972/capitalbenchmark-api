@@ -37,7 +37,7 @@ class StressConfig:
     n_bins: int = 40
     asset_rho: float = 0.20
     random_seed: int = 42
-    top_n: int = 10
+    top_n: int = 100
 
 
 # -----------------------------------------------------------------------------
