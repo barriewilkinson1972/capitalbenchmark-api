@@ -430,10 +430,36 @@ def _weighted_average(values: pd.Series, weights: pd.Series) -> float:
         return float(v.mean())
     return float(np.average(v[valid], weights=w[valid]))
 
+def _pd_to_radius(
+    pd_values,
+    pd_floor: float = 0.001,
+    pd_cap: float = 0.20,
+    max_radius: float = 1.0,
+) -> np.ndarray:
+    """Map PD to radial distance using log scaling."""
+    p = np.clip(np.asarray(pd_values, dtype=float), pd_floor, pd_cap)
 
+    log_p = np.log10(p)
+    log_lo = np.log10(pd_floor)
+    log_hi = np.log10(pd_cap)
 
-def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
-    """Aggregate industry-level stress results."""
+    radius = (log_p - log_lo) / (log_hi - log_lo)
+    radius = np.clip(radius, 0.0, 1.0)
+
+    return radius * max_radius
+
+def _top_industries(
+    df: pd.DataFrame,
+    top_n: int,
+    market: float = 0.0,
+    technology: float = 0.0,
+    commodity: float = 0.0,
+    pd_floor: float = 0.001,
+    pd_cap: float = 0.20,
+    max_radius: float = 1.0,
+) -> List[Dict[str, Any]]:
+    """Aggregate industry-level stress results, including XY plot coordinates."""
+
     grouped = []
 
     for industry, g in df.groupby(INDUSTRY_COLUMN):
@@ -442,11 +468,15 @@ def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
                 "industry": industry,
                 "obligors": int(len(g)),
                 "ead": float(g["ead"].sum()),
+
                 "base_pd": _weighted_average(g["base_pd"], g["ead"]),
                 "stressed_pd": _weighted_average(g["stressed_pd"], g["ead"]),
+
                 "base_expected_loss": float(g["base_expected_loss"].sum()),
                 "expected_loss": float(g["stressed_expected_loss"].sum()),
                 "expected_loss_change": float(g["expected_loss_change"].sum()),
+
+                # These should be identical within an industry, but mean is safe.
                 "rho_Market": float(g["rho_Market"].mean()),
                 "rho_Technology": float(g["rho_Technology"].mean()),
                 "rho_Commodity": float(g["rho_Commodity"].mean()),
@@ -455,36 +485,101 @@ def _top_industries(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         )
 
     industry_df = pd.DataFrame(grouped)
+
     if industry_df.empty:
         return []
 
-    industry_df["pd_change"] = industry_df["stressed_pd"] - industry_df["base_pd"]
+    industry_df["pd_change"] = (
+        industry_df["stressed_pd"] - industry_df["base_pd"]
+    )
+
     industry_df["pd_multiple"] = np.where(
         industry_df["base_pd"] > 0,
         industry_df["stressed_pd"] / industry_df["base_pd"],
         np.nan,
     )
 
+    # ------------------------------------------------------------
+    # XY risk-map coordinates
+    # ------------------------------------------------------------
+
+    # Scenario-weighted structural angle.
+    # This keeps commodity-positive industries on the right and
+    # commodity-negative industries on the left, regardless of whether
+    # the commodity slider is + or -.
+    x_driver = industry_df["rho_Commodity"] * abs(float(commodity))
+    y_driver = industry_df["rho_Technology"] * abs(float(technology))
+
+    driver_strength = np.sqrt(x_driver**2 + y_driver**2)
+
+    structural_angle = np.arctan2(
+        industry_df["rho_Technology"],
+        industry_df["rho_Commodity"],
+    )
+
+    scenario_angle = np.arctan2(
+        y_driver,
+        x_driver,
+    )
+
+    industry_df["risk_map_angle"] = np.where(
+        driver_strength > 1e-8,
+        scenario_angle,
+        structural_angle,
+    )
+
+    # Radius comes from Vasicek stressed PD.
+    industry_df["risk_map_radius"] = _pd_to_radius(
+        industry_df["stressed_pd"],
+        pd_floor=pd_floor,
+        pd_cap=pd_cap,
+        max_radius=max_radius,
+    )
+
+    industry_df["x_plot"] = (
+        industry_df["risk_map_radius"]
+        * np.cos(industry_df["risk_map_angle"])
+    )
+
+    industry_df["y_plot"] = (
+        industry_df["risk_map_radius"]
+        * np.sin(industry_df["risk_map_angle"])
+    )
+
+    # Optional extras useful for Bubble tooltips / debugging
+    industry_df["commodity_driver"] = x_driver
+    industry_df["technology_driver"] = y_driver
+
     cols = [
         "industry",
         "obligors",
         "ead",
+
         "base_pd",
         "stressed_pd",
         "pd_change",
         "pd_multiple",
+
         "base_expected_loss",
         "expected_loss",
         "expected_loss_change",
+
         "rho_Market",
         "rho_Technology",
         "rho_Commodity",
         "residual_rho",
+
+        "risk_map_radius",
+        "risk_map_angle",
+        "x_plot",
+        "y_plot",
+        "commodity_driver",
+        "technology_driver",
     ]
 
     return (
         industry_df[cols]
-        .sort_values("expected_loss", ascending=False)
+        .sort_values("stressed_pd", ascending=False)
         .head(int(top_n))
         .replace({np.nan: None})
         .to_dict(orient="records")
@@ -613,7 +708,8 @@ def run_stress(
             "expected_loss_change": expected_loss_change,
             "expected_loss_multiple": expected_loss_multiple,
         },
-        "top_industries": _top_industries(df, top_n=116),
+        "top_industries": _top_industries(df, top_n=30),
+        "top_industries": _top_industries(df, top_n=top_n),
         "top_obligors": _top_obligors(df, top_n=100),
         "download": {
             "available": False,
