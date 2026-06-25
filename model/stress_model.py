@@ -458,6 +458,11 @@ def colors_ind(pd_values):
 
             colors.append("red")
 
+        
+        elif p<0.005:
+
+            colors.append("green")
+
         else:
 
             colors.append("amber")
