@@ -448,6 +448,22 @@ def _pd_to_radius(
 
     return radius * max_radius
 
+def colors_ind(pd_values):
+
+    colors = []
+
+    for p in pd_values:
+
+        if p > 0.05:
+
+            colors.append("red")
+
+        else:
+
+            colors.append("amber")
+
+    return colors
+
 def _top_industries(
     df: pd.DataFrame,
     top_n: int,
@@ -536,6 +552,8 @@ def _top_industries(
         max_radius=max_radius,
     )
 
+    industry_df["color"] = colors_ind(industry_df["stressed_pd"])
+
     industry_df["x_plot"] = (
         industry_df["risk_map_radius"]
         * np.cos(industry_df["risk_map_angle"])
@@ -556,6 +574,7 @@ def _top_industries(
         "obligors",
         "ead",
         "circle_size",
+        "color",
         "base_pd",
         "stressed_pd",
         "pd_change",
@@ -710,7 +729,6 @@ def run_stress(
             "expected_loss_multiple": expected_loss_multiple,
         },
         "top_industries": _top_industries(df, top_n=30),
-        "top_industries": _top_industries(df, top_n=top_n),
         "top_obligors": _top_obligors(df, top_n=100),
         "download": {
             "available": False,
