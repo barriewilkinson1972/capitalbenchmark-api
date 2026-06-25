@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
+from functools import lru_cache
 
 
 # -----------------------------------------------------------------------------
@@ -15,10 +16,9 @@ from scipy.stats import norm
 
 PORTFOLIO_PATH = "market_data/obligor_data.csv"
 LOADINGS_PATH = "data/industry_factor_loadings.parquet"
-INDUSTRY_CORR_PATH = "data/industry_corr_clean.parquet"
 
+MODEL_NAME = "obligor_pd_ead_three_factor_deterministic_vasicek"
 MODEL_VERSION = "2.0.0"
-MODEL_NAME = "obligor_pd_ead_three_factor_vasicek_with_industry_mc"
 
 # Explicit obligor-level model inputs from the new obligor dataset.
 PD_COLUMN = "CB pd"
@@ -27,6 +27,23 @@ INDUSTRY_COLUMN = "industry"
 
 FACTOR_COLUMNS = ["rho_Market", "rho_Technology", "rho_Commodity"]
 FACTOR_NAMES = ["market", "technology", "commodity"]
+
+@lru_cache(maxsize=1)
+def _load_inputs_cached() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Load obligors and industry factor loadings once per server process."""
+    portfolio = pd.read_csv(PORTFOLIO_PATH)
+
+    loadings = pd.read_parquet(LOADINGS_PATH)
+
+    if "industry" not in loadings.columns:
+        loadings = loadings.reset_index()
+
+    if "Industry" in loadings.columns and "industry" not in loadings.columns:
+        loadings = loadings.rename(columns={"Industry": "industry"})
+
+    loadings["industry"] = loadings["industry"].astype(str).str.strip()
+
+    return portfolio, loadings
 
 
 @dataclass(frozen=True)
@@ -145,42 +162,42 @@ def _normalise_loadings(loadings: pd.DataFrame) -> pd.DataFrame:
 
 
 
-def _normalise_industry_corr(industry_corr: Optional[pd.DataFrame]) -> Optional[pd.DataFrame]:
-    """Normalize optional industry correlation matrix labels."""
-    if industry_corr is None:
-        return None
+# def _normalise_industry_corr(industry_corr: Optional[pd.DataFrame]) -> Optional[pd.DataFrame]:
+#     """Normalize optional industry correlation matrix labels."""
+#     if industry_corr is None:
+#         return None
 
-    corr = industry_corr.copy()
+#     corr = industry_corr.copy()
 
-    # Parquet can sometimes preserve a named index cleanly; CSV-style tables may
-    # include an unnamed first column. Handle both cases defensively.
-    unnamed_cols = [c for c in corr.columns if str(c).startswith("Unnamed")]
-    if unnamed_cols:
-        corr = corr.set_index(unnamed_cols[0])
+#     # Parquet can sometimes preserve a named index cleanly; CSV-style tables may
+#     # include an unnamed first column. Handle both cases defensively.
+#     unnamed_cols = [c for c in corr.columns if str(c).startswith("Unnamed")]
+#     if unnamed_cols:
+#         corr = corr.set_index(unnamed_cols[0])
 
-    corr.index = corr.index.astype(str).str.strip()
-    corr.columns = corr.columns.astype(str).str.strip()
-    corr = corr.apply(pd.to_numeric, errors="coerce")
+#     corr.index = corr.index.astype(str).str.strip()
+#     corr.columns = corr.columns.astype(str).str.strip()
+#     corr = corr.apply(pd.to_numeric, errors="coerce")
 
-    return corr
+#     return corr
 
 
 
-def _load_inputs(
-    portfolio_path: str = PORTFOLIO_PATH,
-    loadings_path: str = LOADINGS_PATH,
-    industry_corr_path: str = INDUSTRY_CORR_PATH,
-) -> Tuple[pd.DataFrame, pd.DataFrame, Optional[pd.DataFrame]]:
-    """Load obligors, three-factor industry loadings, and optional industry correlation."""
-    portfolio = pd.read_csv(portfolio_path)
-    loadings = _normalise_loadings(_read_table(loadings_path))
+# def _load_inputs(
+#     portfolio_path: str = PORTFOLIO_PATH,
+#     loadings_path: str = LOADINGS_PATH,
+#     industry_corr_path: str = INDUSTRY_CORR_PATH,
+# ) -> Tuple[pd.DataFrame, pd.DataFrame, Optional[pd.DataFrame]]:
+#     """Load obligors, three-factor industry loadings, and optional industry correlation."""
+#     portfolio = pd.read_csv(portfolio_path)
+#     loadings = _normalise_loadings(_read_table(loadings_path))
 
-    try:
-        industry_corr = _normalise_industry_corr(_read_table(industry_corr_path))
-    except FileNotFoundError:
-        industry_corr = None
+#     try:
+#         industry_corr = _normalise_industry_corr(_read_table(industry_corr_path))
+#     except FileNotFoundError:
+#         industry_corr = None
 
-    return portfolio, loadings, industry_corr
+#     return portfolio, loadings, industry_corr
 
 
 # -----------------------------------------------------------------------------
@@ -275,128 +292,128 @@ def _prepare_obligors(
 # -----------------------------------------------------------------------------
 
 
-def _industry_correlation_matrix(
-    industries: List[str], industry_corr: Optional[pd.DataFrame]
-) -> np.ndarray:
-    """Return a PSD industry correlation matrix aligned to the current portfolio."""
-    n = len(industries)
-    if n == 0:
-        return np.empty((0, 0))
+# def _industry_correlation_matrix(
+#     industries: List[str], industry_corr: Optional[pd.DataFrame]
+# ) -> np.ndarray:
+#     """Return a PSD industry correlation matrix aligned to the current portfolio."""
+#     n = len(industries)
+#     if n == 0:
+#         return np.empty((0, 0))
 
-    if industry_corr is None:
-        return np.eye(n)
+#     if industry_corr is None:
+#         return np.eye(n)
 
-    corr = industry_corr.copy()
-    corr.index = corr.index.astype(str).str.strip()
-    corr.columns = corr.columns.astype(str).str.strip()
+#     corr = industry_corr.copy()
+#     corr.index = corr.index.astype(str).str.strip()
+#     corr.columns = corr.columns.astype(str).str.strip()
 
-    aligned = corr.reindex(index=industries, columns=industries).fillna(0.0)
+#     aligned = corr.reindex(index=industries, columns=industries).fillna(0.0)
 
-    matrix = aligned.to_numpy(copy=True).astype(float)
-    np.fill_diagonal(matrix, 1.0)
+#     matrix = aligned.to_numpy(copy=True).astype(float)
+#     np.fill_diagonal(matrix, 1.0)
 
-    # Symmetrise and repair to positive semi-definite.
-    matrix = (matrix + matrix.T) / 2.0
+#     # Symmetrise and repair to positive semi-definite.
+#     matrix = (matrix + matrix.T) / 2.0
 
-    eigvals, eigvecs = np.linalg.eigh(matrix)
-    eigvals = np.clip(eigvals, 1e-8, None)
-    matrix = eigvecs @ np.diag(eigvals) @ eigvecs.T
+#     eigvals, eigvecs = np.linalg.eigh(matrix)
+#     eigvals = np.clip(eigvals, 1e-8, None)
+#     matrix = eigvecs @ np.diag(eigvals) @ eigvecs.T
 
-    std = np.sqrt(np.diag(matrix))
-    matrix = matrix / np.outer(std, std)
-    np.fill_diagonal(matrix, 1.0)
+#     std = np.sqrt(np.diag(matrix))
+#     matrix = matrix / np.outer(std, std)
+#     np.fill_diagonal(matrix, 1.0)
 
-    return matrix
-
-
-
-def _simulate_losses(
-    df: pd.DataFrame,
-    industry_corr: Optional[pd.DataFrame],
-    config: StressConfig,
-) -> Tuple[np.ndarray, np.ndarray]:
-    """Simulate unconditional and conditional portfolio loss distributions.
-
-    The unconditional distribution uses obligor-level base PDs. The conditional
-    distribution uses the three-factor stressed PDs. Both retain the same residual
-    stochastic structure: an industry systematic factor plus obligor idiosyncratic
-    epsilon.
-    """
-    if df.empty:
-        return np.array([0.0]), np.array([0.0])
-
-    rng = np.random.default_rng(config.random_seed)
-
-    industries = sorted(df[INDUSTRY_COLUMN].astype(str).unique().tolist())
-    industry_to_idx = {industry: i for i, industry in enumerate(industries)}
-    industry_idx = df[INDUSTRY_COLUMN].astype(str).map(industry_to_idx).to_numpy()
-
-    corr_matrix = _industry_correlation_matrix(industries, industry_corr)
-
-    systematic = rng.multivariate_normal(
-        mean=np.zeros(len(industries)),
-        cov=corr_matrix,
-        size=config.n_sims,
-        method="svd",
-    )
-
-    eps = rng.standard_normal(size=(config.n_sims, len(df)))
-
-    rho = float(np.clip(config.asset_rho, 0.0, 0.999))
-    latent = np.sqrt(rho) * systematic[:, industry_idx] + np.sqrt(1.0 - rho) * eps
-
-    base_threshold = norm.ppf(df["base_pd"].to_numpy().clip(1e-8, 1.0 - 1e-8))
-    stressed_threshold = norm.ppf(df["stressed_pd"].to_numpy().clip(1e-8, 1.0 - 1e-8))
-
-    loss_given_default = (df["lgd"] * df["ead"]).to_numpy()
-
-    unconditional_losses = (latent < base_threshold) @ loss_given_default
-    conditional_losses = (latent < stressed_threshold) @ loss_given_default
-
-    return unconditional_losses, conditional_losses
+#     return matrix
 
 
 
-def _bin_loss_distributions(
-    unconditional_losses: np.ndarray,
-    conditional_losses: np.ndarray,
-    n_bins: int,
-) -> List[Dict[str, float]]:
-    """Return Bubble-friendly probability bins for two loss distributions."""
-    max_loss = float(max(unconditional_losses.max(), conditional_losses.max(), 1.0))
-    bins = np.linspace(0.0, max_loss, int(n_bins) + 1)
+# def _simulate_losses(
+#     df: pd.DataFrame,
+#     industry_corr: Optional[pd.DataFrame],
+#     config: StressConfig,
+# ) -> Tuple[np.ndarray, np.ndarray]:
+#     """Simulate unconditional and conditional portfolio loss distributions.
 
-    uncond_counts, _ = np.histogram(unconditional_losses, bins=bins)
-    cond_counts, _ = np.histogram(conditional_losses, bins=bins)
+#     The unconditional distribution uses obligor-level base PDs. The conditional
+#     distribution uses the three-factor stressed PDs. Both retain the same residual
+#     stochastic structure: an industry systematic factor plus obligor idiosyncratic
+#     epsilon.
+#     """
+#     if df.empty:
+#         return np.array([0.0]), np.array([0.0])
 
-    uncond_probs = uncond_counts / max(1, len(unconditional_losses))
-    cond_probs = cond_counts / max(1, len(conditional_losses))
+#     rng = np.random.default_rng(config.random_seed)
 
-    rows: List[Dict[str, float]] = []
-    for i in range(len(bins) - 1):
-        rows.append(
-            {
-                "loss_bin": float((bins[i] + bins[i + 1]) / 2.0),
-                "loss_bin_min": float(bins[i]),
-                "loss_bin_max": float(bins[i + 1]),
-                "unconditional": float(uncond_probs[i]),
-                "conditional": float(cond_probs[i]),
-            }
-        )
+#     industries = sorted(df[INDUSTRY_COLUMN].astype(str).unique().tolist())
+#     industry_to_idx = {industry: i for i, industry in enumerate(industries)}
+#     industry_idx = df[INDUSTRY_COLUMN].astype(str).map(industry_to_idx).to_numpy()
 
-    return rows
+#     corr_matrix = _industry_correlation_matrix(industries, industry_corr)
+
+#     systematic = rng.multivariate_normal(
+#         mean=np.zeros(len(industries)),
+#         cov=corr_matrix,
+#         size=config.n_sims,
+#         method="svd",
+#     )
+
+#     eps = rng.standard_normal(size=(config.n_sims, len(df)))
+
+#     rho = float(np.clip(config.asset_rho, 0.0, 0.999))
+#     latent = np.sqrt(rho) * systematic[:, industry_idx] + np.sqrt(1.0 - rho) * eps
+
+#     base_threshold = norm.ppf(df["base_pd"].to_numpy().clip(1e-8, 1.0 - 1e-8))
+#     stressed_threshold = norm.ppf(df["stressed_pd"].to_numpy().clip(1e-8, 1.0 - 1e-8))
+
+#     loss_given_default = (df["lgd"] * df["ead"]).to_numpy()
+
+#     unconditional_losses = (latent < base_threshold) @ loss_given_default
+#     conditional_losses = (latent < stressed_threshold) @ loss_given_default
+
+#     return unconditional_losses, conditional_losses
 
 
 
-def _loss_percentiles(losses: np.ndarray) -> Dict[str, float]:
-    """Common loss-distribution summary metrics."""
-    return {
-        "mean": float(np.mean(losses)),
-        "p50": float(np.percentile(losses, 50)),
-        "p95": float(np.percentile(losses, 95)),
-        "p99": float(np.percentile(losses, 99)),
-        "max": float(np.max(losses)),
-    }
+# def _bin_loss_distributions(
+#     unconditional_losses: np.ndarray,
+#     conditional_losses: np.ndarray,
+#     n_bins: int,
+# ) -> List[Dict[str, float]]:
+#     """Return Bubble-friendly probability bins for two loss distributions."""
+#     max_loss = float(max(unconditional_losses.max(), conditional_losses.max(), 1.0))
+#     bins = np.linspace(0.0, max_loss, int(n_bins) + 1)
+
+#     uncond_counts, _ = np.histogram(unconditional_losses, bins=bins)
+#     cond_counts, _ = np.histogram(conditional_losses, bins=bins)
+
+#     uncond_probs = uncond_counts / max(1, len(unconditional_losses))
+#     cond_probs = cond_counts / max(1, len(conditional_losses))
+
+#     rows: List[Dict[str, float]] = []
+#     for i in range(len(bins) - 1):
+#         rows.append(
+#             {
+#                 "loss_bin": float((bins[i] + bins[i + 1]) / 2.0),
+#                 "loss_bin_min": float(bins[i]),
+#                 "loss_bin_max": float(bins[i + 1]),
+#                 "unconditional": float(uncond_probs[i]),
+#                 "conditional": float(cond_probs[i]),
+#             }
+#         )
+
+#     return rows
+
+
+
+# def _loss_percentiles(losses: np.ndarray) -> Dict[str, float]:
+#     """Common loss-distribution summary metrics."""
+#     return {
+#         "mean": float(np.mean(losses)),
+#         "p50": float(np.percentile(losses, 50)),
+#         "p95": float(np.percentile(losses, 95)),
+#         "p99": float(np.percentile(losses, 99)),
+#         "max": float(np.max(losses)),
+#     }
 
 
 # -----------------------------------------------------------------------------
@@ -521,36 +538,22 @@ def run_stress(
     commodity: float = 0.0,
     lgd: float = 0.45,
     obligors: Optional[int] = None,
-    n_sims: int = 1000,
-    n_bins: int = 40,
-    asset_rho: float = 0.20,
-    random_seed: int = 42,
+    top_n: int = 10,
+    include_empty_loss_distribution: bool = True,
 ) -> Dict[str, Any]:
-    """Run the three-factor credit stress scenario and return API-ready JSON.
+    """Run deterministic three-factor Vasicek stressed PD calculation.
 
-    Factor shocks are supplied in standard-deviation units:
-
-    * market: broad market / credit-risk factor
-    * technology: technology infrastructure factor
-    * commodity: commodity producer factor
-
-    PD and EAD are read directly from the obligor dataset using ``CB pd`` and
-    ``totalDebt_usd``. LGD remains a scenario/API parameter.
+    No Monte Carlo simulation is performed. The endpoint returns obligor-level
+    and industry-level Vasicek stressed PDs and expected losses.
     """
+
     market = _to_float(market, 0.0)
     technology = _to_float(technology, 0.0)
     commodity = _to_float(commodity, 0.0)
-    lgd = _to_float(lgd, 0.45)
-    n_sims = _to_int(n_sims, 1000)
-    n_bins = _to_int(n_bins, 40)
-    random_seed = _to_int(random_seed, 42)
-    asset_rho = _to_float(asset_rho, 0.20)
+    lgd = float(np.clip(_to_float(lgd, 0.45), 0.0, 1.0))
+    top_n = int(np.clip(_to_int(top_n, 10), 1, 100))
 
-    lgd = float(np.clip(lgd, 0.0, 1.0))
-    n_sims = int(np.clip(n_sims, 100, 10000))
-    n_bins = int(np.clip(n_bins, 5, 100))
-
-    portfolio, loadings, industry_corr = _load_inputs()
+    portfolio, loadings = _load_inputs_cached()
 
     df = _prepare_obligors(
         portfolio=portfolio,
@@ -562,30 +565,22 @@ def run_stress(
         obligors=obligors,
     )
 
-    config = StressConfig(
-        n_sims=n_sims,
-        n_bins=n_bins,
-        asset_rho=asset_rho,
-        random_seed=random_seed,
-    )
-
-    unconditional_losses, conditional_losses = _simulate_losses(df, industry_corr, config)
-    loss_distribution = _bin_loss_distributions(
-        unconditional_losses,
-        conditional_losses,
-        n_bins=n_bins,
-    )
-
     total_ead = float(df["ead"].sum())
+
     base_portfolio_pd = _weighted_average(df["base_pd"], df["ead"])
     stressed_portfolio_pd = _weighted_average(df["stressed_pd"], df["ead"])
+
     simple_base_portfolio_pd = float(df["base_pd"].mean())
     simple_stressed_portfolio_pd = float(df["stressed_pd"].mean())
+
     base_expected_loss = float(df["base_expected_loss"].sum())
     stressed_expected_loss = float(df["stressed_expected_loss"].sum())
+
     expected_loss_change = stressed_expected_loss - base_expected_loss
     expected_loss_multiple = (
-        stressed_expected_loss / base_expected_loss if base_expected_loss > 0 else None
+        stressed_expected_loss / base_expected_loss
+        if base_expected_loss > 0
+        else None
     )
 
     response: Dict[str, Any] = {
@@ -596,31 +591,30 @@ def run_stress(
             "lgd": float(lgd),
             "obligors": int(len(df)),
             "requested_obligors": int(obligors) if obligors is not None else None,
-            "n_sims": int(n_sims),
-            "n_bins": int(n_bins),
-            "asset_rho": float(asset_rho),
-            "random_seed": int(random_seed),
+            "top_n": int(top_n),
         },
         "summary": {
             "total_ead": total_ead,
+
             "base_portfolio_pd": base_portfolio_pd,
             "base_portfolio_pd_percent": base_portfolio_pd * 100.0,
+
             "stressed_portfolio_pd": stressed_portfolio_pd,
             "stressed_portfolio_pd_percent": stressed_portfolio_pd * 100.0,
+
             "simple_base_portfolio_pd": simple_base_portfolio_pd,
             "simple_base_portfolio_pd_percent": simple_base_portfolio_pd * 100.0,
+
             "simple_stressed_portfolio_pd": simple_stressed_portfolio_pd,
             "simple_stressed_portfolio_pd_percent": simple_stressed_portfolio_pd * 100.0,
+
             "base_expected_loss": base_expected_loss,
             "stressed_expected_loss": stressed_expected_loss,
             "expected_loss_change": expected_loss_change,
             "expected_loss_multiple": expected_loss_multiple,
-            "unconditional_loss": _loss_percentiles(unconditional_losses),
-            "conditional_loss": _loss_percentiles(conditional_losses),
         },
-        "loss_distribution": loss_distribution,
-        "top_industries": _top_industries(df, top_n=config.top_n),
-        "top_obligors": _top_obligors(df, top_n=config.top_n),
+        "top_industries": _top_industries(df, top_n=116),
+        "top_obligors": _top_obligors(df, top_n=100),
         "download": {
             "available": False,
             "requires_registration": True,
@@ -629,17 +623,19 @@ def run_stress(
         "model_info": {
             "model": MODEL_NAME,
             "version": MODEL_VERSION,
+            "calculation_mode": "deterministic_vasicek",
             "factors": FACTOR_NAMES,
             "portfolio_path": PORTFOLIO_PATH,
             "loadings_path": LOADINGS_PATH,
-            "industry_corr_path": INDUSTRY_CORR_PATH,
             "pd_column": df.attrs.get("pd_column"),
             "ead_column": df.attrs.get("ead_column"),
             "pd_is_obligor_level": True,
             "ead_is_obligor_level": True,
             "loading_columns": FACTOR_COLUMNS,
+            "simulation_enabled": False,
         },
-        # Flat aliases for simpler Bubble/API bindings.
+
+        # Flat aliases for simpler Bubble/API bindings
         "market": float(market),
         "technology": float(technology),
         "commodity": float(commodity),
@@ -647,5 +643,6 @@ def run_stress(
         "portfolio_pd_percent": stressed_portfolio_pd * 100.0,
         "expected_loss": stressed_expected_loss,
     }
+
 
     return response
