@@ -572,7 +572,7 @@ def _top_industries(
     # Optional extras useful for Bubble tooltips / debugging
     industry_df["commodity_driver"] = x_driver
     industry_df["technology_driver"] = y_driver
-    industry_df["circle_size"]=(industry_df["ead"]/1000000000)^0.5
+    industry_df["circle_size"]=(industry_df["expected_loss"]/10000000)^0.5
 
     cols = [
         "industry",
