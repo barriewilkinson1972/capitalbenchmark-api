@@ -733,7 +733,7 @@ def run_stress(
             "expected_loss_change": expected_loss_change,
             "expected_loss_multiple": expected_loss_multiple,
         },
-        "top_industries": _top_industries(df, top_n=30),
+        "top_industries": _top_industries(df, top_n=116),
         "top_obligors": _top_obligors(df, top_n=100),
         "download": {
             "available": False,
