@@ -80,9 +80,9 @@ def _to_int(value: Any, default: int) -> int:
 
 
 
-def _clean_text_series(s: pd.Series) -> pd.Series:
-    """Normalize text keys used for joins."""
-    return s.astype(str).str.strip()
+# def _clean_text_series(s: pd.Series) -> pd.Series:
+#     """Normalize text keys used for joins."""
+#     return s.astype(str).str.strip()
 
 
 
@@ -132,8 +132,6 @@ def _normalise_loadings(loadings: pd.DataFrame) -> pd.DataFrame:
     loadings = loadings.rename(columns=rename_map)
 
     _required_columns(loadings, [INDUSTRY_COLUMN, *FACTOR_COLUMNS], "industry factor loadings")
-
-    loadings[INDUSTRY_COLUMN] = _clean_text_series(loadings[INDUSTRY_COLUMN])
 
     for col in FACTOR_COLUMNS:
         loadings[col] = pd.to_numeric(loadings[col], errors="coerce").fillna(0.0)
@@ -223,7 +221,6 @@ def _prepare_obligors(
         "obligor portfolio",
     )
 
-    df[INDUSTRY_COLUMN] = _clean_text_series(df[INDUSTRY_COLUMN])
     df["base_pd"] = pd.to_numeric(df[PD_COLUMN], errors="coerce")
     df["ead"] = pd.to_numeric(df[EAD_COLUMN], errors="coerce")
 
@@ -471,7 +468,6 @@ def colors_ind(pd_values):
 
 def _top_industries(
     df: pd.DataFrame,
-    top_n: int,
     market: float = 0.0,
     technology: float = 0.0,
     commodity: float = 0.0,
@@ -494,7 +490,7 @@ def _top_industries(
                 "stressed_pd": _weighted_average(g["stressed_pd"], g["ead"]),
 
                 "base_expected_loss": float(g["base_expected_loss"].sum()),
-                "expected_loss": float(g["stressed_expected_loss"].sum()),
+                "stressed_expected_loss": float(g["stressed_expected_loss"].sum()),
                 "expected_loss_change": float(g["expected_loss_change"].sum()),
 
                 # These should be identical within an industry, but mean is safe.
@@ -572,7 +568,7 @@ def _top_industries(
     # Optional extras useful for Bubble tooltips / debugging
     industry_df["commodity_driver"] = x_driver
     industry_df["technology_driver"] = y_driver
-    industry_df["circle_size"]=np.sqrt(industry_df["expected_loss"]/10000000)
+    industry_df["circle_size"]=np.sqrt(industry_df["stressed_expected_loss"]/10000000)
 
     cols = [
         "industry",
@@ -586,7 +582,7 @@ def _top_industries(
         "pd_multiple",
 
         "base_expected_loss",
-        "expected_loss",
+        "stressed_expected_loss",
         "expected_loss_change",
 
         "rho_Market",
@@ -605,7 +601,6 @@ def _top_industries(
     return (
         industry_df[cols]
         .sort_values("stressed_pd", ascending=False)
-        .head(int(top_n))
         .replace({np.nan: None})
         .to_dict(orient="records")
     )
@@ -733,7 +728,7 @@ def run_stress(
             "expected_loss_change": expected_loss_change,
             "expected_loss_multiple": expected_loss_multiple,
         },
-        "top_industries": _top_industries(df, top_n=116),
+        "top_industries": _top_industries(df),
         "top_obligors": _top_obligors(df, top_n=100),
         "download": {
             "available": False,
