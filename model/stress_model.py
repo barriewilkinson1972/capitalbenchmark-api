@@ -327,22 +327,27 @@ def _prepare_obligors(
     pds = list(df["stressed_pd"].values)
 
     obligor_colors = []
+    font_colors = []
 
     for p_d in pds:
 
         if p_d >= 0.05:
 
-            obligor_colors.append("#00785E") #red
+            obligor_colors.append("#E90F5E") #red
+            font_colors.append("#FFFFFF")
 
         elif p_d < 0.005:
 
             obligor_colors.append("#00785E") #green
+            font_colors.append("#FFFFFF")
 
         else:
 
             obligor_colors.append("#FFBF00") #amber
+            font_colors.append("#000000")
 
     df["color"] = obligor_colors
+    df["font_color"] = font_colors
 
     df["pd_change"] = df["stressed_pd"] - df["base_pd"]
     df["pd_multiple"] = np.where(
@@ -694,6 +699,7 @@ def _top_obligors(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         "is_rated_obligor",
         INDUSTRY_COLUMN,
         "color",
+        "font_color",
         "sector",
         "country",
         "ead",
