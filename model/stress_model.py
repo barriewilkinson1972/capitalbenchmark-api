@@ -92,6 +92,63 @@ def _required_columns(df: pd.DataFrame, columns: List[str], name: str) -> None:
         raise ValueError(f"{name} is missing required columns: {missing}")
 
 
+
+
+def _one_tailed_probability(z: float) -> float:
+    """
+    Probability of a one-sided shock at least as extreme as z.
+
+    z = 0 is treated as no constraint, so probability = 1.
+    """
+    z = float(z)
+
+    if z > 0:
+
+        z = 0
+
+
+    return float(2 * norm.sf(abs(z)))
+
+
+def _two_tailed_probability(z: float) -> float:
+    """
+    Probability of a two-sided shock at least as extreme as |z|.
+
+    z = 0 naturally gives probability = 1.
+    """
+    z = float(z)
+
+    return float(2.0 * norm.sf(abs(z)))
+
+
+def _scenario_tail_probability(
+    market: float,
+    technology: float,
+    commodity: float,
+) -> dict:
+    """
+    Calculate scenario tail probability assuming independent standard normal factors.
+
+    Market is one-tailed.
+    Technology and commodity are two-tailed.
+    """
+
+    market_prob = _one_tailed_probability(market)
+    technology_prob = _two_tailed_probability(technology)
+    commodity_prob = _two_tailed_probability(commodity)
+
+    joint_prob = np.round(market_prob * technology_prob * commodity_prob, 4)
+
+    return {
+        "market_tail_probability": market_prob,
+        "technology_tail_probability": technology_prob,
+        "commodity_tail_probability": commodity_prob,
+        "scenario_tail_probability": 1 - joint_prob,
+        "scenario_tail_odds": (
+            int(np.round(1.0 / joint_prob, 0)) if joint_prob > 0 else None
+        ),
+    }
+
 # -----------------------------------------------------------------------------
 # Input loading and schema normalisation
 # -----------------------------------------------------------------------------
@@ -668,6 +725,11 @@ def run_stress(
     lgd = float(np.clip(_to_float(lgd, 0.45), 0.0, 1.0))
     top_n = int(np.clip(_to_int(top_n, 10), 1, 100))
 
+    scenario_likelihood = _scenario_tail_probability(
+    market=market,
+    technology=technology,
+    commodity=commodity)
+
     portfolio, loadings = _load_inputs_cached()
 
     df = _prepare_obligors(
@@ -727,6 +789,8 @@ def run_stress(
             "stressed_expected_loss": stressed_expected_loss,
             "expected_loss_change": expected_loss_change,
             "expected_loss_multiple": expected_loss_multiple,
+
+            "scenario_likelihood": scenario_likelihood
         },
         "top_industries": _top_industries(df),
         "top_obligors": _top_obligors(df, top_n=100),
