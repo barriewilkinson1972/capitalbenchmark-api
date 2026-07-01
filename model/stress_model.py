@@ -625,7 +625,7 @@ def _top_industries(
     # Optional extras useful for Bubble tooltips / debugging
     industry_df["commodity_driver"] = x_driver
     industry_df["technology_driver"] = y_driver
-    industry_df["circle_size"]=np.sqrt(industry_df["stressed_expected_loss"]/10000000)
+    industry_df["circle_size"]=np.sqrt(industry_df["stressed_expected_loss"]/20000000)
 
     cols = [
         "industry",
