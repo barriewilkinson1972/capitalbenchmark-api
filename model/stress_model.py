@@ -324,6 +324,26 @@ def _prepare_obligors(
     df["stressed_pd"] = norm.cdf((threshold - factor_impact.to_numpy()) / residual)
     df["stressed_pd"] = df["stressed_pd"].clip(1e-8, 1.0 - 1e-8)
 
+    pds = list(df["stressed_pd"].values)
+
+    obligor_colors = []
+
+    for p_d in pds:
+
+        if p_d >= 0.05:
+
+            obligor_colors.append("#00785E") #red
+
+        elif p_d < 0.005:
+
+            obligor_colors.append("#00785E") #green
+
+        else:
+
+            obligor_colors.append("#FFBF00") #amber
+
+    df["color"] = obligor_colors
+
     df["pd_change"] = df["stressed_pd"] - df["base_pd"]
     df["pd_multiple"] = np.where(
         df["base_pd"] > 0,
@@ -673,6 +693,7 @@ def _top_obligors(df: pd.DataFrame, top_n: int) -> List[Dict[str, Any]]:
         "cb_rating",
         "is_rated_obligor",
         INDUSTRY_COLUMN,
+        "color",
         "sector",
         "country",
         "ead",
