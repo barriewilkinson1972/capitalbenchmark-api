@@ -749,13 +749,13 @@ def _top_industries(
         "technology_driver",
     ]
 
-    out_df = industry_df[cols].sort_values("stressed_pd", ascending=False)
+    out_df = industry_df[cols].sort_values("stressed_expected_loss", ascending=False)
 
-    spds = list(out_df["stressed_pd"].values)
+    s_el = list(out_df["stressed_expected_loss"].values)
     indies = list(out_df["industry"].values)
     point_labels = []
 
-    for i in range(len(spds)):
+    for i in range(len(s_el)):
 
         if i < 5:
 
