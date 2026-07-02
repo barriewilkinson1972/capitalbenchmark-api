@@ -719,6 +719,8 @@ def _top_industries(
     industry_df["technology_driver"] = y_driver
     industry_df["circle_size"]=np.sqrt(industry_df["stressed_expected_loss"]/100000000)
 
+
+
     cols = [
         "industry",
         "obligors",
@@ -747,9 +749,26 @@ def _top_industries(
         "technology_driver",
     ]
 
+    out_df = industry_df[cols].sort_values("stressed_pd", ascending=False)
+
+    spds = list(industry_df["stressed_pd"].values)
+    indies = list(industry_df["industry"].values)
+    point_labels = []
+
+    for i in range(len(spds)):
+
+        if i < 5:
+
+            point_labels.append(indies[i])
+
+        else:
+
+            point_labels.append("")
+
+    out_df["point_label"] = point_labels
+
     return (
-        industry_df[cols]
-        .sort_values("stressed_pd", ascending=False)
+        out_df
         .replace({np.nan: None})
         .to_dict(orient="records")
     )
