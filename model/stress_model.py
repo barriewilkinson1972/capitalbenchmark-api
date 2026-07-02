@@ -92,62 +92,130 @@ def _required_columns(df: pd.DataFrame, columns: List[str], name: str) -> None:
         raise ValueError(f"{name} is missing required columns: {missing}")
 
 
+from scipy.stats import norm, multivariate_normal
+import numpy as np
 
 
-def _one_tailed_probability(z: float) -> float:
-    """
-    Probability of a one-sided shock at least as extreme as z.
-
-    z = 0 is treated as no constraint, so probability = 1.
-    """
+def _two_tailed_probability(z: float, neutral_tol: float = 1e-12) -> float:
     z = float(z)
 
-    if z > 0:
-
-        z = 0
-
-
-    return float(2 * norm.sf(abs(z)))
-
-
-def _two_tailed_probability(z: float) -> float:
-    """
-    Probability of a two-sided shock at least as extreme as |z|.
-
-    z = 0 naturally gives probability = 1.
-    """
-    z = float(z)
+    if abs(z) <= neutral_tol:
+        return 1.0
 
     return float(2.0 * norm.sf(abs(z)))
 
 
-def _scenario_tail_probability(
+def _one_tailed_probability(z: float, neutral_tol: float = 1e-12) -> float:
+    z = float(z)
+
+    if abs(z) <= neutral_tol:
+        return 1.0
+
+    return float(norm.sf(abs(z)))
+
+
+def _bivariate_upper_tail_probability(z1: float, z2: float, rho: float) -> float:
+    rho = float(np.clip(rho, -0.999, 0.999))
+
+    cov = [
+        [1.0, rho],
+        [rho, 1.0],
+    ]
+
+    cdf = multivariate_normal.cdf(
+        [z1, z2],
+        mean=[0.0, 0.0],
+        cov=cov,
+    )
+
+    return float(
+        1.0
+        - norm.cdf(z1)
+        - norm.cdf(z2)
+        + cdf
+    )
+
+
+def _scenario_tail_probability_with_market_dependence(
     market: float,
     technology: float,
     commodity: float,
+    market_tc_corr: float = 0.50,
 ) -> dict:
     """
-    Calculate scenario tail probability assuming independent standard normal factors.
+    Scenario likelihood model:
 
-    Market is one-tailed.
-    Technology and commodity are two-tailed.
+    1. Technology and commodity are independent two-tailed events.
+    2. Their joint probability is converted into a latent thematic stress z-score.
+    3. Market stress is combined with that thematic stress using a Gaussian copula.
+
+    Positive output remains a normal-implied tail likelihood, not an empirical frequency.
     """
 
-    market_prob = _one_tailed_probability(market)
-    technology_prob = _two_tailed_probability(technology)
-    commodity_prob = _two_tailed_probability(commodity)
+    p_technology = _two_tailed_probability(technology)
+    p_commodity = _two_tailed_probability(commodity)
 
-    joint_prob = np.round(market_prob * technology_prob * commodity_prob, 4)
+    p_tc = p_technology * p_commodity
+
+    # If tech and commodity are both neutral, no thematic constraint.
+    if p_tc >= 1.0:
+        z_tc = None
+    else:
+        z_tc = float(norm.isf(p_tc))
+
+    # For market, assume negative market is stress.
+    # If market >= 0, there is no market-stress constraint in this calculation.
+    if market < 0:
+        p_market = _one_tailed_probability(market)
+        z_market = float(norm.isf(p_market))
+    else:
+        p_market = 1.0
+        z_market = None
+
+    if z_tc is None and z_market is None:
+        joint_probability = 1.0
+
+    elif z_tc is None:
+        joint_probability = p_market
+
+    elif z_market is None:
+        joint_probability = p_tc
+
+    else:
+        joint_probability = _bivariate_upper_tail_probability(
+            z1=z_tc,
+            z2=z_market,
+            rho=market_tc_corr,
+        )
+
+    conditional_market_given_tc = (
+        joint_probability / p_tc
+        if p_tc > 0 and z_market is not None
+        else None
+    )
 
     return {
-        "market_tail_probability": market_prob,
-        "technology_tail_probability": technology_prob,
-        "commodity_tail_probability": commodity_prob,
-        "scenario_tail_probability": 1 - joint_prob,
+        "technology_tail_probability": p_technology,
+        "commodity_tail_probability": p_commodity,
+        "tech_commodity_joint_probability": p_tc,
+        "tech_commodity_joint_z": z_tc,
+
+        "market_tail_probability": p_market,
+        "market_stress_z": z_market,
+
+        "market_tech_commodity_corr": float(market_tc_corr),
+
+        "scenario_tail_probability": joint_probability,
+        "scenario_tail_probability_percent": joint_probability * 100.0,
         "scenario_tail_odds": (
-            int(np.round(1.0 / joint_prob, 0)) if joint_prob > 0 else None
+            int(np.round(1.0 / joint_probability,0))
+
         ),
+
+        "conditional_market_stress_given_tech_commodity": conditional_market_given_tc,
     }
+
+
 
 # -----------------------------------------------------------------------------
 # Input loading and schema normalisation
@@ -752,10 +820,12 @@ def run_stress(
     lgd = float(np.clip(_to_float(lgd, 0.45), 0.0, 1.0))
     top_n = int(np.clip(_to_int(top_n, 10), 1, 100))
 
-    scenario_likelihood = _scenario_tail_probability(
-    market=market,
-    technology=technology,
-    commodity=commodity)
+    scenario_likelihood = _scenario_tail_probability_with_market_dependence(
+        market=market,
+        technology=technology,
+        commodity=commodity,
+        market_tc_corr=0.50,
+    )
 
     portfolio, loadings = _load_inputs_cached()
 
