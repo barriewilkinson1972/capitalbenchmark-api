@@ -705,17 +705,14 @@ def _top_industries(
 
     industry_df["color"] = colors_ind(industry_df["stressed_pd"])
 
-    industry_df["x_plot"] = np.round((
+    industry_df["x_plot"] = 
         industry_df["risk_map_radius"]
         * np.cos(industry_df["risk_map_angle"])
-    ),4)
 
-    industry_df["x_plot"] = np.sign(industry_df["x_plot"])*industry_df["x_plot"] * industry_df["x_plot"]
 
-    industry_df["y_plot"] = np.round((
-        industry_df["risk_map_radius"]
-        * np.sin(industry_df["risk_map_angle"])
-    ),4)
+    industry_df["x_plot"] = np.round(np.sign(industry_df["x_plot"])*industry_df["x_plot"] * industry_df["x_plot"],6)
+
+    industry_df["y_plot"] = industry_df["risk_map_radius"] * np.sin(industry_df["risk_map_angle"])
 
     industry_df["y_plot"] = np.sign(industry_df["y_plot"])*industry_df["y_plot"] * industry_df["y_plot"]
 
