@@ -710,10 +710,14 @@ def _top_industries(
         * np.cos(industry_df["risk_map_angle"])
     ),4)
 
+    industry_df["x_plot"] = np.sign(industry_df["x_plot"])*industry_df["x_plot"] * industry_df["x_plot"]
+
     industry_df["y_plot"] = np.round((
         industry_df["risk_map_radius"]
         * np.sin(industry_df["risk_map_angle"])
     ),4)
+
+    industry_df["y_plot"] = np.sign(industry_df["y_plot"])*industry_df["y_plot"] * industry_df["y_plot"]
 
     # Optional extras useful for Bubble tooltips / debugging
     industry_df["commodity_driver"] = x_driver
