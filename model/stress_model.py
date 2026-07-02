@@ -751,8 +751,8 @@ def _top_industries(
 
     out_df = industry_df[cols].sort_values("stressed_pd", ascending=False)
 
-    spds = list(industry_df["stressed_pd"].values)
-    indies = list(industry_df["industry"].values)
+    spds = list(out_df["stressed_pd"].values)
+    indies = list(out_df["industry"].values)
     point_labels = []
 
     for i in range(len(spds)):
