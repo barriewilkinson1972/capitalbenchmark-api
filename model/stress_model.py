@@ -705,9 +705,7 @@ def _top_industries(
 
     industry_df["color"] = colors_ind(industry_df["stressed_pd"])
 
-    industry_df["x_plot"] = 
-        industry_df["risk_map_radius"]
-        * np.cos(industry_df["risk_map_angle"])
+    industry_df["x_plot"] = industry_df["risk_map_radius"] * np.cos(industry_df["risk_map_angle"])
 
 
     industry_df["x_plot"] = np.round(np.sign(industry_df["x_plot"])*industry_df["x_plot"] * industry_df["x_plot"],6)
