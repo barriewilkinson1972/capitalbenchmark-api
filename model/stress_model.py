@@ -208,7 +208,7 @@ def _scenario_tail_probability_with_market_dependence(
         "scenario_tail_probability": joint_probability,
         "scenario_tail_probability_percent": joint_probability * 100.0,
         "scenario_tail_odds": (
-            int(np.round(1.0 / joint_probability,0))
+            int(min(np.round(1.0 / joint_probability,0),1000))
 
         ),
 
