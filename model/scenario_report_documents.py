@@ -316,15 +316,29 @@ def render_scenario_report_docx(
 
 
 def convert_docx_to_pdf(docx_path: str | Path, output_dir: str | Path | None = None) -> Path:
-    """Convert a DOCX to PDF using LibreOffice headless. Requires libreoffice on PATH."""
-    docx_path = Path(docx_path)
-    output_dir = Path(output_dir) if output_dir is not None else docx_path.parent
+    """
+    Convert a DOCX to PDF using LibreOffice headless.
+
+    Production note:
+    systemd may set PATH only to the Python venv, so do not rely only on
+    shutil.which("libreoffice"). Prefer LIBREOFFICE_BIN when provided.
+    """
+    docx_path = Path(docx_path).resolve()
+    output_dir = Path(output_dir).resolve() if output_dir is not None else docx_path.parent
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    libreoffice = shutil.which("libreoffice") or shutil.which("soffice")
-    if not libreoffice:
+    libreoffice = (
+        os.getenv("LIBREOFFICE_BIN")
+        or shutil.which("libreoffice")
+        or shutil.which("soffice")
+        or "/usr/bin/libreoffice"
+    )
+
+    if not Path(libreoffice).exists() and shutil.which(libreoffice) is None:
         raise RuntimeError(
-            "LibreOffice is not installed or not on PATH. Install it with: sudo apt install -y libreoffice"
+            "LibreOffice is not installed or not accessible. "
+            f"Tried LIBREOFFICE_BIN/libreoffice path: {libreoffice}. "
+            "On Ubuntu install with: sudo apt install -y libreoffice"
         )
 
     with tempfile.TemporaryDirectory() as profile_dir:
@@ -334,6 +348,7 @@ def convert_docx_to_pdf(docx_path: str | Path, output_dir: str | Path | None = N
             "--headless",
             "--nologo",
             "--nofirststartwizard",
+            "--nolockcheck",
             f"-env:UserInstallation={profile_uri}",
             "--convert-to",
             "pdf",
@@ -341,17 +356,36 @@ def convert_docx_to_pdf(docx_path: str | Path, output_dir: str | Path | None = N
             str(output_dir),
             str(docx_path),
         ]
-        completed = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+
+        env = os.environ.copy()
+        env["HOME"] = env.get("HOME") or "/tmp"
+        env["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:" + env.get("PATH", "")
+
+        completed = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=90,
+            env=env,
+        )
+
         if completed.returncode != 0:
             raise RuntimeError(
                 "LibreOffice PDF conversion failed.\n"
+                f"Command: {' '.join(cmd)}\n"
+                f"Return code: {completed.returncode}\n"
                 f"stdout: {completed.stdout}\n"
                 f"stderr: {completed.stderr}"
             )
 
     pdf_path = output_dir / f"{docx_path.stem}.pdf"
     if not pdf_path.exists() or pdf_path.stat().st_size == 0:
-        raise RuntimeError("LibreOffice did not create the expected PDF file.")
+        raise RuntimeError(
+            "LibreOffice did not create the expected PDF file.\n"
+            f"Expected: {pdf_path}\n"
+            f"Output directory contents: {[p.name for p in output_dir.iterdir()]}"
+        )
+
     return pdf_path
 
 
