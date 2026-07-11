@@ -18,6 +18,7 @@ idna==3.18
 itsdangerous==2.2.0
 Jinja2==3.1.6
 jiter==0.16.0
+lxml==6.1.1
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
@@ -35,6 +36,7 @@ pydantic==2.13.4
 pydantic_core==2.46.4
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
+python-docx==1.2.0
 pytz==2026.2
 requests==2.34.2
 rich==15.0.0

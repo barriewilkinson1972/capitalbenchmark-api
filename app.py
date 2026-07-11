@@ -2,10 +2,20 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from model.stress_model import run_stress
 from model.scenario_report import create_scenario_report
+from model.scenario_report_documents import (
+    DOCX_MIMETYPE,
+    PDF_MIMETYPE,
+    convert_docx_to_pdf,
+    render_scenario_report_docx,
+    scenario_report_filename,
+)
 
 from io import BytesIO
 from datetime import datetime
 import zipfile
+
+from pathlib import Path
+import tempfile
 
 import pandas as pd
 from flask import send_file, request, jsonify
@@ -14,6 +24,12 @@ app = Flask(__name__)
 
 # Prototype: allow Bubble / browser calls
 CORS(app)
+
+def _bool_arg(name, default=False):
+    value = request.args.get(name)
+    if value is None:
+        return default
+    return value.lower() in {"1", "true", "yes", "y"}
 
 def _request_value(payload, name, default=None):
     if isinstance(payload, dict) and name in payload:
@@ -182,6 +198,80 @@ def scenario_report():
     )
 
     return jsonify(report)
+
+@app.route("/scenario_report_file")
+def scenario_report_file():
+    file_format = request.args.get("format", "docx").lower().strip()
+    if file_format not in {"docx", "pdf"}:
+        return jsonify({"error": "format must be 'docx' or 'pdf'"}), 400
+
+    market = float(request.args.get("market", 0))
+    technology = float(request.args.get("technology", request.args.get("ai", 0)))
+    commodity = float(request.args.get("commodity", request.args.get("oil", 0)))
+    lgd = float(request.args.get("lgd", 0.45))
+
+    top_n = int(request.args.get("top_n", 100))
+    industry_limit = int(request.args.get("industry_limit", 10))
+    obligor_limit = int(request.args.get("obligor_limit", 10))
+
+    use_openai = _bool_arg("use_openai", True)
+    require_openai = _bool_arg("require_openai", False)
+
+    stress_result = run_stress(
+        market=market,
+        technology=technology,
+        commodity=commodity,
+        lgd=lgd,
+        top_n=top_n,
+    )
+
+    scenario = {
+        "market": market,
+        "technology": technology,
+        "commodity": commodity,
+        "lgd": lgd,
+        "top_n": top_n,
+    }
+
+    report_payload = create_scenario_report(
+        stress_result=stress_result,
+        scenario=scenario,
+        use_openai=use_openai,
+        require_openai=require_openai,
+        top_industries_n=max(industry_limit, 20),
+        top_obligors_n=max(obligor_limit, 20),
+    )
+
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        docx_name = scenario_report_filename(scenario, extension="docx")
+        docx_path = tmp_path / docx_name
+
+        render_scenario_report_docx(
+            report_payload=report_payload,
+            output_path=docx_path,
+            industry_limit=industry_limit,
+            obligor_limit=obligor_limit,
+        )
+
+        if file_format == "docx":
+            data = docx_path.read_bytes()
+            return send_file(
+                BytesIO(data),
+                mimetype=DOCX_MIMETYPE,
+                as_attachment=True,
+                download_name=docx_name,
+            )
+
+        pdf_path = convert_docx_to_pdf(docx_path, output_dir=tmp_path)
+        pdf_name = scenario_report_filename(scenario, extension="pdf")
+        data = pdf_path.read_bytes()
+        return send_file(
+            BytesIO(data),
+            mimetype=PDF_MIMETYPE,
+            as_attachment=True,
+            download_name=pdf_name,
+        )
 
 
 if __name__ == "__main__":
