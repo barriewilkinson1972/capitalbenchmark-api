@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import io
 from flask_cors import CORS
 from model.stress_model import run_stress
 from model.scenario_report import create_scenario_report
@@ -9,6 +10,15 @@ from model.scenario_report_documents import (
     render_scenario_report_docx,
     scenario_report_filename,
 )
+from model.credit_memo import create_credit_memo, load_rating_context
+from model.credit_memo_documents import (
+    DOCX_MIMETYPE,
+    PDF_MIMETYPE,
+    convert_docx_to_pdf,
+    credit_memo_filename,
+    render_credit_memo_docx,
+)
+
 
 from io import BytesIO
 from datetime import datetime
@@ -24,6 +34,44 @@ app = Flask(__name__)
 
 # Prototype: allow Bubble / browser calls
 CORS(app)
+
+def _bool_param(value, default=False):
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes", "y"}
+
+
+def _float_param(value, default=None):
+    if value is None or value == "":
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _credit_request_from_source(source):
+    return {
+        "request_type": source.get("request_type", "preliminary_credit_assessment"),
+        "existing_exposure_usd": _float_param(source.get("existing_exposure_usd")),
+        "requested_increase_usd": _float_param(source.get("requested_increase_usd")),
+        "proposed_exposure_usd": _float_param(source.get("proposed_exposure_usd")),
+        "facility_type": source.get("facility_type"),
+        "purpose": source.get("purpose"),
+        "tenor_years": _float_param(source.get("tenor_years")),
+        "secured": None if source.get("secured") is None else _bool_param(source.get("secured")),
+        "seniority": source.get("seniority"),
+        "relationship_context": source.get("relationship_context"),
+        "currency": source.get("currency", "USD"),
+        "lgd": _float_param(source.get("lgd"), 0.45),
+    }
+
+def _truthy(value, default=False):
+    if value is None:
+        return default
+    return str(value).lower() in {"1", "true", "yes", "y"}
 
 def _bool_arg(name, default=False):
     value = request.args.get(name)
@@ -272,6 +320,139 @@ def scenario_report_file():
             as_attachment=True,
             download_name=pdf_name,
         )
+
+@app.route("/credit_memo", methods=["GET", "POST"])
+def credit_memo():
+    payload = request.get_json(silent=True) or {}
+
+    symbol = (
+        payload.get("symbol")
+        or request.args.get("symbol")
+        or request.args.get("ticker")
+    )
+
+    if not symbol:
+        return jsonify({"error": "symbol is required"}), 400
+
+    # Everything that is not a control parameter can be treated as credit request data.
+    control_keys = {"symbol", "ticker", "use_openai", "require_openai", "model"}
+    credit_request = {
+        k: v for k, v in payload.items()
+        if k not in control_keys
+    }
+
+    # GET convenience parameters for Bubble/local testing.
+    for key in [
+        "request_type",
+        "existing_exposure_usd",
+        "requested_increase_usd",
+        "proposed_exposure_usd",
+        "facility_type",
+        "purpose",
+        "tenor_years",
+        "secured",
+        "seniority",
+        "relationship_context",
+        "currency",
+        "lgd",
+    ]:
+        if request.args.get(key) is not None:
+            credit_request[key] = request.args.get(key)
+
+    use_openai = _truthy(payload.get("use_openai", request.args.get("use_openai")), True)
+    require_openai = _truthy(payload.get("require_openai", request.args.get("require_openai")), False)
+    model = payload.get("model") or request.args.get("model")
+
+    try:
+        result = create_credit_memo(
+            symbol=symbol,
+            credit_request=credit_request,
+            use_openai=use_openai,
+            require_openai=require_openai,
+            model=model,
+        )
+        return jsonify(result)
+    except LookupError as exc:
+        return jsonify({"error": str(exc)}), 404
+    except Exception as exc:
+        return jsonify({"error": str(exc), "type": type(exc).__name__}), 500
+
+
+@app.route("/credit_memo_health")
+def credit_memo_health():
+    try:
+        df = load_rating_context()
+        return jsonify({
+            "ok": True,
+            "rows": int(len(df)),
+            "columns": list(df.columns),
+        })
+    except Exception as exc:
+        return jsonify({"ok": False, "error": str(exc), "type": type(exc).__name__}), 500
+
+@app.route("/credit_memo_file", methods=["GET", "POST"])
+def credit_memo_file_endpoint():
+    if request.method == "POST":
+        body = request.get_json(silent=True) or {}
+        source = body
+        credit_request = body.get("credit_request") or _credit_request_from_source(body)
+    else:
+        source = request.args
+        credit_request = _credit_request_from_source(source)
+
+    symbol = source.get("symbol")
+    if not symbol:
+        return jsonify({"error": "symbol is required"}), 400
+
+    file_format = str(source.get("format", "docx")).lower().strip()
+    if file_format not in {"docx", "pdf"}:
+        return jsonify({"error": "format must be 'docx' or 'pdf'"}), 400
+
+    use_openai = _bool_param(source.get("use_openai"), True)
+    require_openai = _bool_param(source.get("require_openai"), False)
+    model = source.get("model") or None
+
+    try:
+        memo_payload = create_credit_memo(
+            symbol=symbol,
+            credit_request=credit_request,
+            use_openai=use_openai,
+            require_openai=require_openai,
+            model=model,
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = Path(tmp)
+            borrower = memo_payload.get("memo_context", {}).get("borrower", {})
+            docx_name = credit_memo_filename(borrower, extension="docx")
+            docx_path = tmp_dir / docx_name
+            render_credit_memo_docx(memo_payload, docx_path)
+
+            if file_format == "docx":
+                output_path = docx_path
+                download_name = docx_name
+                mimetype = DOCX_MIMETYPE
+            else:
+                pdf_path = convert_docx_to_pdf(docx_path, output_dir=tmp_dir)
+                output_path = pdf_path
+                download_name = docx_name.replace(".docx", ".pdf")
+                mimetype = PDF_MIMETYPE
+
+            # Read into memory so TemporaryDirectory can safely clean up before response completes.
+            data = io.BytesIO(output_path.read_bytes())
+            data.seek(0)
+            return send_file(
+                data,
+                mimetype=mimetype,
+                as_attachment=True,
+                download_name=download_name,
+            )
+
+    except LookupError as exc:
+        return jsonify({"error": str(exc)}), 404
+    except Exception as exc:
+        app.logger.exception("credit_memo_file failed")
+        return jsonify({"error": "credit_memo_file failed", "detail": str(exc)}), 500
 
 
 if __name__ == "__main__":
