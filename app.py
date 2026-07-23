@@ -362,6 +362,13 @@ def credit_memo():
     use_openai = _truthy(payload.get("use_openai", request.args.get("use_openai")), True)
     require_openai = _truthy(payload.get("require_openai", request.args.get("require_openai")), False)
     model = payload.get("model") or request.args.get("model")
+    model_tier = (
+        payload.get("model_tier")
+        or payload.get("model_size")
+        or request.args.get("model_tier")
+        or request.args.get("model_size")
+        or "mini"
+    )
     context_mode = payload.get("context_mode") or request.args.get("context_mode", "full")
     policy_mode = payload.get("policy_mode") or request.args.get("policy_mode", "deterministic_evaluated")
     prompt_mode = payload.get("prompt_mode") or request.args.get("prompt_mode", "tight")
