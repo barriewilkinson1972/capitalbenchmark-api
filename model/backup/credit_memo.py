@@ -175,14 +175,11 @@ Core rules:
 - Financial watchpoints must come from memo_context.financial_watchpoints or explicit credit metrics.
 
 Credit policy rules:
-- Use memo_context.credit_policy as the machine-readable policy reference.
-- Use memo_context.policy_evaluation as the deterministic policy result.
-- Do not independently reinterpret policy thresholds if policy_evaluation is supplied.
-- policy_breaches must summarize policy_evaluation.triggered_policies.
-- policy_required_actions must summarize policy_evaluation.required_actions.
-- policy_missing_information must summarize policy_evaluation.missing_information.
-- policy_escalation_assessment must state the approval zone and whether senior credit committee exception approval is required.
-- If a severe breach is present, do not present the request as ordinary-course approval.
+- The experiment may show you deterministic policy evaluation, LLM-evaluated policy, or no policy context.
+- If memo_context.policy_evaluation is supplied, treat it as the deterministic policy result. Do not independently reinterpret policy thresholds. policy_breaches must summarize policy_evaluation.triggered_policies; policy_required_actions must summarize policy_evaluation.required_actions; policy_missing_information must summarize policy_evaluation.missing_information; and policy_escalation_assessment must state the approval zone and whether senior credit committee exception approval is required.
+- If memo_context.credit_policy is supplied but memo_context.policy_evaluation is not supplied, apply the credit policy rules yourself to facts visible in the supplied JSON. Do not invent missing metrics or policy outcomes. If required facts are not visible, state that policy compliance cannot be fully assessed and list the information required to apply the relevant policy rules.
+- If neither memo_context.credit_policy nor memo_context.policy_evaluation is supplied, do not claim the request complies with policy. State that policy compliance cannot be assessed from the LLM-visible context.
+- If a severe breach is visible or supplied in policy_evaluation, do not present the request as ordinary-course approval.
 - Do not give a final approve/decline decision. You may provide a process recommendation such as ordinary review, enhanced review, exception approval routing, or defer pending missing information. Use conditional language around required review, mitigants, missing information, and approval authority.
 
 Executive summary must include:
@@ -214,13 +211,57 @@ Return only JSON matching the supplied schema. Use a polished bank-credit style.
 
 
 VALID_CONTEXT_MODES = {"full", "minimal"}
-VALID_POLICY_MODES = {"include", "hide"}
+VALID_POLICY_MODES = {"none", "llm_evaluated", "deterministic_evaluated"}
 VALID_PROMPT_MODES = {"tight", "loose"}
+
+# Backwards-compatible aliases from the first ablation implementation.
+# include/evaluated -> deterministic_evaluated: model sees policy manual and deterministic policy evaluation.
+# hide    -> none:      model sees neither policy manual nor policy evaluation.
+POLICY_MODE_ALIASES = {
+    # Current labels
+    "deterministic_evaluated": "deterministic_evaluated",
+    "llm_evaluated": "llm_evaluated",
+    "none": "none",
+
+    # Backwards-compatible aliases from earlier ablation implementations
+    "evaluated": "deterministic_evaluated",
+    "include": "deterministic_evaluated",
+    "show": "deterministic_evaluated",
+    "with_policy": "deterministic_evaluated",
+    "deterministic": "deterministic_evaluated",
+    "backend_evaluated": "deterministic_evaluated",
+
+    "manual": "llm_evaluated",
+    "manual_only": "llm_evaluated",
+    "policy_only": "llm_evaluated",
+    "policy_manual_only": "llm_evaluated",
+    "llm": "llm_evaluated",
+
+    "hide": "none",
+    "hidden": "none",
+    "without_policy": "none",
+    "no_policy": "none",
+}
 
 
 def _normalise_mode(value: Any, valid_values: set[str], default: str) -> str:
     text = str(value or default).strip().lower()
     return text if text in valid_values else default
+
+
+def _normalise_policy_mode(value: Any, default: str = "deterministic_evaluated") -> str:
+    text = str(value or default).strip().lower()
+    text = POLICY_MODE_ALIASES.get(text, text)
+    return text if text in VALID_POLICY_MODES else default
+
+
+def _policy_mode_description(policy_mode: str) -> str:
+    policy_mode = _normalise_policy_mode(policy_mode)
+    if policy_mode == "deterministic_evaluated":
+        return "LLM sees the machine-readable policy manual and the backend deterministic policy evaluation."
+    if policy_mode == "llm_evaluated":
+        return "LLM sees the machine-readable policy manual but not the deterministic policy evaluation; the model must identify applicable policy breaches itself."
+    return "LLM sees neither the credit policy manual nor the deterministic policy evaluation."
 
 
 def _prompt_instructions(prompt_mode: str) -> str:
@@ -1099,7 +1140,7 @@ def build_credit_memo_context(
 def build_llm_context(
     memo_context: dict[str, Any],
     context_mode: str = "full",
-    policy_mode: str = "include",
+    policy_mode: str = "deterministic_evaluated",
     prompt_mode: str = "tight",
     model: str | None = None,
     experiment_id: str | None = None,
@@ -1111,7 +1152,7 @@ def build_llm_context(
     evaluator. This function controls only what the LLM sees when writing prose.
     """
     context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
-    policy_mode = _normalise_mode(policy_mode, VALID_POLICY_MODES, "include")
+    policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
     prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
 
     experiment_config = {
@@ -1122,8 +1163,9 @@ def build_llm_context(
         "model": model,
         "description": (
             "LLM ablation configuration: controls whether deterministic borrower/facility facts, "
-            "machine-readable credit policy, and tight prompting are visible to the model."
+            "machine-readable credit policy, deterministic policy evaluation, and tight prompting are visible to the model."
         ),
+        "policy_mode_description": _policy_mode_description(policy_mode),
     }
 
     if context_mode == "full":
@@ -1167,18 +1209,31 @@ def build_llm_context(
             },
         }
 
-    if policy_mode == "include":
+    # Policy grounding modes:
+    # - deterministic_evaluated: policy manual + backend deterministic policy evaluation are visible.
+    # - llm_evaluated: policy manual is visible, deterministic evaluation is hidden; LLM applies rules itself.
+    # - none: both policy manual and deterministic evaluation are hidden.
+    if policy_mode == "deterministic_evaluated":
         if "credit_policy" not in llm_context and memo_context.get("credit_policy") is not None:
             llm_context["credit_policy"] = memo_context.get("credit_policy")
         if "policy_evaluation" not in llm_context and memo_context.get("policy_evaluation") is not None:
             llm_context["policy_evaluation"] = memo_context.get("policy_evaluation")
+    elif policy_mode == "llm_evaluated":
+        if "credit_policy" not in llm_context and memo_context.get("credit_policy") is not None:
+            llm_context["credit_policy"] = memo_context.get("credit_policy")
+        llm_context.pop("policy_evaluation", None)
+        llm_context["policy_context_limitation"] = {
+            "credit_policy_manual_visible_to_llm": True,
+            "policy_evaluation_hidden_from_llm": True,
+            "instruction": "The LLM-visible context includes the machine-readable credit policy manual but not the deterministic policy evaluation. Apply policy only to facts visible in this JSON; do not invent missing financial metrics or policy outcomes.",
+        }
     else:
         llm_context.pop("credit_policy", None)
         llm_context.pop("policy_evaluation", None)
         llm_context["policy_context_limitation"] = {
-            "credit_policy_hidden_from_llm": True,
+            "credit_policy_manual_hidden_from_llm": True,
             "policy_evaluation_hidden_from_llm": True,
-            "instruction": "The LLM-visible context does not include the machine-readable credit policy or deterministic policy evaluation.",
+            "instruction": "The LLM-visible context does not include the machine-readable credit policy manual or deterministic policy evaluation. Do not claim policy compliance; state that policy compliance cannot be assessed from the LLM-visible context.",
         }
 
     llm_context["experiment_config"] = experiment_config
@@ -1389,13 +1444,13 @@ def create_credit_memo(
     rating_context_path: str = DEFAULT_RATING_CONTEXT_PATH,
     credit_policy_path: str = DEFAULT_CREDIT_POLICY_PATH,
     context_mode: str = "full",
-    policy_mode: str = "include",
+    policy_mode: str = "deterministic_evaluated",
     prompt_mode: str = "tight",
     experiment_id: str | None = None,
     include_llm_context: bool = True,
 ) -> dict[str, Any]:
     context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
-    policy_mode = _normalise_mode(policy_mode, VALID_POLICY_MODES, "include")
+    policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
     prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
 
     memo_context = build_credit_memo_context(
@@ -1413,7 +1468,9 @@ def create_credit_memo(
         "prompt_mode": prompt_mode,
         "model": selected_model,
         "llm_sees_full_deterministic_context": context_mode == "full",
-        "llm_sees_credit_policy": policy_mode == "include",
+        "llm_sees_credit_policy": policy_mode in {"llm_evaluated", "deterministic_evaluated"},
+        "llm_sees_policy_evaluation": policy_mode == "deterministic_evaluated",
+        "policy_mode_description": _policy_mode_description(policy_mode),
         "llm_uses_tight_prompt": prompt_mode == "tight",
     }
 

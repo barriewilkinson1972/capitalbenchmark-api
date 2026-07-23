@@ -11,7 +11,14 @@ from typing import Any
 import pandas as pd
 
 
-DEFAULT_CREDIT_MEMO_MODEL = os.getenv("OPENAI_CREDIT_MEMO_MODEL", "gpt-4o-mini")
+# Default OpenAI model configuration for benchmark toggles.
+# Explicit ?model=... still overrides these values.
+DEFAULT_CREDIT_MEMO_MODEL_MINI = os.getenv(
+    "OPENAI_CREDIT_MEMO_MODEL_MINI",
+    os.getenv("OPENAI_CREDIT_MEMO_MODEL", "gpt-4o-mini"),
+)
+DEFAULT_CREDIT_MEMO_MODEL_FULL = os.getenv("OPENAI_CREDIT_MEMO_MODEL_FULL", "gpt-5")
+DEFAULT_CREDIT_MEMO_MODEL = os.getenv("OPENAI_CREDIT_MEMO_MODEL", DEFAULT_CREDIT_MEMO_MODEL_MINI)
 DEFAULT_RATING_CONTEXT_PATH = os.getenv(
     "OBLIGOR_RATING_CONTEXT_PATH",
     "market_data/obligor_rating_context.parquet",
@@ -213,6 +220,20 @@ Return only JSON matching the supplied schema. Use a polished bank-credit style.
 VALID_CONTEXT_MODES = {"full", "minimal"}
 VALID_POLICY_MODES = {"none", "llm_evaluated", "deterministic_evaluated"}
 VALID_PROMPT_MODES = {"tight", "loose"}
+VALID_MODEL_TIERS = {"mini", "full"}
+
+MODEL_TIER_ALIASES = {
+    "mini": "mini",
+    "small": "mini",
+    "cheap": "mini",
+    "fast": "mini",
+    "gpt_mini": "mini",
+    "full": "full",
+    "large": "full",
+    "premium": "full",
+    "best": "full",
+    "gpt_full": "full",
+}
 
 # Backwards-compatible aliases from the first ablation implementation.
 # include/evaluated -> deterministic_evaluated: model sees policy manual and deterministic policy evaluation.
@@ -255,6 +276,22 @@ def _normalise_policy_mode(value: Any, default: str = "deterministic_evaluated")
     return text if text in VALID_POLICY_MODES else default
 
 
+def _normalise_model_tier(value: Any, default: str = "mini") -> str:
+    text = str(value or default).strip().lower()
+    text = MODEL_TIER_ALIASES.get(text, text)
+    return text if text in VALID_MODEL_TIERS else default
+
+
+def resolve_credit_memo_model(model: str | None = None, model_tier: str = "mini") -> str:
+    """Resolve explicit model override or mini/full benchmark model tier."""
+    if model:
+        return str(model).strip()
+    tier = _normalise_model_tier(model_tier, "mini")
+    if tier == "full":
+        return DEFAULT_CREDIT_MEMO_MODEL_FULL
+    return DEFAULT_CREDIT_MEMO_MODEL_MINI
+
+
 def _policy_mode_description(policy_mode: str) -> str:
     policy_mode = _normalise_policy_mode(policy_mode)
     if policy_mode == "deterministic_evaluated":
@@ -276,12 +313,14 @@ def _experiment_id(
     policy_mode: str,
     prompt_mode: str,
     model: str | None = None,
+    model_tier: str | None = None,
     explicit_id: str | None = None,
 ) -> str:
     if explicit_id:
         return str(explicit_id)
     model_part = str(model or "model").replace("/", "_").replace(" ", "_")
-    return f"ctx_{context_mode}__policy_{policy_mode}__prompt_{prompt_mode}__{model_part}"
+    tier_part = f"__tier_{_normalise_model_tier(model_tier)}" if model_tier else ""
+    return f"ctx_{context_mode}__policy_{policy_mode}__prompt_{prompt_mode}{tier_part}__{model_part}"
 
 
 # -----------------------------
@@ -1143,6 +1182,7 @@ def build_llm_context(
     policy_mode: str = "deterministic_evaluated",
     prompt_mode: str = "tight",
     model: str | None = None,
+    model_tier: str = "mini",
     experiment_id: str | None = None,
 ) -> dict[str, Any]:
     """
@@ -1154,12 +1194,14 @@ def build_llm_context(
     context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
     policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
     prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
+    model_tier = _normalise_model_tier(model_tier, "mini")
 
     experiment_config = {
-        "experiment_id": _experiment_id(context_mode, policy_mode, prompt_mode, model, experiment_id),
+        "experiment_id": _experiment_id(context_mode, policy_mode, prompt_mode, model, model_tier, experiment_id),
         "context_mode": context_mode,
         "policy_mode": policy_mode,
         "prompt_mode": prompt_mode,
+        "model_tier": model_tier,
         "model": model,
         "description": (
             "LLM ablation configuration: controls whether deterministic borrower/facility facts, "
@@ -1446,12 +1488,14 @@ def create_credit_memo(
     context_mode: str = "full",
     policy_mode: str = "deterministic_evaluated",
     prompt_mode: str = "tight",
+    model_tier: str = "mini",
     experiment_id: str | None = None,
     include_llm_context: bool = True,
 ) -> dict[str, Any]:
     context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
     policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
     prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
+    model_tier = _normalise_model_tier(model_tier, "mini")
 
     memo_context = build_credit_memo_context(
         symbol=symbol,
@@ -1460,18 +1504,24 @@ def create_credit_memo(
         credit_policy_path=credit_policy_path,
     )
 
-    selected_model = model or DEFAULT_CREDIT_MEMO_MODEL
+    selected_model = resolve_credit_memo_model(model=model, model_tier=model_tier)
     experiment_config = {
-        "experiment_id": _experiment_id(context_mode, policy_mode, prompt_mode, selected_model, experiment_id),
+        "experiment_id": _experiment_id(context_mode, policy_mode, prompt_mode, selected_model, model_tier, experiment_id),
         "context_mode": context_mode,
         "policy_mode": policy_mode,
         "prompt_mode": prompt_mode,
+        "model_tier": model_tier,
         "model": selected_model,
         "llm_sees_full_deterministic_context": context_mode == "full",
         "llm_sees_credit_policy": policy_mode in {"llm_evaluated", "deterministic_evaluated"},
         "llm_sees_policy_evaluation": policy_mode == "deterministic_evaluated",
         "policy_mode_description": _policy_mode_description(policy_mode),
         "llm_uses_tight_prompt": prompt_mode == "tight",
+        "model_tier_description": (
+            "Full GPT model selected for higher-quality policy/reasoning assessment."
+            if model_tier == "full"
+            else "Mini GPT model selected for lower-cost benchmark generation."
+        ),
     }
 
     llm_context = build_llm_context(
@@ -1480,6 +1530,7 @@ def create_credit_memo(
         policy_mode=policy_mode,
         prompt_mode=prompt_mode,
         model=selected_model,
+        model_tier=model_tier,
         experiment_id=experiment_config["experiment_id"],
     )
 
@@ -1517,6 +1568,7 @@ def create_credit_memo(
         "openai_requested": bool(use_openai),
         "openai_api_key_present": api_key_present,
         "openai_model": selected_model,
+        "openai_model_tier": model_tier,
         "experiment_config": experiment_config,
         "memo_context": memo_context,
         "narrative": narrative,
