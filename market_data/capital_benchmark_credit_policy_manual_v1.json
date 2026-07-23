@@ -1,0 +1,249 @@
+{
+  "policy_manual": {
+    "id": "capital_benchmark_corporate_credit_policy_v1",
+    "title": "Capital Benchmark Illustrative Corporate Credit Policy Manual",
+    "version": "1.0",
+    "status": "illustrative_for_research_benchmark",
+    "created_at_utc": "2026-07-22T18:55:53.077561+00:00",
+    "scope": "Public-company corporate credit memo benchmark",
+    "purpose": "Provide concise credit policy rules for evaluating whether generated credit memos identify policy breaches, required mitigants, escalation requirements, and missing information.",
+    "important_disclaimer": "This policy is illustrative only and does not represent the credit policy of any specific bank."
+  },
+  "policy_rules": [
+    {
+      "policy_id": "CP-01",
+      "name": "Minimum rating",
+      "requirement": "New or increased unsecured corporate exposure requires a minimum CB rating of BBB-.",
+      "metric": "cb_rating",
+      "operator": ">=",
+      "threshold": "BBB-",
+      "breach_condition": "CB rating is BB+ or below.",
+      "severity": "high",
+      "required_action": "Exception approval required for BB+ or below.",
+      "memo_requirement": "State that the borrower is below the minimum rating threshold and that exception approval is required."
+    },
+    {
+      "policy_id": "CP-02",
+      "name": "Maximum leverage",
+      "requirement": "Debt / EBITDA must not exceed 4.0x for unsecured non-financial corporate facilities unless approved as an exception.",
+      "metric": "debt_to_ebitda",
+      "operator": "<=",
+      "threshold": 4.0,
+      "breach_condition": "Debt / EBITDA is above 4.0x.",
+      "severity": "medium",
+      "required_action": "Enhanced review or exception approval depending on severity.",
+      "memo_requirement": "Identify the leverage breach and explain the credit concern."
+    },
+    {
+      "policy_id": "CP-03",
+      "name": "Severe leverage trigger",
+      "requirement": "Debt / EBITDA above 6.0x is a high-severity policy breach.",
+      "metric": "debt_to_ebitda",
+      "operator": "<=",
+      "threshold": 6.0,
+      "breach_condition": "Debt / EBITDA is above 6.0x.",
+      "severity": "high",
+      "required_action": "Senior credit committee exception approval required.",
+      "memo_requirement": "Use direct breach language and state that senior credit committee approval is required."
+    },
+    {
+      "policy_id": "CP-04",
+      "name": "Net leverage review",
+      "requirement": "Net Debt / EBITDA above 5.0x requires enhanced review.",
+      "metric": "net_debt_to_ebitda",
+      "operator": "<=",
+      "threshold": 5.0,
+      "breach_condition": "Net Debt / EBITDA is above 5.0x.",
+      "severity": "medium",
+      "required_action": "Enhanced review of liquidity, maturity profile, and refinancing capacity.",
+      "memo_requirement": "Identify the net leverage trigger and request additional debt maturity and liquidity information."
+    },
+    {
+      "policy_id": "CP-05",
+      "name": "Profitability review",
+      "requirement": "Borrowers with negative profit margin require explanation of whether losses are temporary, recurring, accounting-driven, or structural.",
+      "metric": "profit_margin",
+      "operator": ">=",
+      "threshold": 0.0,
+      "breach_condition": "Profit margin is negative.",
+      "severity": "medium",
+      "required_action": "Enhanced profitability review required.",
+      "memo_requirement": "Do not infer the cause of losses. Ask for explanation and supporting information."
+    },
+    {
+      "policy_id": "CP-06",
+      "name": "Liquidity review",
+      "requirement": "Cash / Debt below 10% requires enhanced liquidity review and confirmation of committed funding sources.",
+      "metric": "cash_to_debt",
+      "operator": ">=",
+      "threshold": 0.1,
+      "breach_condition": "Cash / Debt is below 10%.",
+      "severity": "medium",
+      "required_action": "Enhanced liquidity review required.",
+      "memo_requirement": "Identify low cash coverage and request liquidity sources and near-term debt maturity profile."
+    },
+    {
+      "policy_id": "CP-07",
+      "name": "Agency rating gap",
+      "requirement": "If no agency rating is available, the memo must state that the CB rating cannot be externally benchmarked.",
+      "metric": "agency_rating",
+      "operator": "is_not_null",
+      "threshold": "available",
+      "breach_condition": "Agency rating is not available.",
+      "severity": "low",
+      "required_action": "Disclose limitation.",
+      "memo_requirement": "State that no agency rating comparison is available and describe CB rating as a proprietary estimate."
+    },
+    {
+      "policy_id": "CP-08",
+      "name": "Data quality",
+      "requirement": "Facilities must not be approved solely on model output where rating context quality is incomplete, stale, or scored using significant imputation.",
+      "metric": "rating_context_quality",
+      "operator": "==",
+      "threshold": "complete",
+      "breach_condition": "Rating context quality is incomplete, stale, or materially imputed.",
+      "severity": "medium",
+      "required_action": "Enhanced data validation required.",
+      "memo_requirement": "Identify incomplete or imputed data and state that human review is required."
+    },
+    {
+      "policy_id": "CP-09",
+      "name": "Existing exposure",
+      "requirement": "Existing exposure must be supplied before final credit decision.",
+      "metric": "existing_exposure_usd",
+      "operator": "is_not_null",
+      "threshold": "available",
+      "breach_condition": "Existing exposure is missing.",
+      "severity": "medium",
+      "required_action": "Obtain existing exposure before final decision.",
+      "memo_requirement": "Identify existing exposure as missing information."
+    },
+    {
+      "policy_id": "CP-10",
+      "name": "Facility purpose",
+      "requirement": "Facility purpose must be stated. Vague purposes such as general corporate purposes require additional relationship-manager explanation for material increases.",
+      "metric": "purpose",
+      "operator": "specific_or_explained",
+      "threshold": "specific_purpose_or_explanation",
+      "breach_condition": "Purpose is missing, vague, or general corporate purposes without further explanation.",
+      "severity": "low",
+      "required_action": "Request additional relationship-manager explanation.",
+      "memo_requirement": "Ask what the facility will fund and why the increase is required."
+    }
+  ],
+  "approval_zones": {
+    "standard_approval_zone": {
+      "description": "Request may be treated as within standard policy parameters, subject to ordinary credit review.",
+      "all_conditions": [
+        "CB rating is BBB- or better",
+        "Debt / EBITDA is 4.0x or below",
+        "Net Debt / EBITDA is 5.0x or below",
+        "Profit margin is positive",
+        "Cash / Debt is at least 10%",
+        "Rating context quality is complete",
+        "No material adverse media flags are present",
+        "Existing and proposed exposure are both supplied",
+        "Facility purpose is sufficiently specific"
+      ]
+    },
+    "enhanced_review_zone": {
+      "description": "Request requires enhanced credit review where one or more conditions are met.",
+      "any_conditions": [
+        "Debt / EBITDA is above 4.0x but no higher than 6.0x",
+        "Net Debt / EBITDA is above 5.0x",
+        "Profit margin is negative",
+        "Cash / Debt is below 10%",
+        "No agency rating is available",
+        "Facility purpose is vague or unspecified",
+        "Existing exposure is missing"
+      ]
+    },
+    "exception_approval_zone": {
+      "description": "Request requires documented exception approval where one or more conditions are met.",
+      "any_conditions": [
+        "CB rating is BB+ or below",
+        "Debt / EBITDA is above 6.0x",
+        "Rating context quality is materially incomplete",
+        "Material adverse media flags are present",
+        "Requested increase is large relative to existing exposure and no rationale is supplied"
+      ],
+      "required_language": "The request is outside standard policy parameters and requires documented exception approval before any approval could be considered."
+    }
+  },
+  "memo_requirements": [
+    "Borrower and request summary",
+    "Capital Benchmark rating assessment",
+    "Financial risk assessment",
+    "Policy compliance assessment",
+    "Key credit strengths",
+    "Key credit watchpoints",
+    "Policy breaches",
+    "Missing information",
+    "Relationship-manager questions",
+    "Credit committee focus areas",
+    "Data quality and limitations"
+  ],
+  "model_output_guardrails": {
+    "must_distinguish": [
+      "Rating model drivers",
+      "Financial watchpoints",
+      "Policy breaches",
+      "Missing information",
+      "Human judgement items"
+    ],
+    "must_not_infer_without_evidence": [
+      "Market leadership",
+      "Improving or deteriorating trends",
+      "Covenant compliance",
+      "Refinancing capacity",
+      "Parent support",
+      "Agency rating support",
+      "Competitive strength",
+      "Operational inefficiency",
+      "Approval recommendation"
+    ],
+    "approval_language_rule": "Do not recommend approval where a policy breach exists unless the memo clearly identifies the breach, explains required mitigants or missing information, and states that approval is conditional on the required approval authority."
+  },
+  "benchmark_evaluation_rules": {
+    "mark_down_if": [
+      "Fails to identify a clear policy breach",
+      "Describes a breached facility as ordinary-course approval",
+      "Recommends approval without exception language",
+      "Confuses rating drivers with policy compliance",
+      "Fails to identify missing exposure, tenor, security, or purpose information",
+      "Invents mitigants not present in the supplied data",
+      "Claims agency rating support where no agency rating exists",
+      "Uses vague language where a hard threshold has been breached"
+    ],
+    "mark_positive_if": [
+      "Identifies the correct policy IDs",
+      "Explains the policy breach using supplied numbers",
+      "Separates model output from credit judgement",
+      "Lists required mitigants or missing information",
+      "Uses conditional approval language appropriately",
+      "Escalates severe breaches to senior credit committee"
+    ]
+  },
+  "illustrative_application": {
+    "input_facts": {
+      "cb_rating": "BBB+",
+      "debt_to_ebitda": 8.8,
+      "net_debt_to_ebitda": 8.2,
+      "profit_margin": -0.0007,
+      "cash_to_debt": 0.0685,
+      "agency_rating": null,
+      "existing_exposure_usd": null,
+      "purpose": "general_corporate_purposes"
+    },
+    "expected_policy_findings": [
+      "CP-03 severe leverage breach",
+      "CP-04 net leverage enhanced review",
+      "CP-05 negative profitability review",
+      "CP-06 liquidity review",
+      "CP-07 no agency rating comparison",
+      "CP-09 missing existing exposure",
+      "CP-10 vague facility purpose"
+    ],
+    "expected_conclusion": "The request is outside standard policy parameters and would require enhanced review and senior credit committee exception approval before any approval could be considered."
+  }
+}

@@ -363,7 +363,7 @@ def credit_memo():
     require_openai = _truthy(payload.get("require_openai", request.args.get("require_openai")), False)
     model = payload.get("model") or request.args.get("model")
     context_mode = payload.get("context_mode") or request.args.get("context_mode", "full")
-    policy_mode = payload.get("policy_mode") or request.args.get("policy_mode", "deterministic_evaluated")
+    policy_mode = payload.get("policy_mode") or request.args.get("policy_mode", "include")
     prompt_mode = payload.get("prompt_mode") or request.args.get("prompt_mode", "tight")
     experiment_id = payload.get("experiment_id") or request.args.get("experiment_id")
     include_llm_context = _truthy(
@@ -436,21 +436,8 @@ def credit_memo_ablation_config():
             {"value": "minimal", "label": "Minimal borrower/request context only"},
         ],
         "policy_modes": [
-            {
-                "value": "deterministic_evaluated",
-                "label": "Deterministic evaluated",
-                "description": "LLM sees the machine-readable policy manual and the backend's deterministic policy evaluation."
-            },
-            {
-                "value": "llm_evaluated",
-                "label": "LLM evaluated",
-                "description": "LLM sees the machine-readable policy manual, but not the backend policy evaluation; it must apply the rules itself."
-            },
-            {
-                "value": "none",
-                "label": "None",
-                "description": "LLM sees neither the policy manual nor the backend policy evaluation."
-            },
+            {"value": "include", "label": "Credit policy and deterministic policy evaluation visible to LLM"},
+            {"value": "hide", "label": "Credit policy and policy evaluation hidden from LLM"},
         ],
         "prompt_modes": [
             {"value": "tight", "label": "Tight controlled prompt"},
@@ -463,7 +450,7 @@ def credit_memo_ablation_config():
             "facility_type": "revolving_credit_facility",
             "purpose": "general_corporate_purposes",
             "context_mode": "minimal",
-            "policy_mode": "none",
+            "policy_mode": "hide",
             "prompt_mode": "loose",
         },
     })
@@ -490,7 +477,7 @@ def credit_memo_file_endpoint():
     require_openai = _bool_param(source.get("require_openai"), False)
     model = source.get("model") or None
     context_mode = source.get("context_mode") or "full"
-    policy_mode = source.get("policy_mode") or "deterministic_evaluated"
+    policy_mode = source.get("policy_mode") or "include"
     prompt_mode = source.get("prompt_mode") or "tight"
     experiment_id = source.get("experiment_id") or None
 

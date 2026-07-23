@@ -360,7 +360,6 @@ def _experiment_rows(payload: dict[str, Any]) -> list[tuple[str, str]]:
         ("Model", _safe_text(config.get("model"), "n/a")),
         ("LLM sees deterministic context", _safe_text(config.get("llm_sees_full_deterministic_context"), "n/a")),
         ("LLM sees credit policy", _safe_text(config.get("llm_sees_credit_policy"), "n/a")),
-        ("LLM sees policy evaluation", _safe_text(config.get("llm_sees_policy_evaluation"), "n/a")),
     ]
 
 
