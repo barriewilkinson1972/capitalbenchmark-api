@@ -1560,7 +1560,7 @@ def create_credit_memo(
             raise RuntimeError(f"OpenAI narrative required but unavailable: {fallback_reason}")
         narrative = fallback_credit_memo_narrative(memo_context)
 
-    markdown = render_credit_memo_markdown(memo_context, narrative)
+    markdown = render_credit_memo_markdown(memo_context, narrative, experiment_config=experiment_config)
 
     result = {
         "narrative_source": narrative_source,
@@ -1679,6 +1679,51 @@ def _preamble(narrative: dict[str, Any], key: str) -> str:
     return f"_{text}_\n" if text else ""
 
 
+def _policy_labels_for_render(experiment_config: dict[str, Any] | None = None) -> dict[str, str]:
+    """Human-readable labels for policy prose vs backend reference policy checks."""
+    config = experiment_config or {}
+    policy_mode = _normalise_policy_mode(config.get("policy_mode"), "deterministic_evaluated")
+
+    if policy_mode == "llm_evaluated":
+        return {
+            "policy_heading": "LLM-Applied Policy Assessment",
+            "policy_note": (
+                "The prose below is the LLM's application of the visible machine-readable credit policy "
+                "to the supplied borrower and facility context. Compare it with the backend reference policy "
+                "table in the rendered document when evaluating the model."
+            ),
+            "breaches_heading": "LLM-Identified Policy Breaches and Triggers",
+            "actions_heading": "LLM-Recommended Policy Actions",
+            "missing_heading": "LLM-Identified Missing Information",
+            "escalation_heading": "LLM Escalation Assessment",
+        }
+
+    if policy_mode == "none":
+        return {
+            "policy_heading": "Policy Assessment Without Policy Grounding",
+            "policy_note": (
+                "The prose below was generated without exposing the credit policy manual or deterministic "
+                "policy evaluation to the LLM. Treat it as an ungrounded policy assessment for benchmark comparison."
+            ),
+            "breaches_heading": "LLM-Observed Policy Considerations",
+            "actions_heading": "LLM-Suggested Follow-up Actions",
+            "missing_heading": "LLM-Identified Missing Information",
+            "escalation_heading": "LLM Escalation Assessment",
+        }
+
+    return {
+        "policy_heading": "Deterministically Evaluated Policy Assessment",
+        "policy_note": (
+            "The backend deterministically evaluated the policy rules. The LLM's role is to narrate and "
+            "prioritise the supplied policy findings rather than independently calculate them."
+        ),
+        "breaches_heading": "Policy Breaches and Triggers",
+        "actions_heading": "Required Policy Actions",
+        "missing_heading": "Policy Missing Information",
+        "escalation_heading": "Policy Escalation Assessment",
+    }
+
+
 def _experiment_table_from_context(memo_context: dict[str, Any], narrative: dict[str, Any] | None = None) -> str:
     # The markdown renderer normally receives only memo_context and narrative, so this is a placeholder.
     # The full payload-level experiment_config is rendered in DOCX. For API consumers, use result["experiment_config"].
@@ -1688,8 +1733,10 @@ def _experiment_table_from_context(memo_context: dict[str, Any], narrative: dict
 def render_credit_memo_markdown(
     memo_context: dict[str, Any],
     narrative: dict[str, Any],
+    experiment_config: dict[str, Any] | None = None,
 ) -> str:
     borrower = memo_context.get("borrower", {})
+    policy_labels = _policy_labels_for_render(experiment_config)
     return f"""# {narrative.get("title", "Credit Memo")}
 
 **Borrower:** {narrative.get("borrower_name") or borrower.get("company_name") or borrower.get("symbol") or "n/a"}  
@@ -1747,23 +1794,25 @@ def render_credit_memo_markdown(
 
 {_bullets(narrative.get("financial_watchpoints", []))}
 
-## Credit Policy Compliance
+## {policy_labels['policy_heading']}
+
+_{policy_labels['policy_note']}_
 
 {narrative.get("policy_compliance_assessment", "")}
 
-### Policy Breaches and Triggers
+### {policy_labels['breaches_heading']}
 
 {_bullets(narrative.get("policy_breaches", []))}
 
-### Required Policy Actions
+### {policy_labels['actions_heading']}
 
 {_bullets(narrative.get("policy_required_actions", []))}
 
-### Policy Missing Information
+### {policy_labels['missing_heading']}
 
 {_bullets(narrative.get("policy_missing_information", []))}
 
-### Escalation Assessment
+### {policy_labels['escalation_heading']}
 
 {narrative.get("policy_escalation_assessment", "")}
 

@@ -365,6 +365,88 @@ def _experiment_rows(payload: dict[str, Any]) -> list[tuple[str, str]]:
     ]
 
 
+def _normalise_policy_mode_for_render(value: Any) -> str:
+    text = str(value or "deterministic_evaluated").strip().lower()
+    aliases = {
+        "include": "deterministic_evaluated",
+        "evaluated": "deterministic_evaluated",
+        "deterministic": "deterministic_evaluated",
+        "backend_evaluated": "deterministic_evaluated",
+        "manual_only": "llm_evaluated",
+        "policy_only": "llm_evaluated",
+        "manual": "llm_evaluated",
+        "hide": "none",
+        "hidden": "none",
+        "no_policy": "none",
+    }
+    text = aliases.get(text, text)
+    if text not in {"none", "llm_evaluated", "deterministic_evaluated"}:
+        return "deterministic_evaluated"
+    return text
+
+
+def _policy_render_labels(memo_payload: dict[str, Any]) -> dict[str, str]:
+    """Labels that separate LLM policy prose from backend reference checks."""
+    config = memo_payload.get("experiment_config") or {}
+    policy_mode = _normalise_policy_mode_for_render(config.get("policy_mode"))
+
+    if policy_mode == "llm_evaluated":
+        return {
+            "policy_heading": "LLM-Applied Policy Assessment",
+            "policy_note": (
+                "The prose in this section is the LLM's application of the visible machine-readable "
+                "credit policy to the supplied borrower and facility context. The reference table below "
+                "is generated deterministically by the backend and can be used to benchmark the LLM-applied assessment."
+            ),
+            "table_heading": "Deterministic Ground Truth Reference",
+            "breaches_heading": "LLM-Identified Policy Breaches and Triggers",
+            "actions_heading": "LLM-Recommended Policy Actions",
+            "missing_heading": "LLM-Identified Missing Information",
+            "escalation_heading": "LLM Escalation Assessment",
+        }
+
+    if policy_mode == "none":
+        return {
+            "policy_heading": "Policy Assessment Without Policy Grounding",
+            "policy_note": (
+                "The prose in this section was generated without exposing the credit policy manual or "
+                "deterministic policy evaluation to the LLM. The backend reference table below is included "
+                "only for benchmark comparison."
+            ),
+            "table_heading": "Deterministic Ground Truth Reference Not Shown to LLM",
+            "breaches_heading": "LLM-Observed Policy Considerations",
+            "actions_heading": "LLM-Suggested Follow-up Actions",
+            "missing_heading": "LLM-Identified Missing Information",
+            "escalation_heading": "LLM Escalation Assessment",
+        }
+
+    return {
+        "policy_heading": "Deterministically Evaluated Policy Assessment",
+        "policy_note": (
+            "The backend has deterministically evaluated the machine-readable policy rules. The LLM's role "
+            "is to narrate and prioritise the supplied policy findings rather than independently calculate them."
+        ),
+        "table_heading": "Backend Deterministic Policy Evaluation",
+        "breaches_heading": "Policy Breaches and Triggers",
+        "actions_heading": "Required Policy Actions",
+        "missing_heading": "Policy Missing Information",
+        "escalation_heading": "Policy Escalation Assessment",
+    }
+
+
+def _add_note(doc: Document, text: str | None) -> None:
+    text = _safe_text(text)
+    if not text:
+        return
+    p = doc.add_paragraph()
+    p.paragraph_format.space_after = Pt(5)
+    p.paragraph_format.line_spacing = 1.05
+    run = p.add_run(text)
+    run.italic = True
+    run.font.size = Pt(8.6)
+    run.font.color.rgb = RGBColor.from_string(DARK_GREY)
+
+
 def _add_preamble(doc: Document, narrative: dict[str, Any], key: str) -> None:
     preambles = narrative.get("section_preambles") or {}
     if not isinstance(preambles, dict):
@@ -476,22 +558,26 @@ def render_credit_memo_docx(
         right_align_cols={1, 2},
     )
 
-    _add_heading(doc, "Credit Policy Compliance", 1)
+    policy_labels = _policy_render_labels(memo_payload)
+    _add_heading(doc, policy_labels["policy_heading"], 1)
+    _add_note(doc, policy_labels["policy_note"])
     _add_preamble(doc, narrative, "policy_compliance")
     _add_paragraph(doc, narrative.get("policy_compliance_assessment"))
+
+    _add_heading(doc, policy_labels["table_heading"], 2)
     _add_data_table(
         doc,
         ["Policy ID", "Rule", "Observed", "Severity", "Required action"],
         _policy_rows(context),
         font_size=6.5,
     )
-    _add_heading(doc, "Policy Breaches and Triggers", 2)
+    _add_heading(doc, policy_labels["breaches_heading"], 2)
     _add_bullets(doc, narrative.get("policy_breaches", []))
-    _add_heading(doc, "Required Policy Actions", 2)
+    _add_heading(doc, policy_labels["actions_heading"], 2)
     _add_bullets(doc, narrative.get("policy_required_actions", []))
-    _add_heading(doc, "Policy Missing Information", 2)
+    _add_heading(doc, policy_labels["missing_heading"], 2)
     _add_bullets(doc, narrative.get("policy_missing_information", []))
-    _add_heading(doc, "Policy Escalation Assessment", 2)
+    _add_heading(doc, policy_labels["escalation_heading"], 2)
     _add_paragraph(doc, narrative.get("policy_escalation_assessment"))
 
     _add_heading(doc, "Peer and Anchor Context", 1)

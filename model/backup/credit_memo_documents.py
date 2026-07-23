@@ -357,6 +357,7 @@ def _experiment_rows(payload: dict[str, Any]) -> list[tuple[str, str]]:
         ("Context mode", _safe_text(config.get("context_mode"), "n/a")),
         ("Policy mode", _safe_text(config.get("policy_mode"), "n/a")),
         ("Prompt mode", _safe_text(config.get("prompt_mode"), "n/a")),
+        ("Model tier", _safe_text(config.get("model_tier"), "n/a")),
         ("Model", _safe_text(config.get("model"), "n/a")),
         ("LLM sees deterministic context", _safe_text(config.get("llm_sees_full_deterministic_context"), "n/a")),
         ("LLM sees credit policy", _safe_text(config.get("llm_sees_credit_policy"), "n/a")),
