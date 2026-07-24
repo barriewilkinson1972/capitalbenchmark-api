@@ -11,6 +11,7 @@ from model.scenario_report_documents import (
     scenario_report_filename,
 )
 from model.credit_memo import create_credit_memo, load_rating_context, load_credit_policy
+from model.credit_memo_annotation import annotate_credit_memo, annotation_config
 from model.credit_memo_documents import (
     DOCX_MIMETYPE,
     PDF_MIMETYPE,
@@ -563,6 +564,122 @@ def credit_memo_file_endpoint():
     except Exception as exc:
         app.logger.exception("credit_memo_file failed")
         return jsonify({"error": "credit_memo_file failed", "detail": str(exc)}), 500
+
+
+@app.route("/credit_memo_annotation_config")
+def credit_memo_annotation_config():
+    return jsonify(annotation_config())
+
+
+@app.route("/credit_memo_annotation", methods=["GET", "POST"])
+def credit_memo_annotation_endpoint():
+    """
+    Generate and annotate a credit memo, or annotate a supplied memo_payload.
+
+    POST options:
+      1. {"memo_payload": <payload returned by /credit_memo>}
+      2. <payload returned by /credit_memo> directly
+      3. normal credit_memo request fields, in which case this endpoint generates
+         the memo first and then annotates it.
+
+    GET uses the same query parameters as /credit_memo.
+    """
+    payload = request.get_json(silent=True) or {}
+
+    include_memo_payload = _truthy(
+        payload.get("include_memo_payload", request.args.get("include_memo_payload")),
+        False,
+    )
+
+    try:
+        # Case 1: explicit memo_payload wrapper.
+        if isinstance(payload.get("memo_payload"), dict):
+            memo_payload = payload["memo_payload"]
+            annotation = annotate_credit_memo(memo_payload)
+            if include_memo_payload:
+                annotation["memo_payload"] = memo_payload
+            return jsonify(annotation)
+
+        # Case 2: raw /credit_memo result posted directly.
+        if isinstance(payload.get("memo_context"), dict) and isinstance(payload.get("narrative"), dict):
+            memo_payload = payload
+            annotation = annotate_credit_memo(memo_payload)
+            if include_memo_payload:
+                annotation["memo_payload"] = memo_payload
+            return jsonify(annotation)
+
+        # Case 3: generate memo first, then annotate.
+        symbol = (
+            payload.get("symbol")
+            or request.args.get("symbol")
+            or request.args.get("ticker")
+        )
+        if not symbol:
+            return jsonify({"error": "symbol is required, unless posting memo_payload"}), 400
+
+        control_keys = {
+            "symbol", "ticker", "use_openai", "require_openai", "model",
+            "model_tier", "model_size", "context_mode", "policy_mode", "prompt_mode",
+            "experiment_id", "include_llm_context", "include_memo_payload",
+        }
+        credit_request = {k: v for k, v in payload.items() if k not in control_keys}
+
+        for key in [
+            "request_type",
+            "existing_exposure_usd",
+            "requested_increase_usd",
+            "proposed_exposure_usd",
+            "facility_type",
+            "purpose",
+            "tenor_years",
+            "secured",
+            "seniority",
+            "relationship_context",
+            "currency",
+            "lgd",
+        ]:
+            if request.args.get(key) is not None:
+                credit_request[key] = request.args.get(key)
+
+        use_openai = _truthy(payload.get("use_openai", request.args.get("use_openai")), True)
+        require_openai = _truthy(payload.get("require_openai", request.args.get("require_openai")), True)
+        model = payload.get("model") or request.args.get("model")
+        model_tier = (
+            payload.get("model_tier")
+            or payload.get("model_size")
+            or request.args.get("model_tier")
+            or request.args.get("model_size")
+            or "mini"
+        )
+        context_mode = payload.get("context_mode") or request.args.get("context_mode", "full")
+        policy_mode = payload.get("policy_mode") or request.args.get("policy_mode", "deterministic_evaluated")
+        prompt_mode = payload.get("prompt_mode") or request.args.get("prompt_mode", "tight")
+        experiment_id = payload.get("experiment_id") or request.args.get("experiment_id")
+
+        memo_payload = create_credit_memo(
+            symbol=symbol,
+            credit_request=credit_request,
+            use_openai=use_openai,
+            require_openai=require_openai,
+            model=model,
+            model_tier=model_tier,
+            context_mode=context_mode,
+            policy_mode=policy_mode,
+            prompt_mode=prompt_mode,
+            experiment_id=experiment_id,
+            include_llm_context=True,
+        )
+
+        annotation = annotate_credit_memo(memo_payload)
+        if include_memo_payload:
+            annotation["memo_payload"] = memo_payload
+        return jsonify(annotation)
+
+    except LookupError as exc:
+        return jsonify({"error": str(exc)}), 404
+    except Exception as exc:
+        app.logger.exception("credit_memo_annotation failed")
+        return jsonify({"error": "credit_memo_annotation failed", "detail": str(exc), "type": type(exc).__name__}), 500
 
 
 if __name__ == "__main__":

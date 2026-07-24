@@ -335,7 +335,7 @@ def credit_memo():
         return jsonify({"error": "symbol is required"}), 400
 
     # Everything that is not a control parameter can be treated as credit request data.
-    control_keys = {"symbol", "ticker", "use_openai", "require_openai", "model", "context_mode", "policy_mode", "prompt_mode", "experiment_id", "include_llm_context"}
+    control_keys = {"symbol", "ticker", "use_openai", "require_openai", "model", "model_tier", "model_size", "context_mode", "policy_mode", "prompt_mode", "experiment_id", "include_llm_context"}
     credit_request = {
         k: v for k, v in payload.items()
         if k not in control_keys
@@ -362,6 +362,13 @@ def credit_memo():
     use_openai = _truthy(payload.get("use_openai", request.args.get("use_openai")), True)
     require_openai = _truthy(payload.get("require_openai", request.args.get("require_openai")), False)
     model = payload.get("model") or request.args.get("model")
+    model_tier = (
+        payload.get("model_tier")
+        or payload.get("model_size")
+        or request.args.get("model_tier")
+        or request.args.get("model_size")
+        or "mini"
+    )
     context_mode = payload.get("context_mode") or request.args.get("context_mode", "full")
     policy_mode = payload.get("policy_mode") or request.args.get("policy_mode", "deterministic_evaluated")
     prompt_mode = payload.get("prompt_mode") or request.args.get("prompt_mode", "tight")
@@ -378,6 +385,7 @@ def credit_memo():
             use_openai=use_openai,
             require_openai=require_openai,
             model=model,
+            model_tier=model_tier,
             context_mode=context_mode,
             policy_mode=policy_mode,
             prompt_mode=prompt_mode,
@@ -456,6 +464,18 @@ def credit_memo_ablation_config():
             {"value": "tight", "label": "Tight controlled prompt"},
             {"value": "loose", "label": "Short loose prompt"},
         ],
+        "model_tiers": [
+            {
+                "value": "mini",
+                "label": "Mini GPT model",
+                "description": "Lower-cost GPT model for high-volume benchmark generation."
+            },
+            {
+                "value": "full",
+                "label": "Full GPT model",
+                "description": "Higher-capability GPT model for policy reasoning and premium comparison."
+            },
+        ],
         "example": {
             "symbol": "0008.HK",
             "requested_increase_usd": 100000000,
@@ -465,6 +485,7 @@ def credit_memo_ablation_config():
             "context_mode": "minimal",
             "policy_mode": "none",
             "prompt_mode": "loose",
+            "model_tier": "mini",
         },
     })
 
@@ -489,6 +510,7 @@ def credit_memo_file_endpoint():
     use_openai = _bool_param(source.get("use_openai"), True)
     require_openai = _bool_param(source.get("require_openai"), False)
     model = source.get("model") or None
+    model_tier = source.get("model_tier") or source.get("model_size") or "mini"
     context_mode = source.get("context_mode") or "full"
     policy_mode = source.get("policy_mode") or "deterministic_evaluated"
     prompt_mode = source.get("prompt_mode") or "tight"
@@ -501,6 +523,7 @@ def credit_memo_file_endpoint():
             use_openai=use_openai,
             require_openai=require_openai,
             model=model,
+            model_tier=model_tier,
             context_mode=context_mode,
             policy_mode=policy_mode,
             prompt_mode=prompt_mode,
