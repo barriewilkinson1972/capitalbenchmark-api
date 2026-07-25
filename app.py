@@ -87,6 +87,31 @@ BENCHMARK_PROMPT_MODES = [
     {"api": "loose", "display_name": "Loose"},
 ]
 
+BENCHMARK_COMPANY_LABELS = {
+    item["api"]: item["display_name"]
+    for item in BENCHMARK_COMPANIES
+}
+
+BENCHMARK_MODEL_LABELS = {
+    item["api"]: item["display_name"]
+    for item in BENCHMARK_MODELS
+}
+
+BENCHMARK_CONTEXT_LABELS = {
+    item["api"]: item["display_name"]
+    for item in BENCHMARK_CONTEXTS
+}
+
+BENCHMARK_EVALUATION_LABELS = {
+    item["api"]: item["display_name"]
+    for item in BENCHMARK_EVALUATION_MODES
+}
+
+BENCHMARK_PROMPT_LABELS = {
+    item["api"]: item["display_name"]
+    for item in BENCHMARK_PROMPT_MODES
+}
+
 # ---------------------------------------------------------------------------
 # Stored credit memo benchmark endpoints
 # ---------------------------------------------------------------------------
@@ -175,20 +200,57 @@ def normalise_index_row(row: dict) -> dict:
         except (TypeError, ValueError):
             return None
 
+    symbol = row.get("symbol")
+    context_mode = row.get("context_mode")
+    policy_mode = row.get("policy_mode")
+    prompt_mode = row.get("prompt_mode")
+    model_tier = row.get("model_tier")
+
     return {
         "memo_id": memo_id,
-        "symbol": row.get("symbol"),
+
+        # --- Company ---
+        "symbol": symbol,
         "company_name": row.get("company_name"),
+        "company_display_name": BENCHMARK_COMPANY_LABELS.get(
+            symbol,
+            row.get("company_name") or symbol,
+        ),
+
         "industry": row.get("industry"),
         "sector": row.get("sector"),
         "country": row.get("country"),
-        "context_mode": row.get("context_mode"),
-        "policy_mode": row.get("policy_mode"),
-        "prompt_mode": row.get("prompt_mode"),
-        "model_tier": row.get("model_tier"),
+
+        # --- Benchmark dimensions (raw API values) ---
+        "context_mode": context_mode,
+        "policy_mode": policy_mode,
+        "prompt_mode": prompt_mode,
+        "model_tier": model_tier,
         "model": row.get("model"),
+
+        # --- Friendly display values ---
+        "context_display_name": BENCHMARK_CONTEXT_LABELS.get(
+            context_mode,
+            context_mode,
+        ),
+        "evaluation_display_name": BENCHMARK_EVALUATION_LABELS.get(
+            policy_mode,
+            policy_mode,
+        ),
+        "prompt_display_name": BENCHMARK_PROMPT_LABELS.get(
+            prompt_mode,
+            prompt_mode,
+        ),
+        "model_display_name": BENCHMARK_MODEL_LABELS.get(
+            model_tier,
+            model_tier,
+        ),
+
+        # --- Metadata ---
         "run_id": integer_value(row.get("run_id")),
         "experiment_id": row.get("experiment_id"),
+
+        # --- Scores ---
         "overall_score": float_value(row.get("overall_score")),
         "policy_detection_score": float_value(
             row.get("policy_detection_score")
@@ -196,7 +258,11 @@ def normalise_index_row(row: dict) -> dict:
         "missing_information_detection_score": float_value(
             row.get("missing_information_detection_score")
         ),
-        "annotation_count": integer_value(row.get("annotation_count")),
+
+        # --- Annotation statistics ---
+        "annotation_count": integer_value(
+            row.get("annotation_count")
+        ),
         "critical_or_high_issue_count": integer_value(
             row.get("critical_or_high_issue_count")
         ),
@@ -206,12 +272,16 @@ def normalise_index_row(row: dict) -> dict:
         "unsupported_claim_count": integer_value(
             row.get("unsupported_claim_count")
         ),
+
+        # --- File availability ---
         "files": {
             "memo_json_available": memo_file.is_file(),
             "annotation_json_available": annotation_file.is_file(),
             "pdf_available": pdf_file.is_file(),
             "docx_available": docx_file.is_file(),
         },
+
+        # --- URLs ---
         "urls": {
             "detail": url_for(
                 "benchmark_credit_memo_detail",
