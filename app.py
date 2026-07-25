@@ -40,6 +40,53 @@ app = Flask(__name__)
 # Prototype: allow Bubble / browser calls
 CORS(app)
 
+
+BENCHMARK_COMPANIES = [
+    {"api": "GOOG", "display_name": "Alphabet"},
+    {"api": "NVDA", "display_name": "NVIDIA"},
+    {"api": "RYDAF", "display_name": "Shell"},
+    {"api": "BP", "display_name": "BP"},
+    {"api": "VOD.L", "display_name": "Vodafone"},
+    {"api": "BT-A.L", "display_name": "BT Group"},
+    {"api": "TSCDF", "display_name": "Tesco"},
+    {"api": "MAKSY", "display_name": "Marks & Spencer"},
+    {"api": "IAG.VI", "display_name": "International Airlines Group"},
+    {"api": "RR.L", "display_name": "Rolls-Royce"},
+    {"api": "VWAGY", "display_name": "Volkswagen"},
+    {"api": "RNLSY", "display_name": "Renault"},
+    {"api": "STLA", "display_name": "Stellantis"},
+    {"api": "TUIFF", "display_name": "TUI"},
+    {"api": "NOK", "display_name": "Nokia"},
+    {"api": "BASFY", "display_name": "BASF"},
+    {"api": "AF.PA", "display_name": "Air France-KLM"},
+    {"api": "EADSY", "display_name": "Airbus"},
+    {"api": "MT", "display_name": "ArcelorMittal"},
+    {"api": "AAL", "display_name": "American Airlines"},
+]
+
+BENCHMARK_MODELS = [
+    {"api": "mini", "display_name": "GPT-4o-mini"},
+]
+
+BENCHMARK_CONTEXTS = [
+    {"api": "full", "display_name": "Full Context"},
+    {"api": "minimal", "display_name": "Minimal Context"},
+]
+
+BENCHMARK_EVALUATION_MODES = [
+    {"api": "none", "display_name": "None"},
+    {"api": "llm_evaluated", "display_name": "LLM Evaluated"},
+    {
+        "api": "deterministic_evaluated",
+        "display_name": "Deterministic Evaluated",
+    },
+]
+
+BENCHMARK_PROMPT_MODES = [
+    {"api": "tight", "display_name": "Tight"},
+    {"api": "loose", "display_name": "Loose"},
+]
+
 # ---------------------------------------------------------------------------
 # Stored credit memo benchmark endpoints
 # ---------------------------------------------------------------------------
@@ -1070,6 +1117,20 @@ def benchmark_credit_memo_file(memo_id: str):
         mimetype=format_config["mimetype"],
         as_attachment=format_config["as_attachment"],
         download_name=file_path.name,
+    )
+
+@app.get("/benchmark_credit_memo_filters")
+def benchmark_credit_memo_filters():
+    """Return lightweight filter metadata for the benchmark explorer."""
+
+    return jsonify(
+        {
+            "companies": BENCHMARK_COMPANIES,
+            "models": BENCHMARK_MODELS,
+            "contexts": BENCHMARK_CONTEXTS,
+            "evaluation_modes": BENCHMARK_EVALUATION_MODES,
+            "prompt_modes": BENCHMARK_PROMPT_MODES,
+        }
     )
 
 
