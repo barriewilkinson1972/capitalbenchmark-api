@@ -316,7 +316,71 @@ def find_benchmark_row(memo_id: str) -> dict | None:
     return None
 
 
+def read_json_file(file_path: Path, description: str):
+    """
+    Read and parse a stored JSON file.
 
+    Raises:
+        FileNotFoundError: if the file does not exist.
+        RuntimeError: if the file cannot be read or parsed.
+    """
+    if not file_path.is_file():
+        raise FileNotFoundError(f"{description} was not found: {file_path}")
+
+    try:
+        with file_path.open("r", encoding="utf-8") as file:
+            return json.load(file)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"Unable to read {description}: {exc}"
+        ) from exc
+
+
+def extract_annotation_items(annotation_payload) -> list:
+    """
+    Return the annotation findings as a list for Bubble.
+
+    This supports several likely annotation payload shapes while preserving
+    the complete raw annotation payload elsewhere in the API response.
+    """
+    if annotation_payload is None:
+        return []
+
+    if isinstance(annotation_payload, list):
+        return annotation_payload
+
+    if not isinstance(annotation_payload, dict):
+        return []
+
+    for field in (
+        "annotations",
+        "issues",
+        "findings",
+        "annotation_items",
+    ):
+        value = annotation_payload.get(field)
+
+        if isinstance(value, list):
+            return value
+
+    nested_annotation = annotation_payload.get("annotation")
+
+    if isinstance(nested_annotation, list):
+        return nested_annotation
+
+    if isinstance(nested_annotation, dict):
+        for field in (
+            "annotations",
+            "issues",
+            "findings",
+            "annotation_items",
+        ):
+            value = nested_annotation.get(field)
+
+            if isinstance(value, list):
+                return value
+
+    return []
 
 
 
@@ -1029,62 +1093,98 @@ def benchmark_credit_memos():
 @app.get("/benchmark_credit_memo/<memo_id>")
 def benchmark_credit_memo_detail(memo_id: str):
     """
-    Return the display-ready memo, annotation and summary metadata.
+    Return the complete page model for one stored benchmark memo.
 
-    The large deterministic and LLM context objects are available separately
-    from /benchmark_credit_memo_context/<memo_id>.
+    The response includes:
+        - summary and configuration metadata
+        - generated memo content
+        - annotation findings
+        - deterministic and LLM context
+        - file availability
+        - related endpoint URLs
     """
-    row = find_benchmark_row(memo_id)
+    try:
+        row = find_benchmark_row(memo_id)
+    except (RuntimeError, FileNotFoundError) as exc:
+        return jsonify({"error": str(exc)}), 500
 
     if row is None:
         abort(404, description="Benchmark memo not found")
 
-    benchmark_dir = get_benchmark_dir()
+    try:
+        benchmark_dir = get_benchmark_dir()
+    except RuntimeError as exc:
+        return jsonify({"error": str(exc)}), 500
 
-    memo_file = benchmark_dir / "raw_memos" / f"{memo_id}.json"
+    memo_file = (
+        benchmark_dir
+        / "raw_memos"
+        / f"{memo_id}.json"
+    )
+
     annotation_file = (
         benchmark_dir
         / "offline_annotations"
         / f"{memo_id}__annotation.json"
     )
 
-    if not memo_file.is_file():
-        abort(404, description="Raw memo JSON file not found")
-
     try:
-        with memo_file.open("r", encoding="utf-8") as file:
-            memo_payload = json.load(file)
-    except (OSError, json.JSONDecodeError) as exc:
-        return jsonify(
-            {
-                "error": "Unable to read raw memo JSON",
-                "details": str(exc),
-            }
-        ), 500
+        memo_payload = read_json_file(
+            memo_file,
+            "raw memo JSON file",
+        )
+    except FileNotFoundError as exc:
+        abort(404, description=str(exc))
+    except RuntimeError as exc:
+        return jsonify({"error": str(exc)}), 500
 
     annotation_payload = None
 
     if annotation_file.is_file():
         try:
-            with annotation_file.open("r", encoding="utf-8") as file:
-                annotation_payload = json.load(file)
-        except (OSError, json.JSONDecodeError) as exc:
-            return jsonify(
-                {
-                    "error": "Unable to read annotation JSON",
-                    "details": str(exc),
-                }
-            ), 500
+            annotation_payload = read_json_file(
+                annotation_file,
+                "annotation JSON file",
+            )
+        except RuntimeError as exc:
+            return jsonify({"error": str(exc)}), 500
+
+    index = normalise_index_row(row)
+    annotation_items = extract_annotation_items(annotation_payload)
+
+    memo = {
+        "narrative": memo_payload.get("narrative"),
+        "memo_markdown": memo_payload.get("memo_markdown"),
+        "narrative_source": memo_payload.get("narrative_source"),
+        "fallback_reason": memo_payload.get("fallback_reason"),
+    }
+
+    context = {
+        "experiment_config": memo_payload.get("experiment_config"),
+        "memo_context": memo_payload.get("memo_context"),
+        "llm_context": memo_payload.get("llm_context"),
+        "benchmark_runner": memo_payload.get("benchmark_runner"),
+    }
 
     return jsonify(
         {
-            "index": normalise_index_row(row),
-            "annotation": annotation_payload,
-            "narrative": memo_payload.get("narrative"),
-            "memo_markdown": memo_payload.get("memo_markdown"),
-            "experiment_config": memo_payload.get("experiment_config"),
-            "narrative_source": memo_payload.get("narrative_source"),
-            "fallback_reason": memo_payload.get("fallback_reason"),
+            "memo_id": memo_id,
+
+            # Header, scores and configuration for the detail page.
+            "summary": index,
+
+            # Display-ready generated memo.
+            "memo": memo,
+
+            # Complete annotation object for scores and additional metadata.
+            "annotation_summary": annotation_payload,
+
+            # Inputs and supporting context.
+            "context": context,
+
+            # Convenience fields for buttons and file controls.
+            "files": index.get("files", {}),
+            "urls": index.get("urls", {}),
         }
     )
 
@@ -1093,34 +1193,42 @@ def benchmark_credit_memo_context(memo_id: str):
     """
     Return the input and deterministic context for one benchmark memo.
 
-    This endpoint intentionally separates the potentially large context
-    objects from the display-ready memo response.
+    Retained as a lightweight specialist endpoint even though the main
+    detail endpoint now includes the same context in its page model.
     """
-    row = find_benchmark_row(memo_id)
+    try:
+        row = find_benchmark_row(memo_id)
+    except (RuntimeError, FileNotFoundError) as exc:
+        return jsonify({"error": str(exc)}), 500
 
     if row is None:
         abort(404, description="Benchmark memo not found")
 
-    benchmark_dir = get_benchmark_dir()
-    memo_file = benchmark_dir / "raw_memos" / f"{memo_id}.json"
+    try:
+        benchmark_dir = get_benchmark_dir()
+    except RuntimeError as exc:
+        return jsonify({"error": str(exc)}), 500
 
-    if not memo_file.is_file():
-        abort(404, description="Raw memo JSON file not found")
+    memo_file = (
+        benchmark_dir
+        / "raw_memos"
+        / f"{memo_id}.json"
+    )
 
     try:
-        with memo_file.open("r", encoding="utf-8") as file:
-            memo_payload = json.load(file)
-    except (OSError, json.JSONDecodeError) as exc:
-        return jsonify(
-            {
-                "error": "Unable to read raw memo JSON",
-                "details": str(exc),
-            }
-        ), 500
+        memo_payload = read_json_file(
+            memo_file,
+            "raw memo JSON file",
+        )
+    except FileNotFoundError as exc:
+        abort(404, description=str(exc))
+    except RuntimeError as exc:
+        return jsonify({"error": str(exc)}), 500
 
     return jsonify(
         {
-            "index": normalise_index_row(row),
+            "memo_id": memo_id,
+            "summary": normalise_index_row(row),
             "experiment_config": memo_payload.get("experiment_config"),
             "llm_context": memo_payload.get("llm_context"),
             "memo_context": memo_payload.get("memo_context"),
