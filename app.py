@@ -112,9 +112,55 @@ BENCHMARK_PROMPT_LABELS = {
     for item in BENCHMARK_PROMPT_MODES
 }
 
+BENCHMARK_DATA_DIR = Path(
+    "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
+)
+
+HTML_DIR = BENCHMARK_DATA_DIR / "html"
+
 # ---------------------------------------------------------------------------
 # Stored credit memo benchmark endpoints
 # ---------------------------------------------------------------------------
+
+def resolve_credit_memo_html_file(memo_id: str) -> Path:
+    """
+    Resolve one stored HTML memo safely.
+
+    Supports:
+    - full stem:
+      0001__GOOG__ctx_full__policy_full__prompt_standard__tier_frontier__run_01
+    - numeric memo ID:
+      0001
+    """
+
+    clean_memo_id = str(memo_id).strip()
+
+    if not clean_memo_id:
+        abort(400, description="Memo ID is required.")
+
+    # Prevent path traversal and arbitrary filenames.
+    if "/" in clean_memo_id or "\\" in clean_memo_id or ".." in clean_memo_id:
+        abort(400, description="Invalid memo ID.")
+
+    # Exact filename/stem match.
+    exact_path = HTML_DIR / f"{clean_memo_id}.html"
+
+    if exact_path.is_file():
+        return exact_path
+
+    # Numeric/short memo ID match, e.g. 0001.
+    matches = sorted(HTML_DIR.glob(f"{clean_memo_id}__*.html"))
+
+    if len(matches) == 1:
+        return matches[0]
+
+    if not matches:
+        abort(404, description=f"HTML memo not found: {clean_memo_id}")
+
+    abort(
+        409,
+        description=f"Multiple HTML files matched memo ID: {clean_memo_id}",
+    )
 
 def get_benchmark_dir() -> Path:
     """
@@ -1308,6 +1354,37 @@ def benchmark_credit_memo_filters():
             "contexts": BENCHMARK_CONTEXTS,
             "evaluation_modes": BENCHMARK_EVALUATION_MODES,
             "prompt_modes": BENCHMARK_PROMPT_MODES,
+        }
+    )
+
+@app.get("/benchmark_credit_memo_html_file/<memo_id>")
+def benchmark_credit_memo_html_file(memo_id: str):
+    html_path = resolve_credit_memo_html_file(memo_id)
+
+    return send_file(
+        html_path,
+        mimetype="text/html",
+        as_attachment=False,
+        conditional=True,
+        max_age=3600,
+    )
+
+@app.get("/benchmark_credit_memo_html/<memo_id>")
+def benchmark_credit_memo_html(memo_id: str):
+    html_path = resolve_credit_memo_html_file(memo_id)
+
+    try:
+        memo_html = html_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        abort(500, description="Stored HTML file is not valid UTF-8.")
+    except OSError as exc:
+        abort(500, description=f"Could not read stored HTML: {exc}")
+
+    return jsonify(
+        {
+            "memo_id": memo_id,
+            "html_filename": html_path.name,
+            "memo_html": memo_html,
         }
     )
 
