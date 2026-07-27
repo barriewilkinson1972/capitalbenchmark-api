@@ -114,15 +114,15 @@ BENCHMARK_PROMPT_LABELS = {
     for item in BENCHMARK_PROMPT_MODES
 }
 
-# BENCHMARK_DATA_DIR = Path(
-#     "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
-# )
+BENCHMARK_DATA_DIR = Path(
+    "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
+)
 
-# HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
+HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
-BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
+# BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
 
-HTML_DIR = BENCHMARK_DATA_DIR / "html"
+# HTML_DIR = BENCHMARK_DATA_DIR / "html"
 
 
 
@@ -1420,73 +1420,55 @@ def html_sections(memo_id: str):
     try:
         standalone_html = html_path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
-        abort(
-            500,
-            description="Stored HTML file is not valid UTF-8.",
-        )
+        abort(500, description="Stored HTML file is not valid UTF-8.")
     except OSError as exc:
-        abort(
-            500,
-            description=f"Could not read stored HTML: {exc}",
-        )
+        abort(500, description=f"Could not read stored HTML: {exc}")
 
     soup = BeautifulSoup(standalone_html, "html.parser")
 
-    section_elements = soup.select("section.cb-memo-section")
+    #
+    # Extract all stylesheet blocks
+    #
+    css = "\n".join(
+        style.decode_contents()
+        for style in soup.find_all("style")
+    )
 
-    # Fall back to all section elements if the specific class is absent.
-    if not section_elements:
-        section_elements = soup.find_all("section")
+    css_html = f"<style>\n{css}\n</style>"
+
+    #
+    # Extract memo sections
+    #
+    section_elements = soup.find_all("section")
 
     sections = []
 
     for index, section in enumerate(section_elements, start=1):
-        section_id = (
-            section.get("data-section-id")
-            or section.get("id")
-            or f"section_{index:03d}"
-        )
 
-        section_type = section.get(
-            "data-section-type",
-            "other",
-        )
+        heading = section.find(["h1", "h2", "h3", "h4", "h5", "h6"])
 
-        heading = section.find(
-            ["h1", "h2", "h3", "h4", "h5", "h6"]
-        )
+        sections.append({
+            "section_id": (
+                section.get("data-section-id")
+                or section.get("id")
+                or f"section_{index:03d}"
+            ),
+            "section_type": section.get("data-section-type", "other"),
+            "section_title": (
+                heading.get_text(strip=True)
+                if heading
+                else ""
+            ),
+            "html": str(section)
+        })
 
-        section_title = (
-            heading.get_text(" ", strip=True)
-            if heading
-            else ""
-        )
-
-        document_order_raw = section.get("data-document-order")
-
-        try:
-            document_order = int(document_order_raw)
-        except (TypeError, ValueError):
-            document_order = index
-
-        sections.append(
-            {
-                "section_id": section_id,
-                "section_type": section_type,
-                "section_title": section_title,
-                "document_order": document_order,
-                "html": str(section),
-            }
-        )
-
-    return jsonify(
-        {
-            "memo_id": memo_id,
-            "html_filename": html_path.name,
-            "section_count": len(sections),
-            "sections": sections,
-        }
-    )
+    return jsonify({
+        "memo_id": memo_id,
+        "html_filename": html_path.name,
+        "css": css_html,
+        "section_count": len(sections),
+        "sections": sections
+    })
 
 
 if __name__ == "__main__":
