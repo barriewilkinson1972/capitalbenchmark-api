@@ -116,7 +116,7 @@ BENCHMARK_DATA_DIR = Path(
     "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
 )
 
-HTML_DIR = BENCHMARK_DATA_DIR / "html"
+HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
 # ---------------------------------------------------------------------------
 # Stored credit memo benchmark endpoints
