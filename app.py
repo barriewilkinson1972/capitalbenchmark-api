@@ -128,6 +128,8 @@ HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
 # HTML_DIR = BENCHMARK_DATA_DIR / "html"
 
+
+
 app.config["HTML_DIR"] = HTML_DIR
 
 register_frontend_routes(app)

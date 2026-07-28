@@ -23,6 +23,19 @@ from types import ModuleType
 from typing import Any, Callable, Mapping
 
 
+# The batch runner may live either in the project root or in scripts/.
+# Add the project root to sys.path so the shared frontend renderer can
+# be imported reliably in both layouts.
+PROJECT_ROOT = Path(__file__).resolve().parent
+if not (PROJECT_ROOT / "frontend").is_dir():
+    PROJECT_ROOT = PROJECT_ROOT.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from frontend.index_page import render_benchmark_index
+
+
 RUN_SCHEMA = "credit_memo_batch_html_run"
 RUN_SCHEMA_VERSION = "1.0.0"
 
@@ -562,7 +575,18 @@ def run(args: argparse.Namespace) -> int:
 
     index_path = output_dir / "index.html"
     if not args.no_index:
-        write_text(index_path, build_index_html(results, renderer_version))
+        # Include both newly generated and already-existing memo pages.
+        # This prevents the index from becoming empty when the batch runner
+        # is executed again without --overwrite.
+        index_records = [
+            item
+            for item in results
+            if item.get("status") in {"success", "skipped_existing"}
+        ]
+        write_text(
+            index_path,
+            render_benchmark_index(index_records),
+        )
 
     print()
     print("HTML generation complete")
