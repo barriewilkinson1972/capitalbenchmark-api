@@ -118,15 +118,15 @@ BENCHMARK_PROMPT_LABELS = {
     for item in BENCHMARK_PROMPT_MODES
 }
 
-# BENCHMARK_DATA_DIR = Path(
-#     "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
-# )
+BENCHMARK_DATA_DIR = Path(
+    "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
+)
 
-# HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
+HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
-BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
+# BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
 
-HTML_DIR = BENCHMARK_DATA_DIR / "html"
+# HTML_DIR = BENCHMARK_DATA_DIR / "html"
 
 app.config["HTML_DIR"] = HTML_DIR
 
