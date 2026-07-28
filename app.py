@@ -125,6 +125,53 @@ HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 # HTML_DIR = BENCHMARK_DATA_DIR / "html"
 
 
+ANNOTATION_DIR = (
+    BENCHMARK_DATA_DIR
+    / "annotations"
+)
+
+
+def resolve_credit_memo_annotation_file(memo_id: str) -> Path:
+    requested_value = str(memo_id).strip()
+
+    if not requested_value:
+        abort(400, description="Memo ID is required.")
+
+    if (
+        "/" in requested_value
+        or "\\" in requested_value
+        or ".." in requested_value
+    ):
+        abort(400, description="Invalid memo ID.")
+
+    clean_stem = (
+        requested_value[:-5]
+        if requested_value.lower().endswith(".json")
+        else requested_value
+    )
+
+    exact_path = ANNOTATION_DIR / f"{clean_stem}.json"
+
+    if exact_path.is_file():
+        return exact_path
+
+    matches = sorted(
+        ANNOTATION_DIR.glob(f"{clean_stem}__*.json")
+    )
+
+    if len(matches) == 1:
+        return matches[0]
+
+    if not matches:
+        abort(
+            404,
+            description=f"Annotation file not found: {requested_value}",
+        )
+
+    abort(
+        409,
+        description=f"Multiple annotation files matched: {requested_value}",
+    )
 
 # ---------------------------------------------------------------------------
 # Stored credit memo benchmark endpoints
@@ -1415,6 +1462,7 @@ def benchmark_credit_memo_html(memo_id: str):
 
 @app.get("/html_sections/<memo_id>")
 def html_sections(memo_id: str):
+    
     html_path = resolve_credit_memo_html_file(memo_id)
 
     try:
@@ -1423,6 +1471,17 @@ def html_sections(memo_id: str):
         abort(500, description="Stored HTML file is not valid UTF-8.")
     except OSError as exc:
         abort(500, description=f"Could not read stored HTML: {exc}")
+
+    annotation_path = resolve_credit_memo_annotation_file(memo_id)
+
+    try:
+        with annotation_path.open("r", encoding="utf-8") as f:
+            annotation_payload = json.load(f)
+    except Exception as exc:
+        abort(
+            500,
+            description=f"Could not read annotation file: {exc}",
+        )
 
     soup = BeautifulSoup(standalone_html, "html.parser")
 
@@ -1462,12 +1521,64 @@ def html_sections(memo_id: str):
             "html": str(section)
         })
 
+    ui_annotations = []
+
+    for ann in annotation_payload.get("annotations", []):
+
+        location = ann.get("location", {})
+
+        section_ids = (
+            location.get("section_ids")
+            or location.get("section_id")
+            or []
+        )
+
+        if isinstance(section_ids, str):
+            section_ids = [section_ids]
+
+        ui_annotations.append({
+            "annotation_id": ann.get("annotation_id"),
+            "public_label": ann.get("public_label"),
+            "title": ann.get("title"),
+            "detail": ann.get("detail"),
+            "category": ann.get("category"),
+            "severity": ann.get("severity"),
+            "confidence": ann.get("confidence"),
+            "section_ids": section_ids,
+            "primary_section_id": (
+                section_ids[0]
+                if section_ids
+                else None
+            ),
+            "review_status": (
+                ann.get("review", {})
+                   .get("status")
+            )
+        })
+
+    scores = annotation_payload.get("scores", {})
+
+    annotation_summary = {
+        "overall_score": scores.get("overall_score"),
+        "annotation_count": scores.get("annotation_count"),
+        "critical_count": sum(
+            1
+            for ann in ui_annotations
+            if ann.get("severity") == "critical"
+        )
+    }
+
     return jsonify({
         "memo_id": memo_id,
         "html_filename": html_path.name,
+
         "css": css_html,
+
         "section_count": len(sections),
-        "sections": sections
+        "sections": sections,
+
+        "annotation_summary": annotation_summary,
+        "annotations": ui_annotations
     })
 
 
