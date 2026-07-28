@@ -4,9 +4,13 @@ import os
 
 from bs4 import BeautifulSoup
 
-from flask import Flask, request, jsonify, abort, send_file, url_for
+from flask import Flask, request, jsonify, abort, send_file, url_for, send_from_directory
+from werkzeug.utils import safe_join
+
 import io
 from flask_cors import CORS
+
+from frontend.routes import register_frontend_routes
 from model.stress_model import run_stress
 from model.scenario_report import create_scenario_report
 from model.scenario_report_documents import (
@@ -114,16 +118,19 @@ BENCHMARK_PROMPT_LABELS = {
     for item in BENCHMARK_PROMPT_MODES
 }
 
-BENCHMARK_DATA_DIR = Path(
-    "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
-)
+# BENCHMARK_DATA_DIR = Path(
+#     "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
+# )
 
-HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
+# HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
-# BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
+BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
 
-# HTML_DIR = BENCHMARK_DATA_DIR / "html"
+HTML_DIR = BENCHMARK_DATA_DIR / "html"
 
+app.config["HTML_DIR"] = HTML_DIR
+
+register_frontend_routes(app)
 
 ANNOTATION_DIR = (
     BENCHMARK_DATA_DIR
@@ -551,9 +558,7 @@ def _request_int(payload, name, default=20):
         return default
 
 
-@app.route("/")
-def home():
-    return "Capital Benchmark API"
+
 
 
 @app.route("/health")
