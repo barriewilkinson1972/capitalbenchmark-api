@@ -18,7 +18,7 @@ def benchmark_data_dir() -> Path:
     candidates = [
         Path(
             "/opt/capitalbenchmark-data/"
-            "credit_memo_benchmark_2026_v1/context_visibility_pilot"
+            "context_visibility_pilot"
         ),
         Path(
             "/Users/barrie/capitalbenchmark-api/"
