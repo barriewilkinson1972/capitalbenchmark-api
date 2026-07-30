@@ -2,7 +2,36 @@ import os
 from pathlib import Path
 
 
+def _contains_benchmark_frontend(path: Path) -> bool:
+    """
+    Return True when path contains either:
+    - a legacy single frontend; or
+    - one or more model-specific benchmark frontends.
+    """
+    if (path / "index.html").is_file():
+        return True
+
+    if (path / "html" / "index.html").is_file():
+        return True
+
+    return any(
+        child.is_dir() and (child / "html" / "index.html").is_file()
+        for child in path.iterdir()
+    )
+
+
 def benchmark_data_dir() -> Path:
+    """
+    Locate the benchmark root.
+
+    Preferred layout:
+
+        context_visibility_pilot/
+            gpt4o_mini/
+                html/
+            gpt5/
+                html/
+    """
     configured = os.getenv("BENCHMARK_DATA_DIR")
 
     if configured:
@@ -18,11 +47,11 @@ def benchmark_data_dir() -> Path:
     candidates = [
         Path(
             "/opt/capitalbenchmark-data/"
-            "context_visibility_pilot/gpt5"
+            "context_visibility_pilot"
         ),
         Path(
             "/Users/barrie/capitalbenchmark-api/"
-            "benchmark_runs/context_visibility_pilot/gpt5"
+            "benchmark_runs/context_visibility_pilot"
         ),
     ]
 
@@ -39,35 +68,39 @@ def benchmark_data_dir() -> Path:
 
 
 def benchmark_html_dir(data_dir: Path) -> Path:
+    """
+    Return the root from which model-specific HTML directories are discovered.
+
+    BENCHMARK_HTML_DIR may point to:
+    - the benchmark root containing model folders;
+    - a single model directory containing html/; or
+    - a legacy html directory containing index.html.
+    """
     configured = os.getenv("BENCHMARK_HTML_DIR")
 
     if configured:
         path = Path(configured).expanduser().resolve()
 
-        if not (path / "index.html").is_file():
+        if not path.is_dir() or not _contains_benchmark_frontend(path):
             raise RuntimeError(
-                "Configured BENCHMARK_HTML_DIR does not contain "
-                f"index.html: {path}"
+                "Configured BENCHMARK_HTML_DIR does not contain a "
+                f"benchmark frontend: {path}"
             )
 
         return path
 
-    candidates = [
-        # Local layout
-        data_dir / "html"
+    path = data_dir.expanduser().resolve()
+
+    if _contains_benchmark_frontend(path):
+        return path
+
+    checked = [
+        path / "index.html",
+        path / "html" / "index.html",
+        path / "<model>" / "html" / "index.html",
     ]
 
-    for path in candidates:
-        path = path.resolve()
-
-        if (path / "index.html").is_file():
-            return path
-
-    checked = ", ".join(
-        str(path / "index.html")
-        for path in candidates
-    )
-
     raise RuntimeError(
-        f"Benchmark frontend index.html was not found. Checked: {checked}"
+        "Benchmark frontend index.html was not found. Checked: "
+        + ", ".join(str(item) for item in checked)
     )

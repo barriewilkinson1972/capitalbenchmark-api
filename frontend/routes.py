@@ -1,7 +1,14 @@
-from pathlib import Path
+from __future__ import annotations
 
-from flask import abort, send_from_directory
+import json
+import re
+from pathlib import Path
+from typing import Any
+
+from flask import abort, make_response, send_from_directory
 from werkzeug.utils import safe_join
+
+from .index_page import render_benchmark_index
 
 
 ALLOWED_FRONTEND_SUFFIXES = {
@@ -21,13 +28,101 @@ ALLOWED_FRONTEND_SUFFIXES = {
     ".map",
 }
 
+_MEMOS_PATTERN = re.compile(
+    r"const\s+MEMOS\s*=\s*(\[.*?\])\s*;",
+    re.DOTALL,
+)
+
+
+def _discover_frontends(root: Path) -> dict[str, Path]:
+    """Discover model-specific HTML directories."""
+    frontends: dict[str, Path] = {}
+
+    if (root / "index.html").is_file():
+        frontends[root.name or "default"] = root
+
+    if (root / "html" / "index.html").is_file():
+        frontends[root.name or "default"] = root / "html"
+
+    for child in sorted(root.iterdir()):
+        html_dir = child / "html"
+
+        if child.is_dir() and (html_dir / "index.html").is_file():
+            frontends[child.name] = html_dir
+
+    return frontends
+
+
+def _load_index_records(
+    run_slug: str,
+    html_dir: Path,
+) -> list[dict[str, Any]]:
+    """
+    Read the memo records embedded by run_all_credit_memo_html.py and
+    prefix each memo link with its model/run slug.
+    """
+    index_path = html_dir / "index.html"
+
+    try:
+        source = index_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise RuntimeError(
+            f"Could not read benchmark index: {index_path}"
+        ) from exc
+
+    match = _MEMOS_PATTERN.search(source)
+
+    if match is None:
+        raise RuntimeError(
+            f"Could not find the embedded MEMOS array in {index_path}"
+        )
+
+    try:
+        records = json.loads(match.group(1))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"Invalid embedded MEMOS JSON in {index_path}: {exc}"
+        ) from exc
+
+    normalised_records: list[dict[str, Any]] = []
+
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+
+        item = dict(record)
+        filename = Path(str(item.get("href", "")).strip()).name
+
+        if not filename:
+            continue
+
+        item["href"] = f"memos/{run_slug}/{filename}"
+        item["benchmark_run"] = run_slug
+        normalised_records.append(item)
+
+    return normalised_records
+
 
 def register_frontend_routes(app):
+    html_root = Path(app.config["HTML_DIR"]).expanduser().resolve()
+    frontend_dirs = _discover_frontends(html_root)
 
-    html_dir = Path(app.config["HTML_DIR"])
+    if not frontend_dirs:
+        raise RuntimeError(
+            f"No benchmark HTML frontends were found under {html_root}"
+        )
 
+    def resolve_frontend_file(
+        run_slug: str,
+        filename: str,
+    ) -> tuple[Path, Path]:
+        html_dir = frontend_dirs.get(run_slug)
 
-    def resolve_frontend_file(filename: str) -> Path:
+        if html_dir is None:
+            abort(
+                404,
+                description=f"Unknown benchmark run: {run_slug}",
+            )
 
         requested_filename = str(filename).strip()
 
@@ -62,37 +157,29 @@ def register_frontend_routes(app):
                 description=f"Frontend file not found: {requested_filename}",
             )
 
-        return resolved_path
-
+        return html_dir, resolved_path
 
     @app.get("/")
     def frontend_home():
+        records: list[dict[str, Any]] = []
 
-        index_path = html_dir / "index.html"
+        for run_slug, html_dir in frontend_dirs.items():
+            records.extend(_load_index_records(run_slug, html_dir))
 
-        if not index_path.is_file():
-            abort(
-                404,
-                description="Benchmark frontend index.html was not found.",
-            )
-
-        response = send_from_directory(
-            directory=str(html_dir),
-            path="index.html",
-            mimetype="text/html",
-            conditional=True,
-            max_age=300,
-        )
-
+        page = render_benchmark_index(records)
+        response = make_response(page)
+        response.mimetype = "text/html"
+        response.headers["Cache-Control"] = "public, max-age=300"
         response.headers["X-Content-Type-Options"] = "nosniff"
 
         return response
 
-
-    @app.get("/<path:filename>")
-    def frontend_file(filename: str):
-
-        requested_path = resolve_frontend_file(filename)
+    @app.get("/memos/<run_slug>/<path:filename>")
+    def frontend_memo(run_slug: str, filename: str):
+        html_dir, requested_path = resolve_frontend_file(
+            run_slug,
+            filename,
+        )
 
         relative_path = requested_path.relative_to(html_dir)
 

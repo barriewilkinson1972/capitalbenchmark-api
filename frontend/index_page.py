@@ -660,7 +660,12 @@ def render_benchmark_index(manifest: dict[str, Any] | list[dict[str, Any]]) -> s
 
         function memoHref(value) {{
             const raw = normaliseValue(value);
-            return raw.split("/").filter(Boolean).pop() || "";
+
+            return raw
+                .split("/")
+                .filter(Boolean)
+                .map((segment) => encodeURIComponent(segment))
+                .join("/");
         }}
 
         function uniqueSortedValues(fieldName) {{
@@ -781,7 +786,7 @@ def render_benchmark_index(manifest: dict[str, Any] | list[dict[str, Any]]) -> s
                 const href = memoHref(memo.href);
 
                 if (href) {{
-                    window.location.href = "/" + encodeURIComponent(href);
+                    window.location.href = "/" + href;
                 }}
             }};
 
@@ -872,8 +877,9 @@ def _normalise_manifest_record(
     Map a batch-run manifest result into the frontend index format.
     """
 
-    filename = _first_value(
+    href_value = _first_value(
         record,
+        "href",
         "html_file_name",
         "html_filename",
         "filename",
@@ -882,8 +888,20 @@ def _normalise_manifest_record(
         default="",
     )
 
-    # Never expose an absolute filesystem path in a browser link.
-    filename = Path(str(filename).strip()).name
+    href_text = str(href_value).strip()
+    href_path = Path(href_text)
+    filename = href_path.name
+
+    # Preserve the model-specific relative URL created by routes.py, while
+    # continuing to collapse absolute or unsafe paths to a bare filename.
+    if (
+        href_text.startswith("memos/")
+        and not href_path.is_absolute()
+        and ".." not in href_path.parts
+    ):
+        browser_href = href_text
+    else:
+        browser_href = filename
 
     parsed_filename = _parse_filename_metadata(filename)
 
@@ -948,7 +966,7 @@ def _normalise_manifest_record(
         "context": _display_text(context),
         "evaluation": _display_text(evaluation),
         "issues": issues,
-        "href": filename,
+        "href": browser_href,
     }
 
 
