@@ -150,71 +150,141 @@ CREDIT_MEMO_SCHEMA: dict[str, Any] = {
 }
 
 
+SECTION_GENERATION_SPECS: dict[str, dict[str, Any]] = {
+    "executive_summary": {
+        "deterministic_inputs": [
+            "borrower", "credit_request", "capital_benchmark_rating",
+            "rating_driver_groups", "financial_watchpoints",
+            "policy_evaluation", "exposure_analytics",
+        ],
+        "tight_instruction": (
+            "Summarise only facts and conclusions present in the supplied context. "
+            "Do not fill gaps with assumed ratios, ratings, policy outcomes or facility terms."
+        ),
+        "loose_instruction": "Write a concise executive summary suitable for credit committee readers.",
+    },
+    "borrower_and_request": {
+        "deterministic_inputs": ["borrower", "credit_request", "exposure_analytics"],
+        "tight_instruction": (
+            "Describe the borrower and request only from supplied borrower and credit_request fields. "
+            "Treat a request as illustrative unless relationship_context explicitly states it is live."
+        ),
+        "loose_instruction": "Describe the borrower and proposed credit request.",
+    },
+    "business_profile": {
+        "deterministic_inputs": ["borrower.business_summary", "borrower.industry", "borrower.sector", "borrower.country"],
+        "tight_instruction": (
+            "Use only the supplied business description, industry, sector and country. "
+            "Do not infer market position, resilience, strategy, trends or competitive advantage."
+        ),
+        "loose_instruction": "Provide a professional assessment of the borrower's business profile.",
+    },
+    "rating_assessment": {
+        "deterministic_inputs": ["capital_benchmark_rating"],
+        "tight_instruction": (
+            "Describe the CB rating as a Capital Benchmark proprietary rating estimate. "
+            "Do not invent or infer an agency rating, rating outlook or rating rationale."
+        ),
+        "loose_instruction": "Assess the borrower's credit rating and overall credit standing.",
+    },
+    "rating_drivers": {
+        "deterministic_inputs": ["rating_driver_groups", "rating_driver_sensitivities"],
+        "tight_instruction": (
+            "Use only supplied rating diagnostics. Treat sensitivities as model diagnostics rather than causal proof."
+        ),
+        "loose_instruction": "Identify and discuss the main positive and negative rating drivers.",
+    },
+    "financial_risk": {
+        "deterministic_inputs": ["financials", "credit_metrics", "metric_assessments", "financial_watchpoints"],
+        "tight_instruction": (
+            "Discuss only supplied financial values and deterministic ratios. Never calculate, estimate or invent "
+            "a missing metric. If financial information is absent, state what cannot be assessed."
+        ),
+        "loose_instruction": "Assess leverage, liquidity, profitability, cash flow and financial risk.",
+    },
+    "policy_compliance": {
+        "deterministic_inputs": ["credit_policy", "policy_evaluation"],
+        "tight_instruction": (
+            "State policy conclusions only where supported by supplied policy material or evaluation results. "
+            "Do not invent policy names, sections, thresholds, breaches, waivers or approval requirements. "
+            "If policy information is absent, explain in ordinary credit-memo language that policy compliance "
+            "cannot yet be confirmed. Never mention an LLM, prompt, benchmark, hidden context or generation method."
+        ),
+        "loose_instruction": "Assess policy compliance, exceptions, required actions and escalation.",
+    },
+    "peer_context": {
+        "deterministic_inputs": ["peer_and_anchor_context"],
+        "tight_instruction": (
+            "Use only supplied peer and anchor observations. Do not invent peer names, quartiles or benchmarks."
+        ),
+        "loose_instruction": "Compare the borrower with relevant peers and rating anchors.",
+    },
+    "committee_view": {
+        "deterministic_inputs": [
+            "all LLM-visible sections", "policy_evaluation", "data_quality",
+        ],
+        "tight_instruction": (
+            "Frame strengths, watchpoints, questions and next steps from the supplied evidence. "
+            "Do not issue a final approve/decline decision or introduce new facts."
+        ),
+        "loose_instruction": "Provide strengths, risks, questions, committee focus areas and a recommendation.",
+    },
+}
+
+
 CREDIT_MEMO_INSTRUCTIONS = """
 You are a senior corporate credit officer preparing a controlled first-draft credit memo.
 
-Use only the supplied JSON memo_context. Do not use outside knowledge of the borrower and
-do not invent facts, financial metrics, ratings, facility terms, news items, mitigants,
-trends, covenant status, refinancing capacity, or recommendations.
+Write the prose of the memo using only the supplied JSON memo_context. The memo must remain
+fully in character as a bank credit memo. Never refer to an LLM, prompt, benchmark experiment,
+hidden context, deterministic engine, renderer, system architecture, or generation process.
 
-The backend owns all numbers, calculations, policy checks, tables, and deterministic facts.
-Your job is to narrate the supplied context into the JSON fields required by the schema.
+The backend owns structured facts, calculations and tables. It will render deterministic tables
+only from facts that were also visible to you. Do not reproduce tables in prose and do not invent
+facts that are absent from the supplied context.
 
-Narrative role:
-- You should add senior-credit-officer judgement in the form of synthesis, prioritisation, framing, and committee-ready language.
-- Create an introduction that explains the credit question, the evidence base, and the preliminary nature of the memo.
-- Create short preambles for each main section. A preamble should orient the reader before the deterministic table or bullet list; it should not simply repeat every number.
-- Create a conclusion_recommendation paragraph. This is not an approval/decline decision. It should state the recommended credit process next step, using conditional language grounded in policy_evaluation.
-- If policy_evaluation indicates exception_approval_zone, the conclusion must recommend exception routing / senior credit committee review before any approval could be considered.
-- If policy_evaluation indicates enhanced_review_zone, the conclusion must recommend enhanced review and missing-information follow-up before approval.
-- If policy_evaluation indicates standard_approval_zone, the conclusion may say the request appears suitable for ordinary credit review, subject to normal due diligence and approval authority.
+Core controls:
+- Do not use outside knowledge of the borrower.
+- Do not invent financial metrics, ratings, facility terms, trends, news, policies, thresholds,
+  covenant status, mitigants, refinancing capacity, peer comparisons or recommendations.
+- Where evidence is missing, explain the analytical limitation in normal credit-memo language.
+- Distinguish rating model diagnostics, broader financial watchpoints, policy findings and human judgement.
+- Describe the CB rating as a Capital Benchmark proprietary rating estimate, never an agency rating.
+- Treat the facility as illustrative unless relationship_context explicitly states that it is live.
+- Do not state that the borrower is seeking or approaching the bank unless explicitly supplied.
+- Do not give a final approve/decline decision. Recommend only the appropriate next credit-process step.
+- Use concise bank-credit language and compact figures such as "$100.0mn", "$8.0bn", "0.15%" and "8.8x".
 
-Core rules:
-- Describe the CB rating as a Capital Benchmark proprietary rating estimate.
-- Do not call it an agency rating or agency-equivalent rating.
-- Treat the facility as illustrative or assumed unless credit_request.relationship_context explicitly says it is live.
-- Do not say the borrower is seeking, requesting, or approaching the bank unless explicitly supplied.
-- Use “This illustrative request assumes...” unless relationship_context states that this is a live request.
-- Use business_summary only for business activities, products, segments, and geographies.
-- Do not infer market leadership, competitiveness, resilience, trend, deterioration, improvement, operational inefficiency, or strategic importance unless explicitly supplied.
-- Distinguish rating model drivers, financial watchpoints, policy breaches, missing information, and human judgement items.
-- Rating model drivers must come from memo_context.rating_driver_groups.
-- Financial watchpoints must come from memo_context.financial_watchpoints or explicit credit metrics.
+Policy controls:
+- If policy_evaluation is supplied, narrate it without independently changing thresholds or outcomes.
+- If credit_policy is supplied without policy_evaluation, apply only those rules that can be assessed
+  from facts present in the supplied JSON.
+- If neither is supplied, do not claim compliance or invent internal policy requirements. State that
+  the applicable policy review remains outstanding.
+- Keep the policy section in character. Technical information about grounding belongs outside the memo.
 
-Credit policy rules:
-- The experiment may show you deterministic policy evaluation, LLM-evaluated policy, or no policy context.
-- If memo_context.policy_evaluation is supplied, treat it as the deterministic policy result. Do not independently reinterpret policy thresholds. policy_breaches must summarize policy_evaluation.triggered_policies; policy_required_actions must summarize policy_evaluation.required_actions; policy_missing_information must summarize policy_evaluation.missing_information; and policy_escalation_assessment must state the approval zone and whether senior credit committee exception approval is required.
-- If memo_context.credit_policy is supplied but memo_context.policy_evaluation is not supplied, apply the credit policy rules yourself to facts visible in the supplied JSON. Do not invent missing metrics or policy outcomes. If required facts are not visible, state that policy compliance cannot be fully assessed and list the information required to apply the relevant policy rules.
-- If neither memo_context.credit_policy nor memo_context.policy_evaluation is supplied, do not claim the request complies with policy. State that policy compliance cannot be assessed from the LLM-visible context.
-- If a severe breach is visible or supplied in policy_evaluation, do not present the request as ordinary-course approval.
-- Do not give a final approve/decline decision. You may provide a process recommendation such as ordinary review, enhanced review, exception approval routing, or defer pending missing information. Use conditional language around required review, mitigants, missing information, and approval authority.
-
-Executive summary must include:
-1. CB rating and CB PD.
-2. Whether an agency rating is available.
-3. Main positive rating drivers.
-4. Main financial watchpoints.
-5. Main policy outcome.
-6. Exposure-level expected loss if supplied.
-
-Style rules:
-- Use concise bank-credit language.
-- Use compact figures such as "$100.0mn", "$8.0bn", "0.15%", and "8.8x".
-- Mention data-quality flags where relevant.
-- Frame driver sensitivities as model diagnostics, not causal proof.
-- If facility terms are missing, make the memo clearly preliminary.
+Return only JSON matching the supplied schema.
 """.strip()
 
 
 LOOSE_CREDIT_MEMO_INSTRUCTIONS = """
-Write a professional corporate credit memo based on the supplied JSON context.
+You are a senior corporate credit officer. Write a polished, committee-ready corporate credit memo
+based on the supplied JSON context.
 
-Cover the borrower, facility request, business profile, rating view, financial risks,
-policy considerations, credit strengths, watchpoints, relationship-manager questions,
-credit committee focus areas, and a conclusion/recommendation paragraph.
-
-Return only JSON matching the supplied schema. Use a polished bank-credit style.
+Cover the borrower, facility request, business profile, rating view, financial risks, policy
+considerations, strengths, watchpoints, relationship-manager questions, committee focus areas,
+and a conclusion/recommendation. Exercise professional judgement and return only JSON matching
+the supplied schema.
 """.strip()
+
+
+def _section_prompt_block(prompt_mode: str) -> str:
+    mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
+    key = "tight_instruction" if mode == "tight" else "loose_instruction"
+    lines = ["Section-specific instructions:"]
+    for section, spec in SECTION_GENERATION_SPECS.items():
+        lines.append(f"- {section}: {spec[key]}")
+    return "\n".join(lines)
 
 
 VALID_CONTEXT_MODES = {"full", "minimal"}
@@ -303,9 +373,8 @@ def _policy_mode_description(policy_mode: str) -> str:
 
 def _prompt_instructions(prompt_mode: str) -> str:
     prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
-    if prompt_mode == "loose":
-        return LOOSE_CREDIT_MEMO_INSTRUCTIONS
-    return CREDIT_MEMO_INSTRUCTIONS
+    base = LOOSE_CREDIT_MEMO_INSTRUCTIONS if prompt_mode == "loose" else CREDIT_MEMO_INSTRUCTIONS
+    return f"{base}\n\n{_section_prompt_block(prompt_mode)}"
 
 
 def _experiment_id(
@@ -1068,7 +1137,7 @@ def build_credit_memo_context(
     financial_watchpoints = _build_financial_watchpoints(metric_assessments)
 
     context = {
-        "memo_version": "credit_memo_v1",
+        "memo_version": "credit_memo_v2",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "borrower": {
             "symbol": _clean_text(row.get("symbol")),
@@ -1185,30 +1254,14 @@ def build_llm_context(
     model_tier: str = "mini",
     experiment_id: str | None = None,
 ) -> dict[str, Any]:
-    """
-    Build the exact context shown to the LLM for ablation experiments.
+    """Build the exact factual context shown to the LLM.
 
-    The full memo_context remains available to the backend renderer and benchmark
-    evaluator. This function controls only what the LLM sees when writing prose.
+    Experimental metadata is deliberately excluded from this payload so that it
+    cannot leak into the memo prose. The full configuration is returned separately
+    by create_credit_memo().
     """
     context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
     policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
-    prompt_mode = _normalise_mode(prompt_mode, VALID_PROMPT_MODES, "tight")
-    model_tier = _normalise_model_tier(model_tier, "mini")
-
-    experiment_config = {
-        "experiment_id": _experiment_id(context_mode, policy_mode, prompt_mode, model, model_tier, experiment_id),
-        "context_mode": context_mode,
-        "policy_mode": policy_mode,
-        "prompt_mode": prompt_mode,
-        "model_tier": model_tier,
-        "model": model,
-        "description": (
-            "LLM ablation configuration: controls whether deterministic borrower/facility facts, "
-            "machine-readable credit policy, deterministic policy evaluation, and tight prompting are visible to the model."
-        ),
-        "policy_mode_description": _policy_mode_description(policy_mode),
-    }
 
     if context_mode == "full":
         llm_context = json.loads(json.dumps(_json_safe(memo_context)))
@@ -1217,7 +1270,6 @@ def build_llm_context(
         request = memo_context.get("credit_request", {})
         llm_context = {
             "memo_version": memo_context.get("memo_version"),
-            "generated_at_utc": memo_context.get("generated_at_utc"),
             "borrower": {
                 "symbol": borrower.get("symbol"),
                 "company_name": borrower.get("company_name"),
@@ -1237,49 +1289,55 @@ def build_llm_context(
                 "relationship_context": request.get("relationship_context"),
                 "currency": request.get("currency"),
             },
-            "llm_context_limitation": {
-                "deterministic_credit_data_hidden": True,
-                "hidden_from_llm": [
-                    "Capital Benchmark rating and PD",
-                    "financial statements and credit metrics",
-                    "rating driver diagnostics",
-                    "financial watchpoints",
-                    "exposure analytics and expected loss",
-                    "peer and anchor metrics",
-                    "data quality flags",
-                ],
-            },
         }
 
-    # Policy grounding modes:
-    # - deterministic_evaluated: policy manual + backend deterministic policy evaluation are visible.
-    # - llm_evaluated: policy manual is visible, deterministic evaluation is hidden; LLM applies rules itself.
-    # - none: both policy manual and deterministic evaluation are hidden.
     if policy_mode == "deterministic_evaluated":
-        if "credit_policy" not in llm_context and memo_context.get("credit_policy") is not None:
+        if memo_context.get("credit_policy") is not None:
             llm_context["credit_policy"] = memo_context.get("credit_policy")
-        if "policy_evaluation" not in llm_context and memo_context.get("policy_evaluation") is not None:
+        if memo_context.get("policy_evaluation") is not None:
             llm_context["policy_evaluation"] = memo_context.get("policy_evaluation")
     elif policy_mode == "llm_evaluated":
-        if "credit_policy" not in llm_context and memo_context.get("credit_policy") is not None:
+        if memo_context.get("credit_policy") is not None:
             llm_context["credit_policy"] = memo_context.get("credit_policy")
         llm_context.pop("policy_evaluation", None)
-        llm_context["policy_context_limitation"] = {
-            "credit_policy_manual_visible_to_llm": True,
-            "policy_evaluation_hidden_from_llm": True,
-            "instruction": "The LLM-visible context includes the machine-readable credit policy manual but not the deterministic policy evaluation. Apply policy only to facts visible in this JSON; do not invent missing financial metrics or policy outcomes.",
-        }
     else:
         llm_context.pop("credit_policy", None)
         llm_context.pop("policy_evaluation", None)
-        llm_context["policy_context_limitation"] = {
-            "credit_policy_manual_hidden_from_llm": True,
-            "policy_evaluation_hidden_from_llm": True,
-            "instruction": "The LLM-visible context does not include the machine-readable credit policy manual or deterministic policy evaluation. Do not claim policy compliance; state that policy compliance cannot be assessed from the LLM-visible context.",
+
+    return _json_safe(llm_context)
+
+
+def build_memo_display_context(
+    memo_context: dict[str, Any],
+    context_mode: str = "full",
+    policy_mode: str = "deterministic_evaluated",
+) -> dict[str, Any]:
+    """Return deterministic facts permitted to appear in the rendered memo.
+
+    The display context follows the same information boundary as the LLM context:
+    facts hidden from the LLM are not silently injected into the finished memo.
+    Technical experiment metadata remains outside the memo in all cases.
+    """
+    context_mode = _normalise_mode(context_mode, VALID_CONTEXT_MODES, "full")
+    policy_mode = _normalise_policy_mode(policy_mode, "deterministic_evaluated")
+
+    if context_mode == "full":
+        display = json.loads(json.dumps(_json_safe(memo_context)))
+    else:
+        display = {
+            "borrower": memo_context.get("borrower", {}),
+            "credit_request": memo_context.get("credit_request", {}),
         }
 
-    llm_context["experiment_config"] = experiment_config
-    return _json_safe(llm_context)
+    if policy_mode == "deterministic_evaluated":
+        if memo_context.get("policy_evaluation") is not None:
+            display["policy_evaluation"] = memo_context.get("policy_evaluation")
+    else:
+        display.pop("policy_evaluation", None)
+
+    # The policy manual is an LLM input/reference source, not a memo table.
+    display.pop("credit_policy", None)
+    return _json_safe(display)
 
 
 # -----------------------------
@@ -1560,7 +1618,13 @@ def create_credit_memo(
             raise RuntimeError(f"OpenAI narrative required but unavailable: {fallback_reason}")
         narrative = fallback_credit_memo_narrative(memo_context)
 
-    markdown = render_credit_memo_markdown(memo_context, narrative)
+    display_context = build_memo_display_context(
+        memo_context=memo_context,
+        context_mode=context_mode,
+        policy_mode=policy_mode,
+    )
+
+    markdown = render_credit_memo_markdown(display_context, narrative, experiment_config=experiment_config)
 
     result = {
         "narrative_source": narrative_source,
@@ -1571,8 +1635,27 @@ def create_credit_memo(
         "openai_model_tier": model_tier,
         "experiment_config": experiment_config,
         "memo_context": memo_context,
+        "memo_display_context": display_context,
         "narrative": narrative,
         "memo_markdown": markdown,
+        "benchmark_metadata": {
+            "section_generation_specs": SECTION_GENERATION_SPECS,
+            "information_boundary": {
+                "facts_hidden_from_llm_are_hidden_from_memo": True,
+                "deterministic_tables_use_only_llm_visible_facts": True,
+                "generation_method_is_excluded_from_memo_prose": True,
+            },
+            "score_framework": {
+                "llm_performance_score": {
+                    "status": "not_scored",
+                    "purpose": "Evaluate the model's prose, reasoning and uncertainty handling given its visible information.",
+                },
+                "memo_quality_score": {
+                    "status": "not_scored",
+                    "purpose": "Evaluate the final memo's completeness, accuracy and usefulness for credit decision support.",
+                },
+            },
+        },
     }
     if include_llm_context:
         result["llm_context"] = llm_context
@@ -1679,17 +1762,57 @@ def _preamble(narrative: dict[str, Any], key: str) -> str:
     return f"_{text}_\n" if text else ""
 
 
+def _policy_labels_for_render(experiment_config: dict[str, Any] | None = None) -> dict[str, str]:
+    """In-character memo labels. Grounding details belong in benchmark metadata."""
+    return {
+        "policy_heading": "Policy Assessment",
+        "policy_note": "",
+        "breaches_heading": "Policy Considerations",
+        "actions_heading": "Required Follow-up",
+        "missing_heading": "Outstanding Information",
+        "escalation_heading": "Escalation and Recommendation",
+    }
+
+
 def _experiment_table_from_context(memo_context: dict[str, Any], narrative: dict[str, Any] | None = None) -> str:
     # The markdown renderer normally receives only memo_context and narrative, so this is a placeholder.
     # The full payload-level experiment_config is rendered in DOCX. For API consumers, use result["experiment_config"].
     return ""
 
 
+def _mapping_has_values(mapping: Any) -> bool:
+    if not isinstance(mapping, dict):
+        return False
+    return any(value is not None and value != "" and value != [] for value in mapping.values())
+
+
+def _optional_table(context: dict[str, Any], keys: list[str], table_builder: Any) -> str:
+    if not any(_mapping_has_values(context.get(key)) for key in keys):
+        return ""
+    return "\n\n" + table_builder(context)
+
+
 def render_credit_memo_markdown(
     memo_context: dict[str, Any],
     narrative: dict[str, Any],
+    experiment_config: dict[str, Any] | None = None,
 ) -> str:
     borrower = memo_context.get("borrower", {})
+    policy_labels = _policy_labels_for_render(experiment_config)
+
+    request_table = _optional_table(
+        memo_context, ["credit_request", "exposure_analytics"], _request_table
+    )
+    rating_table = _optional_table(
+        memo_context, ["capital_benchmark_rating"], _rating_table
+    )
+    financial_table = _optional_table(
+        memo_context, ["financials", "credit_metrics"], _financial_table
+    )
+    driver_table = ""
+    if memo_context.get("rating_driver_sensitivities"):
+        driver_table = "\n\n" + _driver_table(memo_context)
+
     return f"""# {narrative.get("title", "Credit Memo")}
 
 **Borrower:** {narrative.get("borrower_name") or borrower.get("company_name") or borrower.get("symbol") or "n/a"}  
@@ -1705,9 +1828,7 @@ def render_credit_memo_markdown(
 
 ## Borrower and Request Summary
 
-{narrative.get("request_summary", "")}
-
-{_request_table(memo_context)}
+{narrative.get("request_summary", "")}{request_table}
 
 ## Business Profile
 
@@ -1715,15 +1836,11 @@ def render_credit_memo_markdown(
 
 ## Capital Benchmark Rating Assessment
 
-{narrative.get("capital_benchmark_rating_assessment", "")}
-
-{_rating_table(memo_context)}
+{narrative.get("capital_benchmark_rating_assessment", "")}{rating_table}
 
 ## Rating Driver Commentary
 
-{narrative.get("rating_driver_commentary", "")}
-
-{_driver_table(memo_context)}
+{narrative.get("rating_driver_commentary", "")}{driver_table}
 
 ## Positive Rating Drivers
 
@@ -1739,31 +1856,29 @@ def render_credit_memo_markdown(
 
 ## Financial Risk Assessment
 
-{narrative.get("financial_risk_assessment", "")}
-
-{_financial_table(memo_context)}
+{narrative.get("financial_risk_assessment", "")}{financial_table}
 
 ## Financial Watchpoints
 
 {_bullets(narrative.get("financial_watchpoints", []))}
 
-## Credit Policy Compliance
+## {policy_labels['policy_heading']}
 
 {narrative.get("policy_compliance_assessment", "")}
 
-### Policy Breaches and Triggers
+### {policy_labels['breaches_heading']}
 
 {_bullets(narrative.get("policy_breaches", []))}
 
-### Required Policy Actions
+### {policy_labels['actions_heading']}
 
 {_bullets(narrative.get("policy_required_actions", []))}
 
-### Policy Missing Information
+### {policy_labels['missing_heading']}
 
 {_bullets(narrative.get("policy_missing_information", []))}
 
-### Escalation Assessment
+### {policy_labels['escalation_heading']}
 
 {narrative.get("policy_escalation_assessment", "")}
 

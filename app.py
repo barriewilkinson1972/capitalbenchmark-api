@@ -10,6 +10,8 @@ from werkzeug.utils import safe_join
 import io
 from flask_cors import CORS
 
+from config import benchmark_data_dir, benchmark_html_dir
+
 from frontend.routes import register_frontend_routes
 from model.stress_model import run_stress
 from model.scenario_report import create_scenario_report
@@ -118,15 +120,10 @@ BENCHMARK_PROMPT_LABELS = {
     for item in BENCHMARK_PROMPT_MODES
 }
 
-BENCHMARK_DATA_DIR = Path(
-    "/opt/capitalbenchmark-data/credit_memo_benchmark_2026_v1"
-)
 
-HTML_DIR = BENCHMARK_DATA_DIR / "rendered_files" / "html"
 
-# BENCHMARK_DATA_DIR = Path("/Users/barrie/capitalbenchmark-api/benchmark_runs/benchmark_20_mini_memos")
-
-# HTML_DIR = BENCHMARK_DATA_DIR / "html"
+BENCHMARK_DATA_DIR = benchmark_data_dir()
+HTML_DIR = benchmark_html_dir(BENCHMARK_DATA_DIR)
 
 
 
