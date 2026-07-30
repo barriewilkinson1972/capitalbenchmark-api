@@ -1,0 +1,4 @@
+python scripts/run_all_credit_memo_annotations.py \
+    --benchmark-dir benchmark_runs/benchmark_20_mini_memos \
+    --parser-module model/credit_memo_parser.py \
+    --annotation-module model/credit_memo_annotation.py

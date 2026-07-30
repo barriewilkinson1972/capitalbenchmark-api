@@ -18,11 +18,11 @@ def benchmark_data_dir() -> Path:
     candidates = [
         Path(
             "/opt/capitalbenchmark-data/"
-            "context_visibility_pilot/gpt4o_mini"
+            "context_visibility_pilot/gpt5"
         ),
         Path(
             "/Users/barrie/capitalbenchmark-api/"
-            "benchmark_runs/context_visibility_pilot/gpt4o_mini"
+            "benchmark_runs/context_visibility_pilot/gpt5"
         ),
     ]
 

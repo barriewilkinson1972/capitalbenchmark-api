@@ -376,19 +376,14 @@ CONTEXT_PROFILE_ALIASES = {
 VALID_CONTEXT_MODES = set(CONTEXT_PROFILES)
 VALID_POLICY_MODES = {"none", "llm_evaluated", "deterministic_evaluated"}
 VALID_PROMPT_MODES = {"tight", "loose"}
-VALID_MODEL_TIERS = {"mini", "full"}
+VALID_MODEL_TIERS = {"mini", "gpt5"}
 
 MODEL_TIER_ALIASES = {
     "mini": "mini",
-    "small": "mini",
-    "cheap": "mini",
-    "fast": "mini",
-    "gpt_mini": "mini",
-    "full": "full",
-    "large": "full",
-    "premium": "full",
-    "best": "full",
-    "gpt_full": "full",
+    "gpt4o_mini": "mini",
+    "gpt5": "gpt5",
+    "full": "gpt5",
+    "gpt_full": "gpt5",
 }
 
 # Backwards-compatible aliases from the first ablation implementation.
@@ -467,7 +462,7 @@ def resolve_credit_memo_model(model: str | None = None, model_tier: str = "mini"
     if model:
         return str(model).strip()
     tier = _normalise_model_tier(model_tier, "mini")
-    if tier == "full":
+    if tier == "gpt5":
         return DEFAULT_CREDIT_MEMO_MODEL_FULL
     return DEFAULT_CREDIT_MEMO_MODEL_MINI
 
@@ -1650,7 +1645,7 @@ def create_credit_memo(
         "policy_mode_description": _policy_mode_description(policy_mode),
         "llm_uses_tight_prompt": prompt_mode == "tight",
         "model_tier_description": (
-            "Full GPT model selected for higher-quality policy/reasoning assessment."
+            "GPT-5 model selected for benchmark generation."
             if model_tier == "full"
             else "Mini GPT model selected for lower-cost benchmark generation."
         ),
