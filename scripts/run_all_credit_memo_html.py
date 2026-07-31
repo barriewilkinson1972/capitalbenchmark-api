@@ -8,6 +8,9 @@ python scripts/run_all_credit_memo_html.py \
   --benchmark-dir benchmark_runs/benchmark_20_mini_memos \
   --renderer-module model/credit_memo_html.py \
   --overwrite
+
+By default, matching JSON files from <benchmark-dir>/annotations are passed
+to the renderer. Use --no-annotations to generate memo-only HTML.
 """
 
 import argparse
@@ -37,7 +40,7 @@ from frontend.index_page import render_benchmark_index
 
 
 RUN_SCHEMA = "credit_memo_batch_html_run"
-RUN_SCHEMA_VERSION = "1.0.0"
+RUN_SCHEMA_VERSION = "1.2.0"
 
 
 def utc_now_iso() -> str:
@@ -424,6 +427,114 @@ def select_files(
     return files
 
 
+
+def build_variant_navigation(
+    files: list[Path],
+    *,
+    current_path: Path,
+    annotation_dir: Path,
+) -> dict[str, Any]:
+    """Build links among pre-generated HTML variants for one company.
+
+    Each dropdown changes one experimental dimension while preserving the
+    current values of the other dimensions where an exact variant exists.
+    """
+    records: list[dict[str, Any]] = []
+    for path in files:
+        metadata = parse_filename_metadata(path.name)
+        annotation_path = annotation_dir / path.name
+        summary = annotation_summary(annotation_path)
+        records.append(
+            {
+                "path": path,
+                "href": f"{path.stem}.html",
+                **metadata,
+                "model": summary.get("model") or metadata.get("model_tier") or "",
+            }
+        )
+
+    current = next((item for item in records if item["path"] == current_path), None)
+    if current is None:
+        return {}
+
+    company_records = [
+        item for item in records
+        if item.get("company") == current.get("company")
+    ]
+    company_records.sort(key=lambda item: (
+        item.get("model", ""),
+        item.get("context_mode", ""),
+        item.get("policy_mode", ""),
+        item.get("prompt_mode", ""),
+        item.get("run", ""),
+        item.get("sequence", ""),
+    ))
+
+    dimensions: dict[str, list[dict[str, Any]]] = {}
+    keys = ("model", "context_mode", "policy_mode", "prompt_mode", "run")
+
+    for key in keys:
+        values = sorted({
+            str(item.get(key) or "")
+            for item in company_records
+            if str(item.get(key) or "")
+        })
+        options: list[dict[str, Any]] = []
+
+        for value in values:
+            candidates = [
+                item for item in company_records
+                if str(item.get(key) or "") == value
+            ]
+
+            # Prefer an exact match on all dimensions other than the one being
+            # changed. Fall back to the first available variant for the value.
+            exact = next(
+                (
+                    item for item in candidates
+                    if all(
+                        str(item.get(other) or "") == str(current.get(other) or "")
+                        for other in keys
+                        if other != key
+                    )
+                ),
+                None,
+            )
+            destination = exact or (candidates[0] if candidates else None)
+            if destination:
+                options.append(
+                    {
+                        "value": value,
+                        "href": destination["href"],
+                        "selected": value == str(current.get(key) or ""),
+                    }
+                )
+
+        if options:
+            dimensions[key] = options
+
+    current_index = company_records.index(current)
+    previous_href = (
+        company_records[current_index - 1]["href"]
+        if current_index > 0
+        else None
+    )
+    next_href = (
+        company_records[current_index + 1]["href"]
+        if current_index + 1 < len(company_records)
+        else None
+    )
+
+    return {
+        "dimensions": dimensions,
+        "previous_href": previous_href,
+        "next_href": next_href,
+        "note": (
+            "Scores reflect only the information and policies available to the "
+            "model in this experiment."
+        ),
+    }
+
 def run(args: argparse.Namespace) -> int:
     paths = resolve_paths(args)
     benchmark_dir = paths["benchmark_dir"]
@@ -494,11 +605,32 @@ def run(args: argparse.Namespace) -> int:
             annotation_path = annotation_dir / document_map_path.name
             result.update(annotation_summary(annotation_path))
 
+            annotation_payload: dict[str, Any] | None = None
+            if not args.no_annotations and annotation_path.exists():
+                annotation_payload = read_json(annotation_path)
+
+            result["annotation_file"] = (
+                str(annotation_path) if annotation_path.exists() else None
+            )
+            result["annotations_rendered"] = annotation_payload is not None
+
             if output_path.exists() and not args.overwrite:
                 result["status"] = "skipped_existing"
             else:
+                navigation = (
+                    build_variant_navigation(
+                        files,
+                        current_path=document_map_path,
+                        annotation_dir=annotation_dir,
+                    )
+                    if not args.no_navigation
+                    else None
+                )
+
                 fragment = render_fn(
                     document_map,
+                    annotations=annotation_payload,
+                    navigation=navigation,
                     include_title=not args.no_title,
                     include_styles=True,
                 )
@@ -558,6 +690,8 @@ def run(args: argparse.Namespace) -> int:
         "benchmark_directory": str(benchmark_dir),
         "document_map_directory": str(document_map_dir),
         "annotation_directory": str(annotation_dir),
+        "annotations_enabled": not args.no_annotations,
+        "variant_navigation_enabled": not args.no_navigation,
         "html_directory": str(output_dir),
         "renderer_module": str(renderer_module_path),
         "renderer_function": args.renderer_function,
@@ -618,7 +752,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--annotation-dir",
-        help="Override the optional annotation directory used for index metadata.",
+        help=(
+            "Override the annotation directory used for rendered review findings "
+            "and index metadata."
+        ),
+    )
+    parser.add_argument(
+        "--no-annotations",
+        action="store_true",
+        help="Render memo HTML without annotation findings or the review panel.",
     )
     parser.add_argument(
         "--output-dir",
@@ -652,6 +794,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-title",
         action="store_true",
         help="Do not render the document title inside the memo fragment.",
+    )
+    parser.add_argument(
+        "--no-navigation",
+        action="store_true",
+        help="Do not render model/context/policy/prompt/run navigation controls.",
     )
     parser.add_argument(
         "--no-index",

@@ -1,3 +1,8 @@
+cd capitalbenchmark-api
+
+source venv/bin/activate
+
+
 python scripts/run_all_credit_memo_annotations.py \
     --benchmark-dir benchmark_runs/context_visibility_pilot/gpt5 \
     --parser-module model/document_parser.py \

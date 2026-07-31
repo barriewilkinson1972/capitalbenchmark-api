@@ -8,41 +8,7 @@ from typing import Any
 
 ANNOTATION_SCHEMA = "credit_memo_annotation"
 ANNOTATION_SCHEMA_VERSION = "1.0.0"
-ANNOTATION_ENGINE_VERSION = "0.4.1"
-
-
-# Phrases that explicitly state that a policy escalation does not apply.
-# These prevent a simple synonym match from being counted as an affirmative
-# policy reference.
-POLICY_NEGATION_PATTERNS = {
-    "CP-03": [
-        "not requiring senior credit committee",
-        "does not require senior credit committee",
-        "not necessitating senior credit committee",
-        "senior credit committee involvement is not required",
-        "senior credit committee approval is not required",
-        "no senior credit committee involvement",
-        "no senior credit committee approval",
-        "without senior credit committee involvement",
-        "cp-03 does not apply",
-        "cp-03 is not triggered",
-        "cp-03 not triggered",
-    ],
-}
-
-GENERIC_NEGATION_TERMS = [
-    "not",
-    "no",
-    "does not",
-    "do not",
-    "did not",
-    "is not",
-    "are not",
-    "was not",
-    "were not",
-    "without",
-    "neither",
-]
+ANNOTATION_ENGINE_VERSION = "0.6.0"
 
 SEVERITY_WEIGHTS = {
     "critical": 20,
@@ -87,33 +53,20 @@ POLICY_SYNONYMS = {
     "CP-10": ["CP-10", "facility purpose", "general corporate purposes", "use of proceeds"],
 }
 
-# Rating extraction deliberately avoids a trailing word-boundary after +/-.
-# With a pattern like \bBBB\+\b, Python can fail to match "BBB+" because + is
-# not a word character, and then separately match the substring "BBB". That creates
-# false positive conflicts such as observed BBB vs expected BBB+.
-RATING_RE = re.compile(
-    r"(?<![A-Za-z])(?:AAA|AA[+-]?|A[+-]?|BBB[+-]?|BB[+-]?|B[+-]?|CCC[+-]?|CC|C|D)(?![A-Za-z+-])"
-)
+RATING_TOKEN = r"(?:AAA|AA[+-]?|A[+-]?|BBB[+-]?|BB[+-]?|B[+-]?|CCC[+-]?|CC|C|D)"
+RATING_RE = re.compile(rf"(?<![A-Z0-9])({RATING_TOKEN})(?![A-Z0-9])")
 
-SINGLE_LETTER_RATINGS = {"A", "B", "C", "D"}
+RATING_ASSERTION_PATTERNS = [
+    re.compile(rf"(?:capital benchmark|cb|internal|indicative|model|proprietary)[^.!?;:]{{0,45}}?(?:rating|rating equivalent|assessment)[^.!?;:]{{0,20}}?(?<![A-Z0-9])(?P<rating>{RATING_TOKEN})(?![A-Z0-9+-])", re.I),
+    re.compile(rf"(?:rating|rating equivalent|assessment)[^.!?;:]{{0,25}}?(?:is|of|:|=)?\s*(?<![A-Z0-9])(?P<rating>{RATING_TOKEN})(?![A-Z0-9+-])", re.I),
+    re.compile(rf"(?:borrower|obligor|company|issuer|aal)[^.!?;:]{{0,30}}?(?:is|was|remains)?\s*(?:rated|assessed)[^.!?;:]{{0,12}}?(?<![A-Z0-9])(?P<rating>{RATING_TOKEN})(?![A-Z0-9+-])", re.I),
+]
 
-
-def _extract_rating_mentions(text: str) -> set[str]:
-    """Extract plausible credit ratings from narrative text.
-
-    Single-letter ratings are noisy in prose because they collide with ordinary
-    words/articles. For now, keep them only when they appear close to explicit
-    rating language.
-    """
-    mentions: set[str] = set()
-    for match in RATING_RE.finditer(text or ""):
-        rating = match.group(0)
-        if rating in SINGLE_LETTER_RATINGS:
-            window = (text[max(0, match.start() - 35): match.end() + 35] or "").lower()
-            if not any(term in window for term in ["rating", "rated", "credit quality", "cb " ]):
-                continue
-        mentions.add(rating)
-    return mentions
+RATING_NON_ASSERTION_TERMS = [
+    "minimum rating", "threshold", "below", "above", "or below", "or better",
+    "policy", "trigger", "category", "single-b", "single b", "rating scale",
+    "agency rating", "external rating", "benchmarking",
+]
 
 
 
@@ -200,253 +153,6 @@ def _snippet(text: str, needle: str, chars: int = 110) -> str:
     return text[start:end].replace("\n", " ").strip()
 
 
-
-class DocumentIndex:
-    """Convenience index over the nested document-map structure."""
-
-    def __init__(self, document_map: dict[str, Any]):
-        self.document_map = document_map or {}
-        self.sections_by_id: dict[str, dict[str, Any]] = {}
-        self.sections_by_type: dict[str, list[dict[str, Any]]] = {}
-        self.blocks_by_id: dict[str, dict[str, Any]] = {}
-        self.blocks_by_uuid: dict[str, dict[str, Any]] = {}
-        self.blocks_by_section_type: dict[str, list[dict[str, Any]]] = {}
-        self.blocks_in_order: list[dict[str, Any]] = []
-
-        for section in self.document_map.get("sections", []) or []:
-            section_id = str(section.get("section_id") or "")
-            section_type = str(section.get("section_type") or "other")
-
-            if section_id:
-                self.sections_by_id[section_id] = section
-            self.sections_by_type.setdefault(section_type, []).append(section)
-
-            for block in section.get("blocks", []) or []:
-                block_id = str(block.get("block_id") or "")
-                block_uuid = str(block.get("block_uuid") or "")
-
-                enriched = dict(block)
-                enriched.setdefault("section_id", section_id)
-                enriched.setdefault("section_type", section_type)
-                enriched.setdefault("section_title", section.get("title"))
-
-                if block_id:
-                    self.blocks_by_id[block_id] = enriched
-                if block_uuid:
-                    self.blocks_by_uuid[block_uuid] = enriched
-
-                self.blocks_by_section_type.setdefault(section_type, []).append(enriched)
-                self.blocks_in_order.append(enriched)
-
-        self.blocks_in_order.sort(
-            key=lambda block: (
-                int(block.get("document_order") or 0),
-                str(block.get("block_id") or ""),
-            )
-        )
-
-    def find_blocks(
-        self,
-        *,
-        section_types: list[str] | None = None,
-        search_terms: list[str] | None = None,
-        require_all_terms: bool = False,
-    ) -> list[dict[str, Any]]:
-        candidates = self.blocks_in_order
-        if section_types:
-            allowed = set(section_types)
-            candidates = [
-                block for block in candidates
-                if str(block.get("section_type") or "other") in allowed
-            ]
-
-        terms = [_normalise(term) for term in (search_terms or []) if _clean_text(term)]
-        if not terms:
-            return list(candidates)
-
-        matches: list[dict[str, Any]] = []
-        for block in candidates:
-            haystack = _normalise(str(block.get("text") or ""))
-            checks = [term in haystack for term in terms]
-            if (require_all_terms and all(checks)) or (not require_all_terms and any(checks)):
-                matches.append(block)
-        return matches
-
-    def first_block_in_section_types(self, section_types: list[str]) -> dict[str, Any] | None:
-        matches = self.find_blocks(section_types=section_types)
-        return matches[0] if matches else None
-
-
-def _location_hint(
-    *,
-    target_preference: str,
-    section_types: list[str] | None = None,
-    search_terms: list[str] | None = None,
-    missing_item: str | None = None,
-    policy_id: str | None = None,
-) -> dict[str, Any]:
-    return {
-        "target_preference": target_preference,
-        "section_types": section_types or [],
-        "search_terms": search_terms or [],
-        "missing_item": missing_item,
-        "policy_id": policy_id,
-    }
-
-
-def _block_location(blocks: list[dict[str, Any]]) -> dict[str, Any]:
-    if not blocks:
-        return {
-            "target_type": "unresolved",
-            "resolution_status": "unresolved",
-        }
-
-    target_type = "block" if len(blocks) == 1 else "multi_block"
-    orders = [int(block.get("document_order") or 0) for block in blocks]
-
-    return {
-        "target_type": target_type,
-        "resolution_status": "resolved",
-        "section_ids": list(dict.fromkeys(str(block.get("section_id") or "") for block in blocks)),
-        "section_types": list(dict.fromkeys(str(block.get("section_type") or "other") for block in blocks)),
-        "block_ids": [str(block.get("block_id") or "") for block in blocks],
-        "block_uuids": [str(block.get("block_uuid") or "") for block in blocks],
-        "document_order_start": min(orders) if orders else None,
-        "document_order_end": max(orders) if orders else None,
-        "target_excerpt": str(blocks[0].get("text") or "")[:240],
-    }
-
-
-def _resolve_location(
-    hint: dict[str, Any] | None,
-    document_index: DocumentIndex | None,
-) -> dict[str, Any]:
-    if not hint:
-        return {
-            "target_type": "unresolved",
-            "resolution_status": "no_hint",
-        }
-
-    preference = str(hint.get("target_preference") or "matching_block")
-    section_types = [str(x) for x in hint.get("section_types", []) or []]
-    search_terms = [str(x) for x in hint.get("search_terms", []) or []]
-
-    if preference == "missing_content":
-        suggested = None
-        if document_index:
-            suggested = document_index.first_block_in_section_types(section_types)
-
-        return {
-            "target_type": "missing_content",
-            "resolution_status": "resolved",
-            "expected_section_types": section_types,
-            "missing_item": hint.get("missing_item"),
-            "suggested_insertion_after_block_id": (
-                suggested.get("block_id") if suggested else None
-            ),
-        }
-
-    if document_index is None:
-        return {
-            "target_type": "unresolved",
-            "resolution_status": "document_map_not_supplied",
-            "expected_section_types": section_types,
-        }
-
-    matches = document_index.find_blocks(
-        section_types=section_types or None,
-        search_terms=search_terms or None,
-    )
-
-    if matches:
-        return _block_location(matches[:3])
-
-    fallback = document_index.first_block_in_section_types(section_types) if section_types else None
-    if fallback:
-        location = _block_location([fallback])
-        location["resolution_status"] = "resolved_by_section_fallback"
-        return location
-
-    return {
-        "target_type": "unresolved",
-        "resolution_status": "no_matching_block",
-        "expected_section_types": section_types,
-        "search_terms": search_terms,
-    }
-
-
-def _resolve_annotation_locations(
-    annotations: list[dict[str, Any]],
-    document_map: dict[str, Any] | None,
-) -> dict[str, Any]:
-    document_index = DocumentIndex(document_map) if document_map else None
-
-    resolved = 0
-    unresolved = 0
-    missing_content = 0
-
-    for annotation in annotations:
-        location = _resolve_location(annotation.get("location_hint"), document_index)
-        annotation["location"] = location
-
-        if location.get("target_type") == "missing_content":
-            missing_content += 1
-            resolved += 1
-        elif location.get("resolution_status", "").startswith("resolved"):
-            resolved += 1
-        else:
-            unresolved += 1
-
-    total = len(annotations)
-    return {
-        "annotation_count": total,
-        "resolved_annotation_count": resolved,
-        "unresolved_annotation_count": unresolved,
-        "missing_content_count": missing_content,
-        "location_resolution_score": 100.0 if total == 0 else round(100 * resolved / total, 1),
-    }
-
-
-def _validate_annotation_locations(
-    annotations: list[dict[str, Any]],
-    document_map: dict[str, Any] | None,
-) -> dict[str, Any]:
-    errors: list[dict[str, Any]] = []
-    warnings: list[dict[str, Any]] = []
-
-    if not document_map:
-        warnings.append({
-            "code": "document_map_not_supplied",
-            "message": "Locations could not be fully validated because no document map was supplied.",
-        })
-    else:
-        index = DocumentIndex(document_map)
-        for annotation in annotations:
-            annotation_id = annotation.get("annotation_id")
-            location = annotation.get("location") or {}
-            for block_id in location.get("block_ids", []) or []:
-                if block_id not in index.blocks_by_id:
-                    errors.append({
-                        "annotation_id": annotation_id,
-                        "code": "unknown_block_id",
-                        "block_id": block_id,
-                    })
-            for block_uuid in location.get("block_uuids", []) or []:
-                if block_uuid and block_uuid not in index.blocks_by_uuid:
-                    errors.append({
-                        "annotation_id": annotation_id,
-                        "code": "unknown_block_uuid",
-                        "block_uuid": block_uuid,
-                    })
-
-    return {
-        "status": "failed" if errors else "passed",
-        "error_count": len(errors),
-        "warning_count": len(warnings),
-        "errors": errors,
-        "warnings": warnings,
-    }
-
 def _annotation(
     annotations: list[dict[str, Any]],
     *,
@@ -458,8 +164,7 @@ def _annotation(
     observed: Any = None,
     evidence: Any = None,
     policy_id: str | None = None,
-    location_hint: dict[str, Any] | None = None,
-    confidence: float = 1.0,
+    location: str | None = None,
     scorer: str = "deterministic",
 ) -> None:
     annotations.append(
@@ -467,28 +172,14 @@ def _annotation(
             "annotation_id": f"A{len(annotations) + 1:04d}",
             "category": category,
             "severity": severity,
-            "confidence": max(0.0, min(1.0, float(confidence))),
-            "generated_finding": {
-                "title": title,
-                "detail": detail,
-            },
-            "published_finding": None,
             "title": title,
             "detail": detail,
             "expected": expected,
             "observed": observed,
             "evidence": evidence,
             "policy_id": policy_id,
-            "location_hint": location_hint,
-            "location": None,
+            "location": location,
             "scorer": scorer,
-            "review": {
-                "status": "unreviewed",
-                "reviewer": None,
-                "reviewed_at_utc": None,
-                "decision": None,
-                "notes": None,
-            },
             "status": "draft",
             "public_label": _public_label(category, severity),
         }
@@ -498,11 +189,103 @@ def _annotation(
 def _public_label(category: str, severity: str) -> str:
     if severity in {"critical", "high"}:
         return "Material Error ❌"
-    if category in {"unsupported_claim", "omission", "missing_information_miss", "policy_miss", "rating_driver_confusion"}:
+    if category in {"unsupported_claim", "omission", "policy_miss", "rating_driver_confusion"}:
         return "Important Limitation ⚠"
     if category in {"strength", "correct_detection"}:
         return "Strength ✓"
     return "Review Note"
+
+
+def _evaluation_profile(experiment_config: dict[str, Any]) -> dict[str, Any]:
+    context_mode = _clean_text(experiment_config.get("context_mode")).lower()
+    policy_mode = _clean_text(experiment_config.get("policy_mode")).lower()
+
+    rating_expected = context_mode in {"rating_only", "rating_and_financials", "full"}
+    financials_visible = context_mode in {"financials_only", "rating_and_financials", "full"}
+    policy_trigger_detection_expected = policy_mode in {"llm_evaluated", "deterministic_evaluated"}
+
+    return {
+        "context_mode": context_mode or None,
+        "policy_mode": policy_mode or None,
+        "rating_visible": rating_expected,
+        "rating_expected": rating_expected,
+        "pd_expected": rating_expected,
+        "financials_visible": financials_visible,
+        "expected_loss_expected": context_mode == "full",
+        "policy_trigger_detection_expected": policy_trigger_detection_expected,
+    }
+
+
+def _sentence_windows(text: str) -> list[str]:
+    return [x.strip() for x in re.split(r"(?<=[.!?])\s+|\n+", text) if x.strip()]
+
+
+def _extract_borrower_rating_assertions(text: str) -> list[dict[str, Any]]:
+    assertions: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for sentence in _sentence_windows(text):
+        sentence_norm = _normalise(sentence)
+        for pattern in RATING_ASSERTION_PATTERNS:
+            for match in pattern.finditer(sentence):
+                rating = match.group("rating").upper()
+                start, end = match.span("rating")
+                local = _normalise(sentence[max(0, start - 55): min(len(sentence), end + 55)])
+                if any(term in local for term in RATING_NON_ASSERTION_TERMS):
+                    # Allow a clear CB/internal rating assertion even when the same sentence
+                    # later compares it with a policy threshold.
+                    prefix = _normalise(sentence[max(0, start - 50):start])
+                    if not any(term in prefix for term in ["cb rating", "capital benchmark", "internal rating", "indicative rating", "model indicates"]):
+                        continue
+                key = (rating, sentence)
+                if key in seen:
+                    continue
+                seen.add(key)
+                assertions.append({"rating": rating, "sentence": sentence, "char_start": start, "char_end": end})
+    return assertions
+
+
+def _classify_policy_reference(sentence: str, policy_id: str) -> str:
+    norm = _normalise(sentence)
+    negative_patterns = [
+        "not triggered", "not breached", "no breach", "satisfied", "compliant",
+        "no issue", "does not trigger",
+    ]
+    not_assessable_patterns = [
+        "not assessable", "cannot be assessed", "unable to assess", "not provided",
+        "not available", "insufficient information", "cannot be determined",
+    ]
+    conditional_patterns = [
+        "if ", "would require", "would trigger", "subject to", "once provided",
+        "upon receipt", "if evidenced", "to assess", "to test",
+    ]
+    triggered_patterns = [
+        "breach", "breached", "triggered", "not met", "below the minimum",
+        "exceeds", "requires exception", "exception approval required",
+        "must be obtained", "is missing", "requires enhanced review",
+    ]
+
+    if any(x in norm for x in not_assessable_patterns):
+        return "not_assessable"
+    if any(x in norm for x in negative_patterns):
+        return "not_triggered"
+    if any(x in norm for x in conditional_patterns):
+        return "conditional"
+    if any(x in norm for x in triggered_patterns):
+        return "triggered"
+    return "mentioned"
+
+
+def _policy_references(text: str) -> list[dict[str, Any]]:
+    refs: list[dict[str, Any]] = []
+    for sentence in _sentence_windows(text):
+        explicit = set(re.findall(r"\bCP-\d{2}\b", sentence.upper()))
+        for policy_id in sorted(explicit):
+            refs.append({
+                "policy_id": policy_id,
+                "status": _classify_policy_reference(sentence, policy_id),
+                "sentence": sentence,
+            })
+    return refs
 
 
 def _expected_policy_ids(memo_context: dict[str, Any]) -> list[str]:
@@ -511,86 +294,12 @@ def _expected_policy_ids(memo_context: dict[str, Any]) -> list[str]:
     return [str(x) for x in ids if x]
 
 
-def _policy_term_matches(
-    text_norm: str,
-    policy_id: str,
-    term: str,
-) -> list[dict[str, Any]]:
-    """Return polarity-aware matches for one policy term.
-
-    Matching remains deliberately deterministic. A match is classified as
-    negative when either:
-      * a configured policy-specific negation phrase overlaps the context; or
-      * a common negation term appears immediately before the matched term.
-
-    The returned evidence is useful both for diagnostics and human review.
-    """
-    text_lower = _normalise(text_norm)
-    term_norm = _normalise(term)
-    if not term_norm:
-        return []
-
-    matches: list[dict[str, Any]] = []
-    for match in re.finditer(re.escape(term_norm), text_lower):
-        start, end = match.span()
-        context_start = max(0, start - 90)
-        context_end = min(len(text_lower), end + 70)
-        context = text_lower[context_start:context_end].strip()
-
-        policy_negation = next(
-            (
-                pattern
-                for pattern in POLICY_NEGATION_PATTERNS.get(policy_id, [])
-                if _normalise(pattern) in context
-            ),
-            None,
-        )
-
-        prefix = text_lower[max(0, start - 45):start]
-        generic_negation = next(
-            (
-                negation
-                for negation in GENERIC_NEGATION_TERMS
-                if re.search(
-                    rf"(?:^|[\s,;:()]){re.escape(negation)}(?:\s+\w+){{0,3}}\s*$",
-                    prefix,
-                )
-            ),
-            None,
-        )
-
-        polarity = "negative" if policy_negation or generic_negation else "positive"
-        matches.append(
-            {
-                "policy_id": policy_id,
-                "matched_term": term,
-                "context": context,
-                "polarity": polarity,
-                "negation_pattern": policy_negation or generic_negation,
-            }
-        )
-
-    return matches
-
-
-def _policy_match_evidence(text_norm: str) -> list[dict[str, Any]]:
-    evidence: list[dict[str, Any]] = []
-
-    for policy_id, terms in POLICY_SYNONYMS.items():
-        unique_terms = list(dict.fromkeys([policy_id, *terms]))
-        for term in unique_terms:
-            evidence.extend(_policy_term_matches(text_norm, policy_id, term))
-
-    return evidence
-
-
 def _visible_policy_ids(text_norm: str) -> set[str]:
-    """Return only policies supported by an affirmative text match."""
-    return {
-        match["policy_id"]
-        for match in _policy_match_evidence(text_norm)
-        if match.get("polarity") == "positive"
-    }
+    found = set(re.findall(r"\bCP-\d{2}\b", text_norm.upper()))
+    for policy_id, terms in POLICY_SYNONYMS.items():
+        if _contains_any(text_norm, terms):
+            found.add(policy_id)
+    return found
 
 
 def _narrative_policy_text(narrative: dict[str, Any]) -> str:
@@ -610,105 +319,82 @@ def _check_core_rating_and_pd(
     annotations: list[dict[str, Any]],
     memo_context: dict[str, Any],
     narrative_text: str,
-) -> None:
+    profile: dict[str, Any],
+) -> dict[str, Any]:
     rating = memo_context.get("capital_benchmark_rating", {})
-    expected_rating = _clean_text(rating.get("cb_rating"))
+    expected_rating = _clean_text(rating.get("cb_rating")).upper()
     expected_pd = _safe_float(rating.get("cb_pd"))
+    assertions = _extract_borrower_rating_assertions(narrative_text)
+    asserted_ratings = sorted({x["rating"] for x in assertions})
 
     if expected_rating:
-        mentioned_ratings = _extract_rating_mentions(narrative_text)
-        wrong_ratings = sorted(r for r in mentioned_ratings if r != expected_rating)
+        wrong_ratings = sorted(r for r in asserted_ratings if r != expected_rating)
         if wrong_ratings:
             _annotation(
                 annotations,
                 category="factual_error",
                 severity="high",
-                title="Conflicting credit rating mentioned in LLM prose",
-                detail="The prose contains a rating that does not match the deterministic CB rating.",
+                title="Conflicting borrower credit rating asserted in LLM prose",
+                detail="The prose explicitly asserts a borrower/internal rating that does not match the deterministic CB rating. Policy thresholds and rating-category references are excluded.",
                 expected=expected_rating,
                 observed=wrong_ratings,
-                evidence={"all_ratings_mentioned": sorted(mentioned_ratings)},
-                location_hint=_location_hint(target_preference="matching_block", section_types=["executive_summary", "rating_assessment"], search_terms=wrong_ratings),
+                evidence={"borrower_rating_assertions": assertions},
+                location="narrative",
             )
-        elif expected_rating not in mentioned_ratings:
+        elif profile.get("rating_expected") and expected_rating not in asserted_ratings:
             _annotation(
                 annotations,
                 category="omission",
                 severity="medium",
                 title="CB rating not explicitly mentioned",
-                detail="The deterministic CB rating should normally appear in the executive summary or rating assessment.",
+                detail="The CB rating was visible in this experimental context and should normally appear in the executive summary or rating assessment.",
                 expected=expected_rating,
-                observed="not found in narrative prose",
-                location_hint=_location_hint(
-                    target_preference="missing_content",
-                    section_types=["executive_summary", "rating_assessment"],
-                    missing_item="Capital Benchmark rating",
-                ),
+                observed="no borrower-rating assertion found",
+                evidence={"borrower_rating_assertions": assertions},
+                location="narrative",
             )
 
-    if expected_pd is not None:
+    if expected_pd is not None and profile.get("pd_expected"):
         expected_pd_text = _format_percent(expected_pd)
-        if expected_pd_text not in narrative_text:
+        pd_variants = {
+            expected_pd_text,
+            expected_pd_text.replace(".00%", "%"),
+            f"{expected_pd * 100:.1f}%",
+        }
+        if not any(x in narrative_text for x in pd_variants):
             _annotation(
                 annotations,
                 category="omission",
                 severity="low",
-                title="CB PD not explicitly mentioned in expected format",
-                detail="The deterministic CB PD should normally appear in the executive summary or rating assessment.",
+                title="CB PD not explicitly mentioned",
+                detail="The CB PD was visible in this experimental context and should normally appear in the executive summary or rating assessment.",
                 expected=expected_pd_text,
                 observed="not found in narrative prose",
-                location_hint=_location_hint(target_preference="missing_content", section_types=["executive_summary", "rating_assessment"], missing_item="Capital Benchmark PD"),
+                location="narrative",
             )
 
-
-def _money_value_is_mentioned(expected_value: float, text: str) -> bool:
-    """Return True if a dollar amount appears in common memo formats.
-
-    Accepts exact dollars ("$67,500"), compact thousands ("$67.5k"),
-    and plain numeric variants. This avoids false omissions when different
-    renderers/models use compact notation.
-    """
-    if expected_value is None:
-        return False
-    text_norm = (text or "").lower().replace(",", "")
-    value = float(expected_value)
-    candidates = {
-        f"${value:,.0f}".lower().replace(",", ""),
-        f"{value:,.0f}".lower().replace(",", ""),
-        str(int(round(value))),
+    return {
+        "expected_rating": expected_rating or None,
+        "borrower_rating_assertions": assertions,
+        "asserted_borrower_ratings": asserted_ratings,
+        "rating_scored": bool(profile.get("rating_expected")),
+        "pd_scored": bool(profile.get("pd_expected")),
     }
-    if abs(value) >= 1000:
-        k = value / 1000
-        candidates.update({
-            f"${k:.1f}k".lower(),
-            f"{k:.1f}k".lower(),
-            f"${k:.0f}k".lower(),
-            f"{k:.0f}k".lower(),
-            f"${k:.1f} thousand".lower(),
-            f"{k:.1f} thousand".lower(),
-        })
-    if abs(value) >= 1_000_000:
-        m = value / 1_000_000
-        candidates.update({
-            f"${m:.1f}mn".lower(),
-            f"{m:.1f}mn".lower(),
-            f"${m:.1f} million".lower(),
-            f"{m:.1f} million".lower(),
-        })
-    return any(candidate in text_norm for candidate in candidates if candidate)
-
 
 def _check_expected_loss(
     annotations: list[dict[str, Any]],
     memo_context: dict[str, Any],
     narrative_text: str,
+    profile: dict[str, Any],
 ) -> None:
+    if not profile.get("expected_loss_expected"):
+        return
     exposure = memo_context.get("exposure_analytics", {})
     expected_el = _safe_float(exposure.get("base_expected_loss_on_proposed_exposure"))
     if expected_el is None:
         return
     expected_text = _format_currency(expected_el)
-    if not _money_value_is_mentioned(expected_el, narrative_text):
+    if expected_text not in narrative_text and str(int(round(expected_el))) not in narrative_text.replace(",", ""):
         _annotation(
             annotations,
             category="omission",
@@ -717,7 +403,7 @@ def _check_expected_loss(
             detail="Expected loss is deterministic and should be stated where exposure analytics are discussed.",
             expected=expected_text,
             observed="not found in narrative prose",
-            location_hint=_location_hint(target_preference="missing_content", section_types=["executive_summary", "borrower_request_summary"], missing_item="expected loss"),
+            location="executive_summary_or_request_summary",
         )
 
 
@@ -725,120 +411,93 @@ def _check_policy_detection(
     annotations: list[dict[str, Any]],
     memo_context: dict[str, Any],
     narrative: dict[str, Any],
+    profile: dict[str, Any],
 ) -> dict[str, Any]:
     expected_ids = set(_expected_policy_ids(memo_context))
     policy_text = _narrative_policy_text(narrative)
-    policy_text_norm = _normalise(policy_text)
-    policy_match_evidence = _policy_match_evidence(policy_text_norm)
-    observed_ids = {
-        match["policy_id"]
-        for match in policy_match_evidence
-        if match.get("polarity") == "positive"
-    }
-    positive_matches_by_policy = {
-        policy_id: [
-            match for match in policy_match_evidence
-            if match.get("policy_id") == policy_id
-            and match.get("polarity") == "positive"
-        ]
-        for policy_id in observed_ids
-    }
+    refs = _policy_references(policy_text)
 
-    for policy_id in sorted(expected_ids):
-        if policy_id not in observed_ids:
-            _annotation(
-                annotations,
-                category="policy_miss",
-                severity="high" if policy_id == "CP-03" else "medium",
-                title=f"Expected policy finding not identified: {policy_id}",
-                detail="The deterministic ground-truth policy evaluation triggered this rule, but the LLM policy prose did not clearly identify it.",
-                expected=policy_id,
-                observed=sorted(observed_ids),
-                evidence=memo_context.get("policy_evaluation", {}).get("triggered_policies", []),
-                policy_id=policy_id,
-                location_hint=_location_hint(
-                    target_preference="missing_content",
-                    section_types=[
-                        "policy_assessment",
-                        "policy_breaches_triggers",
-                        "required_policy_actions",
-                        "policy_escalation_assessment",
-                    ],
-                    search_terms=POLICY_SYNONYMS.get(policy_id, [policy_id]),
-                    missing_item=f"expected policy finding {policy_id}",
+    statuses_by_id: dict[str, set[str]] = {}
+    evidence_by_id: dict[str, list[dict[str, Any]]] = {}
+    for ref in refs:
+        policy_id = ref["policy_id"]
+        statuses_by_id.setdefault(policy_id, set()).add(ref["status"])
+        evidence_by_id.setdefault(policy_id, []).append(ref)
+
+    observed_triggered = {
+        policy_id for policy_id, statuses in statuses_by_id.items()
+        if "triggered" in statuses
+    }
+    observed_considered = set(statuses_by_id)
+    should_score = bool(profile.get("policy_trigger_detection_expected"))
+
+    if should_score:
+        for policy_id in sorted(expected_ids):
+            if policy_id not in observed_triggered:
+                observed_statuses = sorted(statuses_by_id.get(policy_id, set())) or ["not mentioned"]
+                _annotation(
+                    annotations,
+                    category="policy_miss",
+                    severity="high" if policy_id == "CP-03" else "medium",
+                    title=f"Expected triggered policy finding not correctly stated: {policy_id}",
+                    detail="The deterministic policy evaluation triggered this rule, but the memo did not state it as an affirmative triggered finding. Mere mentions, conditional statements and 'not assessable' references do not receive trigger credit.",
+                    expected={"policy_id": policy_id, "status": "triggered"},
+                    observed={"statuses": observed_statuses},
+                    evidence={"memo_references": evidence_by_id.get(policy_id, []), "ground_truth": memo_context.get("policy_evaluation", {}).get("triggered_policies", [])},
                     policy_id=policy_id,
-                ),
-            )
+                    location="policy_prose",
+                )
 
-    # False positives are lower severity because a model can defensibly cite a lower threshold
-    # such as CP-02 where CP-03 is the material severe trigger.
-    for policy_id in sorted(observed_ids - expected_ids):
-        if policy_id == "CP-02" and "CP-03" in expected_ids:
-            severity = "info"
-            detail = "The model cited CP-02 as a lesser-included leverage threshold while CP-03 is the material trigger. Treat as over-inclusive rather than wrong."
-            category = "overinclusive_policy_reference"
-        else:
-            severity = "low"
-            detail = "The model appears to cite a policy rule that is not present in the deterministic triggered-policy list."
-            category = "possible_false_positive"
-        _annotation(
-            annotations,
-            category=category,
-            severity=severity,
-            title=f"Additional policy reference not in deterministic triggered list: {policy_id}",
-            detail=detail,
-            expected=sorted(expected_ids),
-            observed=policy_id,
-            evidence={
-                "policy_matches": positive_matches_by_policy.get(policy_id, []),
-            },
-            policy_id=policy_id,
-            location_hint=_location_hint(
-                target_preference="matching_block",
-                section_types=[
-                    "policy_assessment",
-                    "policy_breaches_triggers",
-                    "required_policy_actions",
-                    "policy_escalation_assessment",
-                ],
-                search_terms=[
-                    match.get("matched_term")
-                    for match in positive_matches_by_policy.get(policy_id, [])
-                    if match.get("matched_term")
-                ] or POLICY_SYNONYMS.get(policy_id, [policy_id]),
-                policy_id=policy_id,
-            ),
-        )
-
-    # Escalation checks.
-    policy_eval = memo_context.get("policy_evaluation") or {}
-    if policy_eval.get("requires_senior_credit_committee"):
-        if not _contains_any(policy_text_norm, ["senior credit committee", "exception approval", "exception-approval"]):
+        for policy_id in sorted(observed_triggered - expected_ids):
+            if policy_id == "CP-02" and "CP-03" in expected_ids:
+                category = "overinclusive_policy_reference"
+                severity = "info"
+                detail = "The memo affirmatively cited CP-02 alongside the more severe CP-03 trigger. This is treated as over-inclusive rather than a material error."
+            else:
+                category = "possible_false_positive"
+                severity = "info"
+                detail = "The memo appears to state this policy as triggered, but it is not in the deterministic triggered-policy list. Review the local context before publication."
             _annotation(
                 annotations,
-                category="policy_miss",
-                severity="high",
-                title="Senior credit committee escalation not clearly stated",
-                detail="The deterministic policy evaluation requires senior credit committee exception approval.",
-                expected="senior credit committee exception approval",
-                observed="not clearly found",
-                policy_id="CP-03",
-                location_hint=_location_hint(target_preference="matching_block", section_types=["policy_escalation_assessment"], search_terms=["senior credit committee", "exception approval"], policy_id="CP-03"),
+                category=category,
+                severity=severity,
+                title=f"Additional triggered policy reference: {policy_id}",
+                detail=detail,
+                expected=sorted(expected_ids),
+                observed=evidence_by_id.get(policy_id, []),
+                policy_id=policy_id,
+                location="policy_prose",
             )
+
+        policy_eval = memo_context.get("policy_evaluation") or {}
+        if policy_eval.get("requires_senior_credit_committee"):
+            policy_text_norm = _normalise(policy_text)
+            if not _contains_any(policy_text_norm, ["senior credit committee", "senior committee exception", "senior credit exception"]):
+                _annotation(
+                    annotations,
+                    category="policy_miss",
+                    severity="high",
+                    title="Senior credit committee escalation not clearly stated",
+                    detail="The deterministic policy evaluation requires senior credit committee exception approval.",
+                    expected="senior credit committee exception approval",
+                    observed="not clearly found",
+                    policy_id="CP-03",
+                    location="policy_escalation_assessment",
+                )
 
     return {
-        "expected_policy_ids": sorted(expected_ids),
-        "observed_policy_ids": sorted(observed_ids),
-        "missed_policy_ids": sorted(expected_ids - observed_ids),
-        "additional_policy_ids": sorted(observed_ids - expected_ids),
-        "policy_match_evidence": policy_match_evidence,
-        "negative_policy_matches": [
-            match
-            for match in policy_match_evidence
-            if match.get("polarity") == "negative"
-        ],
+        "policy_detection_scored": should_score,
+        "expected_policy_ids": sorted(expected_ids) if should_score else [],
+        "ground_truth_policy_ids_unscored": sorted(expected_ids) if not should_score else [],
+        "observed_policy_ids": sorted(observed_considered),
+        "observed_triggered_policy_ids": sorted(observed_triggered),
+        "policy_reference_statuses": {
+            k: sorted(v) for k, v in sorted(statuses_by_id.items())
+        },
+        "policy_reference_evidence": refs,
+        "missed_policy_ids": sorted(expected_ids - observed_triggered) if should_score else [],
+        "additional_policy_ids": sorted(observed_triggered - expected_ids) if should_score else [],
     }
-
 
 def _check_missing_information(
     annotations: list[dict[str, Any]],
@@ -889,15 +548,7 @@ def _check_missing_information(
                 detail="The request context lacks this information, but the LLM did not clearly flag it as a follow-up item.",
                 expected=item,
                 observed="not found in missing-information or RM-question text",
-                location_hint=_location_hint(
-                    target_preference="missing_content",
-                    section_types=[
-                        "policy_missing_information",
-                        "relationship_manager_questions",
-                    ],
-                    missing_item=item,
-                ),
-                confidence=0.80,
+                location="policy_missing_information/questions_for_relationship_manager",
             )
 
     return {
@@ -932,8 +583,7 @@ def _check_rating_driver_discipline(
             detail="The deterministic rating-driver group shows leverage/relative debt as neutral. Leverage can be a financial watchpoint or policy breach, but should not be described as a negative model driver unless the driver group supports it.",
             expected="Leverage belongs in financial watchpoints/policy unless rating_driver_groups.negative includes it.",
             observed=_snippet(_flatten(narrative), "leverage"),
-            location_hint=_location_hint(target_preference="matching_block", section_types=["rating_driver_commentary", "negative_rating_drivers"], search_terms=["leverage", "debt / ebitda", "net debt"]),
-            confidence=0.75,
+            location="rating_driver_commentary/negative_rating_drivers",
         )
 
     # Another common failure: equity volatility listed as generic risk although it is supportive.
@@ -947,8 +597,7 @@ def _check_rating_driver_discipline(
                 detail="The diagnostic is supportive because equity volatility is favourable relative to the comparator, not because it is generically 'moderate risk'.",
                 expected="Equity volatility / market-implied risk is supportive relative to median.",
                 observed=_snippet(_flatten(narrative.get("positive_rating_drivers")), "volatility"),
-                location_hint=_location_hint(target_preference="matching_block", section_types=["positive_rating_drivers"], search_terms=["volatility", "market-implied risk"]),
-                confidence=0.75,
+                location="positive_rating_drivers",
             )
 
     return {
@@ -976,17 +625,17 @@ def _check_unsupported_claims(
             detected.append(phrase)
             _annotation(
                 annotations,
-                category="unsupported_claim",
-                severity="medium" if phrase in {"market leader", "leading provider", "operational stability", "approval is recommended"} else "low",
+                category="unsupported_claim_candidate",
+                severity="info",
                 title=f"Potential unsupported claim: '{phrase}'",
-                detail="This phrase is often unsupported unless explicitly present in the supplied context. Review before publication.",
+                detail="This phrase is a candidate for semantic support review. It does not reduce the deterministic score by itself.",
                 expected="Use only supplied facts; avoid unsupported qualitative claims.",
                 observed=_snippet(narrative_text, phrase),
                 evidence={"phrase": phrase},
-                location_hint=_location_hint(target_preference="matching_block", search_terms=[phrase]),
-                confidence=0.55,
+                location="narrative",
+                scorer="deterministic_candidate_generator",
             )
-    return {"potential_unsupported_phrases": detected}
+    return {"potential_unsupported_phrases": detected, "candidates_scored": False}
 
 
 def _check_approval_safety(
@@ -1017,36 +666,47 @@ def _check_approval_safety(
             detail="The deterministic policy evaluation requires exception approval; the LLM should not recommend ordinary approval.",
             expected="Conditional exception-review language only.",
             observed="approval-like language without adequate exception framing",
-            location_hint=_location_hint(target_preference="matching_block", section_types=["conclusion_recommendation"], search_terms=risky_approval_patterns),
+            location="conclusion_recommendation",
         )
 
 
 def _score(annotations: list[dict[str, Any]], diagnostics: dict[str, Any]) -> dict[str, Any]:
-    penalty = sum(SEVERITY_WEIGHTS.get(a.get("severity", "low"), 2) for a in annotations if a.get("severity") != "info")
+    scored_annotations = [
+        a for a in annotations
+        if a.get("severity") != "info" and a.get("category") != "unsupported_claim_candidate"
+    ]
+    penalty = sum(SEVERITY_WEIGHTS.get(a.get("severity", "low"), 2) for a in scored_annotations)
     overall = max(0, 100 - penalty)
 
-    expected_ids = diagnostics.get("policy_detection", {}).get("expected_policy_ids", [])
-    missed_ids = diagnostics.get("policy_detection", {}).get("missed_policy_ids", [])
-    policy_score = 100 if not expected_ids else round(100 * (len(expected_ids) - len(missed_ids)) / len(expected_ids), 1)
+    policy_diag = diagnostics.get("policy_detection", {})
+    policy_scored = bool(policy_diag.get("policy_detection_scored"))
+    expected_ids = policy_diag.get("expected_policy_ids", [])
+    missed_ids = policy_diag.get("missed_policy_ids", [])
+    if not policy_scored:
+        policy_score = None
+    else:
+        policy_score = 100 if not expected_ids else round(100 * (len(expected_ids) - len(missed_ids)) / len(expected_ids), 1)
 
     expected_missing = diagnostics.get("missing_information", {}).get("expected_missing_information", [])
     missed_missing = diagnostics.get("missing_information", {}).get("missed_missing_information", [])
     missing_score = 100 if not expected_missing else round(100 * (len(expected_missing) - len(missed_missing)) / len(expected_missing), 1)
 
-    high_or_worse = [a for a in annotations if a.get("severity") in {"critical", "high"}]
-    unsupported = [a for a in annotations if a.get("category") == "unsupported_claim"]
-    factual = [a for a in annotations if a.get("category") == "factual_error"]
+    high_or_worse = [a for a in scored_annotations if a.get("severity") in {"critical", "high"}]
+    unsupported_candidates = [a for a in annotations if a.get("category") == "unsupported_claim_candidate"]
+    factual = [a for a in scored_annotations if a.get("category") == "factual_error"]
 
     return {
         "overall_score": overall,
         "policy_detection_score": policy_score,
+        "policy_detection_scored": policy_scored,
         "missing_information_detection_score": missing_score,
         "critical_or_high_issue_count": len(high_or_worse),
         "factual_error_count": len(factual),
-        "unsupported_claim_count": len(unsupported),
+        "unsupported_claim_count": 0,
+        "unsupported_claim_candidate_count": len(unsupported_candidates),
+        "scored_annotation_count": len(scored_annotations),
         "annotation_count": len(annotations),
     }
-
 
 def annotate_credit_memo(
     memo_payload: dict[str, Any],
@@ -1055,9 +715,9 @@ def annotate_credit_memo(
     """
     Deterministically annotate a credit memo payload returned by create_credit_memo().
 
-    This v0.1 module is deliberately conservative: it is a first-pass filter for
-    obvious factual conflicts, missed deterministic policy findings, missing-information
-    misses, rating-driver/watchpoint confusion, and likely unsupported phrases.
+    Version 0.6.0 is visibility-aware and distinguishes explicit borrower-rating
+    assertions from policy thresholds. Policy-trigger scoring is disabled when the
+    experiment supplied no policy evaluation, and phrase flags are unscored candidates.
     Human review or an LLM judge can then approve/edit/reject these draft annotations.
     """
     memo_context = memo_payload.get("memo_context") or {}
@@ -1066,37 +726,28 @@ def annotate_credit_memo(
     experiment_config = memo_payload.get("experiment_config") or {}
 
     narrative_text = _flatten(narrative)
-    visible_text = markdown or narrative_text
+    combined_text = "\n".join([narrative_text, markdown])
 
     annotations: list[dict[str, Any]] = []
     diagnostics: dict[str, Any] = {}
+    profile = _evaluation_profile(experiment_config)
+    diagnostics["evaluation_profile"] = profile
 
-    _check_core_rating_and_pd(annotations, memo_context, visible_text)
-    _check_expected_loss(annotations, memo_context, visible_text)
-    diagnostics["policy_detection"] = _check_policy_detection(annotations, memo_context, narrative)
+    diagnostics["rating_and_pd"] = _check_core_rating_and_pd(annotations, memo_context, narrative_text, profile)
+    _check_expected_loss(annotations, memo_context, narrative_text, profile)
+    diagnostics["policy_detection"] = _check_policy_detection(annotations, memo_context, narrative, profile)
     diagnostics["missing_information"] = _check_missing_information(annotations, memo_context, narrative)
     diagnostics["rating_driver_discipline"] = _check_rating_driver_discipline(annotations, memo_context, narrative)
-    diagnostics["unsupported_claims"] = _check_unsupported_claims(annotations, memo_context, visible_text)
-    _check_approval_safety(annotations, memo_context, visible_text)
+    diagnostics["unsupported_claims"] = _check_unsupported_claims(annotations, memo_context, narrative_text)
+    _check_approval_safety(annotations, memo_context, narrative_text)
 
-    diagnostics["location_resolution"] = _resolve_annotation_locations(annotations, document_map)
-    validation = _validate_annotation_locations(annotations, document_map)
     scores = _score(annotations, diagnostics)
-    scores["location_resolution_score"] = diagnostics["location_resolution"]["location_resolution_score"]
 
     return {
         "annotation_schema": ANNOTATION_SCHEMA,
-        "annotation_schema": ANNOTATION_SCHEMA,
         "annotation_schema_version": ANNOTATION_SCHEMA_VERSION,
         "annotation_engine_version": ANNOTATION_ENGINE_VERSION,
-        "annotation_engine_version": ANNOTATION_ENGINE_VERSION,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "source_document": {
-            "memo_id": (document_map or {}).get("memo_id"),
-            "document_title": (document_map or {}).get("document_title"),
-            "source_sha256": (document_map or {}).get("source_sha256"),
-            "parser_version": (document_map or {}).get("parser_version"),
-        },
         "benchmark_metadata": {
             "experiment_id": experiment_config.get("experiment_id"),
             "context_mode": experiment_config.get("context_mode"),
@@ -1108,9 +759,14 @@ def annotate_credit_memo(
         },
         "scores": scores,
         "diagnostics": diagnostics,
-        "validation": validation,
         "annotations": annotations,
         "review_status": "draft_requires_human_review",
+        "source_document": {
+            "memo_id": memo_payload.get("memo_id"),
+            "document_title": (document_map or {}).get("document_title"),
+            "source_sha256": (document_map or {}).get("source_sha256"),
+            "parser_version": (document_map or {}).get("parser_version"),
+        },
     }
 
 

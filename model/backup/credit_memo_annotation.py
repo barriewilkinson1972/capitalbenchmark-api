@@ -8,7 +8,7 @@ from typing import Any
 
 ANNOTATION_SCHEMA = "credit_memo_annotation"
 ANNOTATION_SCHEMA_VERSION = "1.0.0"
-ANNOTATION_ENGINE_VERSION = "0.4.0"
+ANNOTATION_ENGINE_VERSION = "0.4.1"
 
 
 # Phrases that explicitly state that a policy escalation does not apply.
@@ -756,7 +756,18 @@ def _check_policy_detection(
                 observed=sorted(observed_ids),
                 evidence=memo_context.get("policy_evaluation", {}).get("triggered_policies", []),
                 policy_id=policy_id,
-                location_hint=_location_hint(target_preference="matching_block", section_types=["policy_assessment", "policy_breaches_triggers", "required_policy_actions", "policy_escalation_assessment"], search_terms=POLICY_SYNONYMS.get(policy_id, [policy_id]), policy_id=policy_id),
+                location_hint=_location_hint(
+                    target_preference="missing_content",
+                    section_types=[
+                        "policy_assessment",
+                        "policy_breaches_triggers",
+                        "required_policy_actions",
+                        "policy_escalation_assessment",
+                    ],
+                    search_terms=POLICY_SYNONYMS.get(policy_id, [policy_id]),
+                    missing_item=f"expected policy finding {policy_id}",
+                    policy_id=policy_id,
+                ),
             )
 
     # False positives are lower severity because a model can defensibly cite a lower threshold
