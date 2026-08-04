@@ -5,20 +5,23 @@ from __future__ import annotations
 The canonical source remains the parsed document map. This module creates a
 safe, self-contained HTML fragment for display inside Bubble's HTML element.
 
-Version 1.1 adds optional annotation rendering:
-- a memo/review two-column layout;
-- annotation badges beside linked memo blocks;
-- a review findings panel;
-- click-to-scroll and hover highlighting;
-- graceful handling of findings that do not yet contain block identifiers.
+Version 1.3 presents the system-level benchmark framework:
+- Overall System Performance;
+- Architectural Coverage and LLM Performance;
+- Reasoning, Fidelity and Tone;
+- separate descriptive Input Data Coverage;
+- informational coverage cards separated from substantive review findings;
+- expandable coverage details;
+- source-attribution toggle for LLM and deterministic sections.
 
 All memo and annotation content is HTML-escaped.
 """
 
 from html import escape
 from typing import Any, Mapping, Sequence
+from urllib.parse import urlencode
 
-HTML_RENDERER_VERSION = "1.2.1"
+HTML_RENDERER_VERSION = "1.4.0"
 
 DEFAULT_CSS = r"""
 .cb-review-shell {
@@ -111,17 +114,44 @@ DEFAULT_CSS = r"""
   opacity: .45;
   pointer-events: none;
 }
+.cb-page-controls__downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+.cb-page-controls__download {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
+  border: 1px solid #84adff;
+  border-radius: 8px;
+  background: #eff8ff;
+  color: #175cd3;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.cb-page-controls__download:hover {
+  background: #d1e9ff;
+  text-decoration: none;
+}
 .cb-page-controls__note {
   margin: 0;
   color: var(--cb-muted);
   font-size: 11px;
 }
 
-.cb-score-strip {
+.cb-score-panel {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0;
+  gap: 12px;
   margin: 0 0 22px;
+}
+.cb-score-panel__primary {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.25fr) repeat(3, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid var(--cb-border);
   border-radius: 12px;
@@ -130,11 +160,14 @@ DEFAULT_CSS = r"""
 }
 .cb-score-card {
   min-width: 0;
-  padding: 14px 16px;
+  padding: 15px 16px;
   border-right: 1px solid var(--cb-border);
   background: transparent;
 }
 .cb-score-card:last-child { border-right: 0; }
+.cb-score-card--headline {
+  background: #f8fafc;
+}
 .cb-score-card__label {
   display: block;
   margin-bottom: 4px;
@@ -151,11 +184,168 @@ DEFAULT_CSS = r"""
   line-height: 1.2;
   font-weight: 750;
 }
+.cb-score-card--headline .cb-score-card__value {
+  font-size: 26px;
+}
 .cb-score-card__value--muted {
   color: var(--cb-muted);
   font-size: 14px;
   font-weight: 650;
 }
+.cb-score-card__subtext {
+  display: block;
+  margin-top: 5px;
+  color: var(--cb-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+.cb-score-panel__secondary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--cb-border);
+  border-radius: 12px;
+  background: var(--cb-surface);
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.05);
+}
+.cb-score-panel__secondary .cb-score-card {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.cb-score-panel__secondary .cb-score-card__value {
+  font-size: 17px;
+}
+.cb-score-panel__formula {
+  margin: -2px 2px 0;
+  color: var(--cb-muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.cb-coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 22px;
+}
+.cb-coverage-card {
+  border: 1px solid var(--cb-border);
+  border-radius: 12px;
+  background: var(--cb-surface);
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.05);
+  overflow: hidden;
+}
+.cb-coverage-card summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.cb-coverage-card summary::-webkit-details-marker { display: none; }
+.cb-coverage-card summary:hover { background: #f9fafb; }
+.cb-coverage-card__title {
+  display: block;
+  color: var(--cb-heading);
+  font-size: 13px;
+  font-weight: 700;
+}
+.cb-coverage-card__summary {
+  display: block;
+  margin-top: 3px;
+  color: var(--cb-muted);
+  font-size: 11px;
+}
+.cb-coverage-card__score {
+  color: var(--cb-heading);
+  font-size: 20px;
+  font-weight: 750;
+}
+.cb-coverage-card__body {
+  padding: 0 16px 15px;
+  border-top: 1px solid var(--cb-border);
+}
+.cb-coverage-card__note {
+  margin: 11px 0;
+  color: var(--cb-muted);
+  font-size: 11px;
+}
+.cb-coverage-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11px;
+}
+.cb-coverage-list__item {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  color: #344054;
+}
+.cb-coverage-list__status {
+  flex: 0 0 auto;
+  min-width: 72px;
+  color: var(--cb-muted);
+  font-weight: 650;
+}
+.cb-coverage-list__status--covered,
+.cb-coverage-list__status--available { color: #067647; }
+.cb-coverage-list__status--uncovered,
+.cb-coverage-list__status--unavailable { color: #b54708; }
+
+.cb-source-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin: -10px 0 16px;
+}
+.cb-source-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--cb-muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+.cb-source-toggle input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+.cb-review-shell[data-source-highlight="true"] [data-content-source="llm"] {
+  background: #eff8ff;
+  box-shadow: 0 0 0 3px #eff8ff;
+  border-radius: 4px;
+}
+.cb-review-shell[data-source-highlight="true"] [data-content-source="deterministic"] {
+  background: #ecfdf3;
+  box-shadow: 0 0 0 3px #ecfdf3;
+  border-radius: 4px;
+}
+.cb-source-legend {
+  display: none;
+  gap: 12px;
+  margin-left: 8px;
+  font-size: 10px;
+}
+.cb-review-shell[data-source-highlight="true"] .cb-source-legend {
+  display: inline-flex;
+}
+.cb-source-legend__item::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 4px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+.cb-source-legend__item--llm::before { background: #b2ddff; }
+.cb-source-legend__item--deterministic::before { background: #abefc6; }
 
 .cb-review-layout {
   display: grid;
@@ -490,7 +680,8 @@ h6.cb-section__heading { font-size: 15px; line-height: 1.4; }
     margin-top: 20px;
     border-radius: 12px;
   }
-  .cb-score-strip {
+  .cb-score-panel__primary,
+  .cb-score-panel__secondary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .cb-score-card {
@@ -499,9 +690,16 @@ h6.cb-section__heading { font-size: 15px; line-height: 1.4; }
   }
   .cb-score-card:nth-child(2n) { border-right: 0; }
   .cb-score-card:last-child { border-bottom: 0; }
+  .cb-coverage-grid { grid-template-columns: 1fr; }
+  .cb-source-controls { justify-content: flex-start; }
   .cb-page-controls__field { min-width: min(100%, 180px); flex: 1 1 150px; }
   .cb-page-controls__nav { width: 100%; margin-left: 0; }
   .cb-page-controls__link { flex: 1; }
+  .cb-page-controls__downloads {
+    width: 100%;
+    margin-left: 0;
+  }
+  .cb-page-controls__download { flex: 1; }
   .cb-memo__title { font-size: 23px; }
   h2.cb-section__heading { font-size: 19px; }
   .cb-table th, .cb-table td { padding: 8px 9px; }
@@ -580,6 +778,18 @@ DEFAULT_JS = r"""
     clearSelection(findShell(trigger));
   });
 
+
+  document.addEventListener("change", function (event) {
+    var toggle = event.target.closest("[data-cb-source-toggle]");
+    if (!toggle) return;
+    var shell = findShell(toggle);
+    if (!shell) return;
+    shell.setAttribute(
+      "data-source-highlight",
+      toggle.checked ? "true" : "false"
+    );
+  });
+
   document.addEventListener("change", function (event) {
     var select = event.target.closest("[data-cb-variant-select]");
     if (!select) return;
@@ -631,6 +841,47 @@ def _normalise_annotations(value: Any) -> list[dict[str, Any]]:
         if isinstance(item, Mapping):
             annotations.append(dict(item))
     return annotations
+
+
+def _annotation_payload(
+    value: Any,
+) -> Mapping[str, Any] | None:
+    return value if isinstance(value, Mapping) else None
+
+
+def _substantive_annotations(value: Any) -> list[dict[str, Any]]:
+    """Exclude informational coverage cards from review findings."""
+    return [
+        annotation
+        for annotation in _normalise_annotations(value)
+        if annotation.get("category")
+        not in {
+            "architectural_coverage",
+            "input_data_coverage",
+        }
+    ]
+
+
+def _section_source_map(
+    annotation_payload: Mapping[str, Any] | None,
+) -> dict[str, str]:
+    if not isinstance(annotation_payload, Mapping):
+        return {}
+
+    source_manifest = annotation_payload.get("source_manifest")
+    if not isinstance(source_manifest, Mapping):
+        return {}
+
+    section_sources = source_manifest.get("section_sources")
+    if not isinstance(section_sources, Mapping):
+        return {}
+
+    return {
+        str(key): _class_token(value)
+        for key, value in section_sources.items()
+        if value not in (None, "")
+    }
+
 
 
 def _annotation_target(annotation: Mapping[str, Any]) -> tuple[str | None, str | None]:
@@ -853,13 +1104,19 @@ def render_section(
     *,
     annotations_by_target: Mapping[str, Sequence[Mapping[str, Any]]] | None = None,
     annotation_index: Mapping[int, str] | None = None,
+    section_sources: Mapping[str, str] | None = None,
 ) -> str:
     """Render one parsed section, retaining canonical identifiers."""
     annotations_by_target = annotations_by_target or {}
     annotation_index = annotation_index or {}
+    section_sources = section_sources or {}
 
     section_id = str(section.get("section_id") or "section")
     section_type = section.get("section_type") or "other"
+    content_source = section_sources.get(
+        str(section_type),
+        section_sources.get(section_id, "unknown"),
+    )
     level_raw = section.get("level")
     try:
         level = int(level_raw)
@@ -890,6 +1147,7 @@ def render_section(
         f'class="cb-section cb-section--{_class_token(section_type)}" '
         f'data-section-id="{_attr(section_id)}" '
         f'data-section-type="{_attr(section_type)}" '
+        f'data-content-source="{_attr(content_source)}" '
         f'data-section-order="{_attr(section.get("order"))}">'
         f"{heading_html}{block_html}"
         "</section>"
@@ -941,7 +1199,7 @@ def _prepare_annotation_rendering(
     dict[int, str],
     dict[int, str | None],
 ]:
-    normalised = _normalise_annotations(annotations)
+    normalised = _substantive_annotations(annotations)
     known_ids, block_id_by_uuid = _document_identifiers(document_map)
 
     annotations_by_target: dict[str, list[dict[str, Any]]] = {}
@@ -1059,8 +1317,36 @@ def _score_value(value: Any, *, suffix: str = "") -> tuple[str, bool]:
     return f"{value}{suffix}", False
 
 
-def render_score_strip(annotation_payload: Mapping[str, Any] | None) -> str:
-    """Render a compact summary of the evaluated dimensions."""
+def _score_card(
+    label: str,
+    raw_value: Any,
+    *,
+    headline: bool = False,
+    subtext: str = "",
+) -> str:
+    value, muted = _score_value(raw_value)
+    classes = "cb-score-card"
+    if headline:
+        classes += " cb-score-card--headline"
+    value_class = " cb-score-card__value--muted" if muted else ""
+    subtext_html = (
+        f'<span class="cb-score-card__subtext">{_text(subtext)}</span>'
+        if subtext
+        else ""
+    )
+    return (
+        f'<div class="{classes}">'
+        f'<span class="cb-score-card__label">{_text(label)}</span>'
+        f'<span class="cb-score-card__value{value_class}">{_text(value)}</span>'
+        f"{subtext_html}"
+        "</div>"
+    )
+
+
+def render_score_panel(
+    annotation_payload: Mapping[str, Any] | None,
+) -> str:
+    """Render the system score hierarchy without mixing in data coverage."""
     if not isinstance(annotation_payload, Mapping):
         return ""
 
@@ -1068,35 +1354,317 @@ def render_score_strip(annotation_payload: Mapping[str, Any] | None) -> str:
     if not isinstance(scores, Mapping):
         return ""
 
-    cards = [
-        ("Overall", scores.get("overall_score"), ""),
-        ("Policy", scores.get("policy_detection_score"), ""),
-        ("Missing info", scores.get("missing_information_detection_score"), ""),
-        ("Material issues", scores.get("critical_or_high_issue_count"), ""),
-        ("Findings", scores.get("annotation_count"), ""),
+    primary = [
+        _score_card(
+            "Overall System Performance",
+            scores.get(
+                "overall_system_performance",
+                scores.get("overall_memo_quality"),
+            ),
+            headline=True,
+            subtext="Architecture + LLM",
+        ),
+        _score_card(
+            "Architectural Coverage",
+            scores.get(
+                "architectural_coverage",
+                scores.get("information_completeness"),
+            ),
+            subtext="System configuration",
+        ),
+        _score_card(
+            "LLM Performance",
+            scores.get(
+                "llm_performance",
+                scores.get("overall_score"),
+            ),
+            subtext="Reasoning + Fidelity + Tone",
+        ),
+        _score_card(
+            "Input Data Coverage",
+            scores.get("input_data_coverage"),
+            subtext="Test-case descriptor · not scored",
+        ),
     ]
 
-    parts: list[str] = []
-    for label, raw_value, suffix in cards:
-        value, muted = _score_value(raw_value, suffix=suffix)
-        value_class = " cb-score-card__value--muted" if muted else ""
-        parts.append(
-            '<div class="cb-score-card">'
-            f'<span class="cb-score-card__label">{_text(label)}</span>'
-            f'<span class="cb-score-card__value{value_class}">{_text(value)}</span>'
-            "</div>"
+    secondary = [
+        _score_card("Reasoning", scores.get("reasoning")),
+        _score_card("Fidelity", scores.get("fidelity")),
+        _score_card("Tone", scores.get("tone")),
+        _score_card(
+            "Material issues",
+            scores.get("critical_or_high_issue_count"),
+        ),
+    ]
+
+    return (
+        '<section class="cb-score-panel" aria-label="Benchmark scores">'
+        f'<div class="cb-score-panel__primary">{"".join(primary)}</div>'
+        f'<div class="cb-score-panel__secondary">{"".join(secondary)}</div>'
+        '<p class="cb-score-panel__formula">'
+        'Overall System Performance = average of Architectural Coverage and '
+        'LLM Performance. Input Data Coverage describes the frozen test case '
+        'and is not included in the score.'
+        "</p>"
+        "</section>"
+    )
+
+
+def _coverage_items(
+    coverage: Mapping[str, Any],
+    *,
+    architecture: bool,
+) -> list[str]:
+    items: list[str] = []
+
+    if architecture:
+        covered = {
+            str(value)
+            for value in (coverage.get("covered_item_ids") or [])
+        }
+        total_ids = [
+            *(f"REF-{index:03d}" for index in range(1, 23)),
+            *(f"POL-{index:03d}" for index in range(1, 11)),
+        ]
+        for item_id in total_ids:
+            status = "covered" if item_id in covered else "uncovered"
+            items.append(
+                '<li class="cb-coverage-list__item">'
+                f'<span class="cb-coverage-list__status '
+                f'cb-coverage-list__status--{status}">'
+                f'{_text(status.title())}</span>'
+                f'<span>{_text(item_id)}</span>'
+                "</li>"
+            )
+    else:
+        for item in coverage.get("item_statuses") or []:
+            if not isinstance(item, Mapping):
+                continue
+            status = _class_token(item.get("status"))
+            item_id = item.get("item_id") or ""
+            items.append(
+                '<li class="cb-coverage-list__item">'
+                f'<span class="cb-coverage-list__status '
+                f'cb-coverage-list__status--{status}">'
+                f'{_text(status.title())}</span>'
+                f'<span>{_text(item_id)}</span>'
+                "</li>"
+            )
+
+    return items
+
+
+def _coverage_card(
+    title: str,
+    coverage: Mapping[str, Any],
+    *,
+    architecture: bool,
+) -> str:
+    if architecture:
+        numerator = coverage.get("covered_item_count", 0)
+        denominator = coverage.get("total_item_count", 0)
+        unavailable = coverage.get("uncovered_item_count", 0)
+        summary = (
+            f"{numerator} of {denominator} reference slots exposed · "
+            f"{unavailable} not exposed"
+        )
+        note = (
+            "Coverage is determined by the system configuration, independent "
+            "of whether a frozen test-case value is available."
+        )
+    else:
+        numerator = coverage.get("available_item_count", 0)
+        denominator = coverage.get("total_item_count", 0)
+        unavailable = coverage.get("unavailable_item_count", 0)
+        summary = (
+            f"{numerator} of {denominator} test-case inputs available · "
+            f"{unavailable} unavailable"
+        )
+        note = (
+            "Input Data Coverage describes the obligor test case and does not "
+            "affect Overall System Performance."
+        )
+
+    score, muted = _score_value(coverage.get("coverage_pct"))
+    score_class = " cb-score-card__value--muted" if muted else ""
+    items = _coverage_items(
+        coverage,
+        architecture=architecture,
+    )
+
+    return (
+        '<details class="cb-coverage-card">'
+        "<summary>"
+        "<span>"
+        f'<span class="cb-coverage-card__title">{_text(title)}</span>'
+        f'<span class="cb-coverage-card__summary">{_text(summary)}</span>'
+        "</span>"
+        f'<span class="cb-coverage-card__score{score_class}">{_text(score)}</span>'
+        "</summary>"
+        '<div class="cb-coverage-card__body">'
+        f'<p class="cb-coverage-card__note">{_text(note)}</p>'
+        f'<ul class="cb-coverage-list">{"".join(items)}</ul>'
+        "</div>"
+        "</details>"
+    )
+
+
+def render_coverage_cards(
+    annotation_payload: Mapping[str, Any] | None,
+) -> str:
+    if not isinstance(annotation_payload, Mapping):
+        return ""
+
+    architecture = annotation_payload.get(
+        "architectural_coverage"
+    )
+    input_data = annotation_payload.get("input_data_coverage")
+    if not isinstance(architecture, Mapping):
+        architecture = {}
+    if not isinstance(input_data, Mapping):
+        input_data = {}
+
+    if not architecture and not input_data:
+        return ""
+
+    cards: list[str] = []
+    if architecture:
+        cards.append(
+            _coverage_card(
+                "Architectural Coverage",
+                architecture,
+                architecture=True,
+            )
+        )
+    if input_data:
+        cards.append(
+            _coverage_card(
+                "Input Data Coverage",
+                input_data,
+                architecture=False,
+            )
         )
 
     return (
-        '<section class="cb-score-strip" aria-label="Benchmark summary scores">'
-        f'{"".join(parts)}'
+        '<section class="cb-coverage-grid" aria-label="Coverage details">'
+        f'{"".join(cards)}'
         "</section>"
     )
+
+
+def render_source_controls(
+    annotation_payload: Mapping[str, Any] | None,
+) -> str:
+    section_sources = _section_source_map(annotation_payload)
+    if not section_sources:
+        return ""
+
+    return (
+        '<div class="cb-source-controls">'
+        '<label class="cb-source-toggle">'
+        '<input type="checkbox" data-cb-source-toggle="true">'
+        '<span>Show content source</span>'
+        '<span class="cb-source-legend">'
+        '<span class="cb-source-legend__item '
+        'cb-source-legend__item--llm">LLM generated</span>'
+        '<span class="cb-source-legend__item '
+        'cb-source-legend__item--deterministic">Deterministic</span>'
+        "</span>"
+        "</label>"
+        "</div>"
+    )
+
 
 
 def _variant_label(value: Any) -> str:
     raw = str(value or "").replace("_", " ").strip()
     return raw.title() if raw else "—"
+
+
+def _download_query(
+    navigation: Mapping[str, Any],
+    *,
+    file_format: str,
+) -> str | None:
+    """
+    Build a GET request to the existing /credit_memo_file endpoint.
+
+    The endpoint regenerates the selected memo configuration using the frozen
+    benchmark test-case data, then returns DOCX or PDF.
+    """
+    current = navigation.get("current_variant")
+    if not isinstance(current, Mapping):
+        return None
+
+    symbol = current.get("company") or current.get("symbol")
+    if not symbol:
+        return None
+
+    params: dict[str, Any] = {
+        "symbol": symbol,
+        "format": file_format,
+        "context_mode": current.get("context_mode") or "full",
+        "policy_mode": (
+            current.get("policy_mode")
+            or "deterministic_evaluated"
+        ),
+        "prompt_mode": current.get("prompt_mode") or "tight",
+        "model_tier": current.get("model_tier") or "mini",
+        "use_openai": "true",
+        "require_openai": "true",
+    }
+
+    model = current.get("model")
+    if model:
+        params["model"] = model
+
+    experiment_id = current.get("experiment_id")
+    if experiment_id:
+        params["experiment_id"] = experiment_id
+
+    endpoint = str(
+        navigation.get("credit_memo_file_endpoint")
+        or "/credit_memo_file"
+    )
+    return f"{endpoint}?{urlencode(params)}"
+
+
+def render_download_controls(
+    navigation: Mapping[str, Any] | None,
+) -> str:
+    if not isinstance(navigation, Mapping):
+        return ""
+
+    docx_url = _download_query(
+        navigation,
+        file_format="docx",
+    )
+    pdf_url = _download_query(
+        navigation,
+        file_format="pdf",
+    )
+    if not docx_url and not pdf_url:
+        return ""
+
+    links: list[str] = []
+    if docx_url:
+        links.append(
+            '<a class="cb-page-controls__download" '
+            f'href="{_attr(docx_url)}">Download DOCX</a>'
+        )
+    if pdf_url:
+        links.append(
+            '<a class="cb-page-controls__download" '
+            f'href="{_attr(pdf_url)}">Download PDF</a>'
+        )
+
+    return (
+        '<div class="cb-page-controls__downloads" '
+        'aria-label="Download memo">'
+        f'{"".join(links)}'
+        "</div>"
+    )
+
 
 
 def render_variant_controls(navigation: Mapping[str, Any] | None) -> str:
@@ -1159,6 +1727,8 @@ def render_variant_controls(navigation: Mapping[str, Any] | None) -> str:
         "</div>"
     )
 
+    downloads_html = render_download_controls(navigation)
+
     note = navigation.get("note") or (
         "Scores reflect only the information and policies available to the model "
         "in this experiment."
@@ -1166,7 +1736,9 @@ def render_variant_controls(navigation: Mapping[str, Any] | None) -> str:
 
     return (
         '<nav class="cb-page-controls" aria-label="Benchmark variation controls">'
-        f'<div class="cb-page-controls__row">{"".join(fields)}{nav_html}</div>'
+        f'<div class="cb-page-controls__row">'
+        f'{"".join(fields)}{nav_html}{downloads_html}'
+        "</div>"
         f'<p class="cb-page-controls__note">{_text(note)}</p>'
         "</nav>"
     )
@@ -1195,7 +1767,8 @@ def render_document_map_to_html(
     if not _is_sequence(sections):
         raise ValueError("document_map.sections must be a list")
 
-    annotation_payload = annotations if isinstance(annotations, Mapping) else None
+    annotation_payload = _annotation_payload(annotations)
+    section_sources = _section_source_map(annotation_payload)
     (
         normalised_annotations,
         annotations_by_target,
@@ -1214,7 +1787,9 @@ def render_document_map_to_html(
     )
     script_html = (
         f"<script>{javascript if javascript is not None else DEFAULT_JS}</script>"
-        if include_scripts and normalised_annotations
+        if include_scripts and (
+            normalised_annotations or section_sources
+        )
         else ""
     )
     title_html = (
@@ -1229,6 +1804,7 @@ def render_document_map_to_html(
             section,
             annotations_by_target=annotations_by_target,
             annotation_index=annotation_index,
+            section_sources=section_sources,
         )
         for section in sections
         if isinstance(section, Mapping)
@@ -1257,13 +1833,15 @@ def render_document_map_to_html(
         else "cb-review-layout cb-review-layout--memo-only"
     )
     controls_html = render_variant_controls(navigation)
-    score_html = render_score_strip(annotation_payload)
+    score_html = render_score_panel(annotation_payload)
+    coverage_html = render_coverage_cards(annotation_payload)
+    source_controls_html = render_source_controls(annotation_payload)
 
     return (
         f"{style_html}"
         f'<div class="cb-review-shell" '
         f'data-annotation-count="{len(normalised_annotations)}">'
-        f"{controls_html}{score_html}"
+        f"{controls_html}{score_html}{coverage_html}{source_controls_html}"
         f'<div class="{layout_class}">{memo_html}{panel_html}</div>'
         f"</div>"
         f"{script_html}"
@@ -1281,7 +1859,7 @@ def build_html_payload(
     include_annotation_panel: bool = True,
 ) -> dict[str, Any]:
     """Build a JSON-serialisable API payload for Bubble."""
-    normalised_annotations = _normalise_annotations(annotations)
+    normalised_annotations = _substantive_annotations(annotations)
     return {
         "memo_id": document_map.get("memo_id"),
         "document_title": document_map.get("document_title"),

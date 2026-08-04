@@ -40,7 +40,7 @@ from frontend.index_page import render_benchmark_index
 
 
 RUN_SCHEMA = "credit_memo_batch_html_run"
-RUN_SCHEMA_VERSION = "1.2.0"
+RUN_SCHEMA_VERSION = "1.4.0"
 
 
 def utc_now_iso() -> str:
@@ -130,8 +130,10 @@ def parse_filename_metadata(filename: str) -> dict[str, str]:
     return result
 
 
-def annotation_summary(annotation_path: Path) -> dict[str, Any]:
-    """Read optional annotation metadata for the static index."""
+def annotation_summary(
+    annotation_path: Path,
+) -> dict[str, Any]:
+    """Read annotation metadata for the static index and navigation."""
     if not annotation_path.exists():
         return {}
 
@@ -148,18 +150,123 @@ def annotation_summary(annotation_path: Path) -> dict[str, Any]:
     if not isinstance(benchmark_metadata, Mapping):
         benchmark_metadata = {}
 
+    architectural_coverage = payload.get(
+        "architectural_coverage"
+    )
+    if not isinstance(architectural_coverage, Mapping):
+        architectural_coverage = {}
+
+    input_data_coverage = payload.get("input_data_coverage")
+    if not isinstance(input_data_coverage, Mapping):
+        input_data_coverage = {}
+
+    dimension_issue_counts = scores.get(
+        "dimension_issue_counts"
+    )
+    if not isinstance(dimension_issue_counts, Mapping):
+        dimension_issue_counts = {}
+
+    annotations = payload.get("annotations")
+    if not isinstance(annotations, list):
+        annotations = []
+
+    # Exclude the two informational coverage cards from issue counts.
+    substantive_annotations = [
+        item
+        for item in annotations
+        if isinstance(item, Mapping)
+        and item.get("category")
+        not in {
+            "architectural_coverage",
+            "input_data_coverage",
+        }
+    ]
+
     return {
-        "overall_score": scores.get("overall_score"),
-        "annotation_count": scores.get("annotation_count"),
-        "location_resolution_score": scores.get("location_resolution_score"),
+        "overall_system_performance": scores.get(
+            "overall_system_performance",
+            scores.get("overall_memo_quality"),
+        ),
+        "architectural_coverage": scores.get(
+            "architectural_coverage",
+            architectural_coverage.get("coverage_pct"),
+        ),
+        "input_data_coverage": scores.get(
+            "input_data_coverage",
+            input_data_coverage.get("coverage_pct"),
+        ),
+        "llm_performance": scores.get(
+            "llm_performance",
+            scores.get("overall_score"),
+        ),
+        "reasoning": scores.get("reasoning"),
+        "fidelity": scores.get("fidelity"),
+        "tone": scores.get("tone"),
+
+        "reference_item_count": scores.get(
+            "reference_item_count",
+            architectural_coverage.get("total_item_count"),
+        ),
+        "covered_reference_item_count": scores.get(
+            "covered_reference_item_count",
+            architectural_coverage.get("covered_item_count"),
+        ),
+        "input_item_count": scores.get(
+            "input_item_count",
+            input_data_coverage.get("total_item_count"),
+        ),
+        "available_input_item_count": scores.get(
+            "available_input_item_count",
+            input_data_coverage.get("available_item_count"),
+        ),
+
+        "reasoning_issue_count": dimension_issue_counts.get(
+            "reasoning"
+        ),
+        "fidelity_issue_count": dimension_issue_counts.get(
+            "fidelity"
+        ),
+        "tone_issue_count": dimension_issue_counts.get("tone"),
+        "critical_or_high_issue_count": scores.get(
+            "critical_or_high_issue_count"
+        ),
+        "scored_annotation_count": scores.get(
+            "scored_annotation_count"
+        ),
+        "annotation_count": len(substantive_annotations),
+
+        "source_manifest_version": (
+            payload.get("source_manifest", {}).get(
+                "manifest_version"
+            )
+            if isinstance(payload.get("source_manifest"), Mapping)
+            else None
+        ),
+        "source_attribution_level": (
+            payload.get("source_manifest", {}).get(
+                "attribution_level"
+            )
+            if isinstance(payload.get("source_manifest"), Mapping)
+            else None
+        ),
+
         "validation_status": (
             payload.get("validation", {}).get("status")
             if isinstance(payload.get("validation"), Mapping)
             else None
         ),
         "model": benchmark_metadata.get("model"),
-    }
+        "experiment_id": benchmark_metadata.get("experiment_id"),
 
+        # Temporary fallback for old frontend/index consumers.
+        "overall_score": scores.get(
+            "overall_system_performance",
+            scores.get(
+                "overall_memo_quality",
+                scores.get("overall_score"),
+            ),
+        ),
+    }
 
 def full_html_document(
     *,
@@ -230,10 +337,24 @@ def build_index_html(results: list[dict[str, Any]], renderer_version: str) -> st
     rows: list[str] = []
     for item in successful:
         filename_meta = item.get("filename_metadata") or {}
-        score = item.get("overall_score")
-        score_text = "—" if score is None else str(score)
+        system_score = item.get("overall_system_performance")
+        system_score_text = (
+            "—" if system_score is None else str(system_score)
+        )
+        architecture = item.get("architectural_coverage")
+        architecture_text = (
+            "—" if architecture is None else str(architecture)
+        )
+        llm = item.get("llm_performance")
+        llm_text = "—" if llm is None else str(llm)
+        input_coverage = item.get("input_data_coverage")
+        input_coverage_text = (
+            "—" if input_coverage is None else str(input_coverage)
+        )
         annotation_count = item.get("annotation_count")
-        annotation_text = "—" if annotation_count is None else str(annotation_count)
+        annotation_text = (
+            "—" if annotation_count is None else str(annotation_count)
+        )
 
         searchable = " ".join(
             str(value or "")
@@ -258,7 +379,10 @@ def build_index_html(results: list[dict[str, Any]], renderer_version: str) -> st
               <td>{html.escape(str(filename_meta.get("policy_mode") or ""))}</td>
               <td>{html.escape(str(filename_meta.get("prompt_mode") or ""))}</td>
               <td>{html.escape(str(item.get("model") or filename_meta.get("model_tier") or ""))}</td>
-              <td>{score_text}</td>
+              <td>{system_score_text}</td>
+              <td>{architecture_text}</td>
+              <td>{llm_text}</td>
+              <td>{input_coverage_text}</td>
               <td>{annotation_text}</td>
               <td><a href="{html.escape(str(item["html_file_name"]), quote=True)}">Open</a></td>
             </tr>
@@ -345,7 +469,10 @@ def build_index_html(results: list[dict[str, Any]], renderer_version: str) -> st
           <th>Policy</th>
           <th>Prompt</th>
           <th>Model</th>
-          <th>Score</th>
+          <th>System</th>
+          <th>Architecture</th>
+          <th>LLM</th>
+          <th>Input data</th>
           <th>Findings</th>
           <th></th>
         </tr>
@@ -449,7 +576,29 @@ def build_variant_navigation(
                 "path": path,
                 "href": f"{path.stem}.html",
                 **metadata,
-                "model": summary.get("model") or metadata.get("model_tier") or "",
+                "model": (
+                    summary.get("model")
+                    or metadata.get("model_tier")
+                    or ""
+                ),
+                "experiment_id": summary.get("experiment_id"),
+                "scores": {
+                    "overall_system_performance": summary.get(
+                        "overall_system_performance"
+                    ),
+                    "architectural_coverage": summary.get(
+                        "architectural_coverage"
+                    ),
+                    "input_data_coverage": summary.get(
+                        "input_data_coverage"
+                    ),
+                    "llm_performance": summary.get(
+                        "llm_performance"
+                    ),
+                    "reasoning": summary.get("reasoning"),
+                    "fidelity": summary.get("fidelity"),
+                    "tone": summary.get("tone"),
+                },
             }
         )
 
@@ -529,9 +678,35 @@ def build_variant_navigation(
         "dimensions": dimensions,
         "previous_href": previous_href,
         "next_href": next_href,
+        "current_variant": {
+            "company": current.get("company"),
+            "symbol": current.get("company"),
+            "model": current.get("model"),
+            "model_tier": current.get("model_tier"),
+            "context_mode": current.get("context_mode"),
+            "policy_mode": current.get("policy_mode"),
+            "prompt_mode": current.get("prompt_mode"),
+            "run": current.get("run"),
+            "experiment_id": current.get("experiment_id"),
+        },
+        "credit_memo_file_endpoint": "/credit_memo_file",
+        "current_scores": current.get("scores", {}),
+        "score_framework": {
+            "overall_label": "Overall System Performance",
+            "architecture_label": "Architectural Coverage",
+            "llm_label": "LLM Performance",
+            "input_data_label": "Input Data Coverage",
+            "llm_dimensions": [
+                "Reasoning",
+                "Fidelity",
+                "Tone",
+            ],
+            "input_data_is_scored": False,
+        },
         "note": (
-            "Scores reflect only the information and policies available to the "
-            "model in this experiment."
+            "Overall System Performance is the average of Architectural "
+            "Coverage and LLM Performance. Input Data Coverage describes the "
+            "frozen obligor test case and is not included in the system score."
         ),
     }
 
@@ -696,6 +871,27 @@ def run(args: argparse.Namespace) -> int:
         "renderer_module": str(renderer_module_path),
         "renderer_function": args.renderer_function,
         "html_renderer_version": renderer_version,
+        "score_framework": {
+            "headline_score": "overall_system_performance",
+            "system_components": [
+                "architectural_coverage",
+                "llm_performance",
+            ],
+            "llm_dimensions": [
+                "reasoning",
+                "fidelity",
+                "tone",
+            ],
+            "descriptive_metrics": [
+                "input_data_coverage",
+            ],
+            "llm_performance_formula": (
+                "(reasoning + fidelity + tone) / 3"
+            ),
+            "overall_system_performance_formula": (
+                "(architectural_coverage + llm_performance) / 2"
+            ),
+        },
         "selected_file_count": len(files),
         "processed_file_count": len(results),
         "success_count": success_count,

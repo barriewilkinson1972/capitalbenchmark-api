@@ -26,7 +26,7 @@ python scripts/run_all_credit_memo_annotations.py \
 If your parser function has a non-standard name, supply it explicitly:
 
 python scripts/run_all_credit_memo_annotations.py \
-    --parser-function parse_credit_memo \
+    --parser-function parse_markdown_to_blocks \
     --annotation-function annotate_credit_memo
 """
 
@@ -48,10 +48,6 @@ from typing import Any, Callable, Iterable
 
 DEFAULT_PARSER_FUNCTIONS = (
     "parse_markdown_to_blocks",
-    "parse_credit_memo",
-    "build_document_map",
-    "create_document_map",
-    "parse_memo",
 )
 
 DEFAULT_ANNOTATION_FUNCTIONS = (
@@ -68,11 +64,44 @@ class RunResult:
     annotation_file: str | None
     parser_version: str | None
     annotation_engine_version: str | None
-    annotation_count: int | None
-    overall_score: float | int | None
-    location_resolution_score: float | int | None
-    validation_status: str | None
     elapsed_seconds: float
+
+    # Headline score framework.
+    information_completeness: float | int | None = None
+    reasoning: float | int | None = None
+    fidelity: float | int | None = None
+    tone: float | int | None = None
+    llm_performance: float | int | None = None
+    overall_memo_quality: float | int | None = None
+
+    # Reference coverage.
+    reference_item_count: int | None = None
+    supplied_reference_item_count: int | None = None
+    missing_reference_item_count: int | None = None
+
+    # Dimension and issue summaries.
+    reasoning_issue_count: int | None = None
+    fidelity_issue_count: int | None = None
+    tone_issue_count: int | None = None
+    positive_reasoning_finding_count: int | None = None
+    critical_or_high_issue_count: int | None = None
+    factual_error_count: int | None = None
+    unsupported_claim_candidate_count: int | None = None
+    scored_annotation_count: int | None = None
+    llm_annotation_count: int | None = None
+
+    # Source attribution.
+    source_manifest_version: str | None = None
+    source_attribution_level: str | None = None
+    deterministic_section_count: int | None = None
+    deterministic_sections: str | None = None
+
+    # Operational status and backward compatibility.
+    scoring_status: str | None = None
+    annotation_count: int | None = None
+    overall_score: float | int | None = None
+    location_resolution_score: float | int | None = None
+    validation_status: str | None = None
     error_type: str | None = None
     error_message: str | None = None
 
@@ -166,88 +195,39 @@ def memo_id_from_payload(
 def call_parser(
     parser_function: Callable[..., Any],
     memo_payload: dict[str, Any],
-    fallback_memo_id: str,
 ) -> dict[str, Any]:
-    """Call common parser interfaces without coupling the runner to one module.
-
-    Supported parser styles include:
-      * parse_markdown_to_blocks(memo_id, markdown)
-      * parse_credit_memo(memo_payload)
-      * parse_credit_memo(memo_payload=...)
-      * functions accepting canonical fields by keyword
-    """
+    """Call the configured document parser using its declared interface."""
     signature = inspect.signature(parser_function)
     parameters = signature.parameters
-    parameter_names = list(parameters)
 
-    memo_id = memo_id_from_payload(memo_payload, fallback_memo_id)
+    memo_id = memo_id_from_payload(
+        memo_payload,
+        fallback_stem="unknown_memo",
+    )
     markdown = (
         memo_payload.get("memo_markdown")
         or memo_payload.get("markdown")
-        or memo_payload.get("narrative")
+        or ""
     )
 
-    if (
-        "memo_id" in parameters
-        and ("markdown" in parameters or "memo_markdown" in parameters)
-    ):
-        if not isinstance(markdown, str) or not markdown.strip():
-            raise ValueError(
-                "The parser requires Markdown, but the memo payload does not "
-                "contain a non-empty memo_markdown, markdown, or narrative field."
-            )
-
-        kwargs: dict[str, Any] = {"memo_id": memo_id}
-        if "markdown" in parameters:
-            kwargs["markdown"] = markdown
-        else:
-            kwargs["memo_markdown"] = markdown
-
-        result = parser_function(**kwargs)
-
+    if {"memo_id", "markdown"}.issubset(parameters):
+        result = parser_function(
+            memo_id=memo_id,
+            markdown=markdown,
+        )
     elif "memo_payload" in parameters:
         result = parser_function(memo_payload=memo_payload)
-
     elif "payload" in parameters:
         result = parser_function(payload=memo_payload)
-
     elif len(parameters) == 1:
         result = parser_function(memo_payload)
-
     else:
-        kwargs = {}
-        canonical_values = {
-            **memo_payload,
-            "memo_id": memo_id,
-            "markdown": markdown,
-            "memo_markdown": markdown,
-        }
-
-        for name in parameter_names:
-            if name in canonical_values:
-                kwargs[name] = canonical_values[name]
-
-        missing_required = [
-            name
-            for name, parameter in parameters.items()
-            if parameter.default is inspect.Parameter.empty
-            and parameter.kind
-            in {
-                inspect.Parameter.POSITIONAL_ONLY,
-                inspect.Parameter.POSITIONAL_OR_KEYWORD,
-                inspect.Parameter.KEYWORD_ONLY,
-            }
-            and name not in kwargs
-        ]
-
-        if missing_required:
-            raise TypeError(
-                "Could not infer how to call parser function "
-                f"{parser_function.__name__}{signature}. "
-                f"Missing required arguments: {missing_required}"
-            )
-
-        result = parser_function(**kwargs)
+        raise TypeError(
+            "Unsupported parser interface "
+            f"{parser_function.__name__}{signature}. "
+            "Expected parse_markdown_to_blocks(memo_id, markdown), "
+            "a memo_payload parameter, or one dict argument."
+        )
 
     if not isinstance(result, dict):
         raise TypeError(
@@ -255,7 +235,6 @@ def call_parser(
         )
 
     return result
-
 
 def call_annotator(
     annotation_function: Callable[..., Any],
@@ -326,13 +305,93 @@ def annotation_metrics(annotation: dict[str, Any]) -> dict[str, Any]:
     scores = annotation.get("scores") or {}
     validation = annotation.get("validation") or {}
     annotations = annotation.get("annotations") or []
+    dimension_counts = scores.get("dimension_issue_counts") or {}
+
+    source_manifest = annotation.get("source_manifest") or {}
+    deterministic_sections = source_manifest.get(
+        "deterministic_sections"
+    ) or []
+    if not isinstance(deterministic_sections, list):
+        deterministic_sections = [str(deterministic_sections)]
+
+    required_scores = (
+        "information_completeness",
+        "reasoning",
+        "fidelity",
+        "tone",
+        "llm_performance",
+        "overall_memo_quality",
+    )
+    populated_score_count = sum(
+        scores.get(field) is not None for field in required_scores
+    )
+    if populated_score_count == len(required_scores):
+        scoring_status = "complete"
+    elif populated_score_count:
+        scoring_status = "partial"
+    else:
+        scoring_status = "missing_scores"
 
     return {
         "annotation_engine_version": annotation.get(
             "annotation_engine_version"
         ),
+
+        "information_completeness": scores.get(
+            "information_completeness"
+        ),
+        "reasoning": scores.get("reasoning"),
+        "fidelity": scores.get("fidelity"),
+        "tone": scores.get("tone"),
+        "llm_performance": scores.get("llm_performance"),
+        "overall_memo_quality": scores.get("overall_memo_quality"),
+
+        "reference_item_count": scores.get("reference_item_count"),
+        "supplied_reference_item_count": scores.get(
+            "supplied_reference_item_count"
+        ),
+        "missing_reference_item_count": scores.get(
+            "missing_reference_item_count"
+        ),
+
+        "reasoning_issue_count": dimension_counts.get("reasoning"),
+        "fidelity_issue_count": dimension_counts.get("fidelity"),
+        "tone_issue_count": dimension_counts.get("tone"),
+        "positive_reasoning_finding_count": scores.get(
+            "positive_reasoning_finding_count"
+        ),
+        "critical_or_high_issue_count": scores.get(
+            "critical_or_high_issue_count"
+        ),
+        "factual_error_count": scores.get("factual_error_count"),
+        "unsupported_claim_candidate_count": scores.get(
+            "unsupported_claim_candidate_count"
+        ),
+        "scored_annotation_count": scores.get(
+            "scored_annotation_count"
+        ),
+        "llm_annotation_count": scores.get("llm_annotation_count"),
+
+        "source_manifest_version": source_manifest.get(
+            "manifest_version"
+        ),
+        "source_attribution_level": source_manifest.get(
+            "attribution_level"
+        ),
+        "deterministic_section_count": len(deterministic_sections),
+        # CSV-friendly pipe-delimited representation.
+        "deterministic_sections": "|".join(
+            str(value) for value in deterministic_sections
+        ),
+
+        "scoring_status": scoring_status,
         "annotation_count": len(annotations),
-        "overall_score": scores.get("overall_score"),
+        # Retained temporarily for consumers that still expect the old field.
+        "overall_score": (
+            scores.get("overall_score")
+            if scores.get("overall_score") is not None
+            else scores.get("llm_performance")
+        ),
         "location_resolution_score": scores.get(
             "location_resolution_score"
         ),
@@ -561,7 +620,6 @@ def main() -> int:
                 document_map = call_parser(
                     parser_function,
                     memo_payload,
-                    fallback_memo_id=memo_file.stem,
                 )
                 write_json(map_path, document_map)
                 print("  Document map: generated")
@@ -613,22 +671,87 @@ def main() -> int:
                     annotation_engine_version=metrics[
                         "annotation_engine_version"
                     ],
+                    elapsed_seconds=round(elapsed, 4),
+
+                    information_completeness=metrics[
+                        "information_completeness"
+                    ],
+                    reasoning=metrics["reasoning"],
+                    fidelity=metrics["fidelity"],
+                    tone=metrics["tone"],
+                    llm_performance=metrics["llm_performance"],
+                    overall_memo_quality=metrics[
+                        "overall_memo_quality"
+                    ],
+
+                    reference_item_count=metrics[
+                        "reference_item_count"
+                    ],
+                    supplied_reference_item_count=metrics[
+                        "supplied_reference_item_count"
+                    ],
+                    missing_reference_item_count=metrics[
+                        "missing_reference_item_count"
+                    ],
+
+                    reasoning_issue_count=metrics[
+                        "reasoning_issue_count"
+                    ],
+                    fidelity_issue_count=metrics[
+                        "fidelity_issue_count"
+                    ],
+                    tone_issue_count=metrics["tone_issue_count"],
+                    positive_reasoning_finding_count=metrics[
+                        "positive_reasoning_finding_count"
+                    ],
+                    critical_or_high_issue_count=metrics[
+                        "critical_or_high_issue_count"
+                    ],
+                    factual_error_count=metrics[
+                        "factual_error_count"
+                    ],
+                    unsupported_claim_candidate_count=metrics[
+                        "unsupported_claim_candidate_count"
+                    ],
+                    scored_annotation_count=metrics[
+                        "scored_annotation_count"
+                    ],
+                    llm_annotation_count=metrics[
+                        "llm_annotation_count"
+                    ],
+
+                    source_manifest_version=metrics[
+                        "source_manifest_version"
+                    ],
+                    source_attribution_level=metrics[
+                        "source_attribution_level"
+                    ],
+                    deterministic_section_count=metrics[
+                        "deterministic_section_count"
+                    ],
+                    deterministic_sections=metrics[
+                        "deterministic_sections"
+                    ],
+
+                    scoring_status=metrics["scoring_status"],
                     annotation_count=metrics["annotation_count"],
                     overall_score=metrics["overall_score"],
                     location_resolution_score=metrics[
                         "location_resolution_score"
                     ],
                     validation_status=validation_status,
-                    elapsed_seconds=round(elapsed, 4),
                 )
             )
 
             print(
                 "  Result: success; "
-                f"annotations={metrics['annotation_count']}; "
-                f"score={metrics['overall_score']}; "
-                f"locations={metrics['location_resolution_score']}; "
-                f"validation={validation_status}; "
+                f"memo_quality={metrics['overall_memo_quality']}; "
+                f"completeness={metrics['information_completeness']}; "
+                f"llm={metrics['llm_performance']}; "
+                f"R/F/T={metrics['reasoning']}/"
+                f"{metrics['fidelity']}/{metrics['tone']}; "
+                f"issues={metrics['scored_annotation_count']}; "
+                f"status={metrics['scoring_status']}; "
                 f"{elapsed:.2f}s"
             )
 
@@ -649,11 +772,12 @@ def main() -> int:
                     ),
                     parser_version=None,
                     annotation_engine_version=None,
+                    elapsed_seconds=round(elapsed, 4),
+                    scoring_status="annotation_error",
                     annotation_count=None,
                     overall_score=None,
                     location_resolution_score=None,
                     validation_status=None,
-                    elapsed_seconds=round(elapsed, 4),
                     error_type=type(exc).__name__,
                     error_message=str(exc),
                 )
@@ -673,7 +797,7 @@ def main() -> int:
 
     run_manifest = {
         "run_schema": "credit_memo_batch_annotation_run",
-        "run_schema_version": "1.0.0",
+        "run_schema_version": "1.1.0",
         "started_at_utc": started_at,
         "completed_at_utc": completed_at,
         "elapsed_seconds": round(total_elapsed, 4),
@@ -687,6 +811,26 @@ def main() -> int:
         "annotation_module": str(annotation_module_path),
         "annotation_function": annotation_function.__name__,
         "annotation_engine_version": annotation_engine_version,
+        "score_framework": {
+            "headline_fields": [
+                "overall_memo_quality",
+                "information_completeness",
+                "llm_performance",
+                "reasoning",
+                "fidelity",
+                "tone",
+            ],
+            "llm_performance_formula": (
+                "(reasoning + fidelity + tone) / 3"
+            ),
+            "overall_memo_quality_formula": (
+                "(information_completeness + llm_performance) / 2"
+            ),
+            "source_attribution": (
+                "Only LLM-attributed content is eligible for "
+                "LLM-performance deductions."
+            ),
+        },
         "selected_file_count": len(memo_files),
         "processed_file_count": len(results),
         "success_count": success_count,

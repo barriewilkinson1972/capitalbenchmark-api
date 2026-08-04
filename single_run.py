@@ -50,12 +50,12 @@ from typing import Any
 import requests
 
 
-DEFAULT_CONTEXT_MODES = ["identity_only", "rating_only", "financials_only", "rating_and_financials", "full"]
-DEFAULT_POLICY_MODES = ["none", "llm_evaluated", "deterministic_evaluated"]
-DEFAULT_PROMPT_MODES = ["tight", "loose"]
-DEFAULT_MODEL_TIERS = ["gpt5"]
+DEFAULT_CONTEXT_MODES = ["identity_only"]
+DEFAULT_POLICY_MODES = ["none"]
+DEFAULT_PROMPT_MODES = ["loose"]
+DEFAULT_MODEL_TIERS = ["mini"]
 
-DEFAULT_SYMBOLS = ["BBY", "AMGN", "AAL"]
+DEFAULT_SYMBOLS = ["AAL"]
 
 DEFAULT_CREDIT_REQUEST = {
     "requested_increase_usd": 100_000_000,

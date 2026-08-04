@@ -21,7 +21,7 @@ DEFAULT_CREDIT_MEMO_MODEL_FULL = os.getenv("OPENAI_CREDIT_MEMO_MODEL_FULL", "gpt
 DEFAULT_CREDIT_MEMO_MODEL = os.getenv("OPENAI_CREDIT_MEMO_MODEL", DEFAULT_CREDIT_MEMO_MODEL_MINI)
 DEFAULT_RATING_CONTEXT_PATH = os.getenv(
     "OBLIGOR_RATING_CONTEXT_PATH",
-    "market_data/obligor_rating_context.parquet",
+    "market_data/obligor_rating_context_with_test_cases.csv",
 )
 
 DEFAULT_CREDIT_POLICY_PATH = os.getenv(
@@ -470,7 +470,7 @@ def resolve_credit_memo_model(model: str | None = None, model_tier: str = "mini"
 def _policy_mode_description(policy_mode: str) -> str:
     policy_mode = _normalise_policy_mode(policy_mode)
     if policy_mode == "deterministic_evaluated":
-        return "LLM sees the machine-readable policy manual and the backend deterministic policy evaluation."
+        return "LLM sees the machine-readable policy manual but not the backend. Deterministic policy evaluation; policy findings are rendered deterministically by the backend."
     if policy_mode == "llm_evaluated":
         return "LLM sees the machine-readable policy manual but not the deterministic policy evaluation; the model must identify applicable policy breaches itself."
     return "LLM sees neither the credit policy manual nor the deterministic policy evaluation."
@@ -799,6 +799,217 @@ def format_multiple(value: Any) -> str:
     return f"{number:.1f}x"
 
 
+
+# -----------------------------
+# Benchmark test-case coverage
+# -----------------------------
+
+BENCHMARK_REFERENCE_CATALOGUE_VERSION = "2.0.0"
+
+BENCHMARK_REFERENCE_ITEMS: tuple[dict[str, str], ...] = (
+    {"item_id": "REF-001", "visibility": "always", "status_column": "test_obligor_name_status"},
+    {"item_id": "REF-002", "visibility": "always", "status_column": "test_symbol_status"},
+    {"item_id": "REF-003", "visibility": "always", "status_column": "test_country_status"},
+    {"item_id": "REF-004", "visibility": "always", "status_column": "test_industry_status"},
+    {"item_id": "REF-005", "visibility": "always", "status_column": "test_business_summary_status"},
+    {"item_id": "REF-006", "visibility": "always", "status_column": "test_facility_type_status"},
+    {"item_id": "REF-007", "visibility": "always", "status_column": "test_requested_increase_usd_status"},
+    {"item_id": "REF-008", "visibility": "always", "status_column": "test_facility_purpose_status"},
+    {"item_id": "REF-009", "visibility": "always", "status_column": "test_existing_exposure_usd_status"},
+    {"item_id": "REF-010", "visibility": "always", "status_column": "test_tenor_years_status"},
+    {"item_id": "REF-011", "visibility": "always", "status_column": "test_secured_status"},
+    {"item_id": "REF-012", "visibility": "always", "status_column": "test_seniority_status"},
+    {"item_id": "REF-013", "visibility": "financials", "status_column": "test_total_revenue_usd_status"},
+    {"item_id": "REF-014", "visibility": "financials", "status_column": "test_ebitda_usd_status"},
+    {"item_id": "REF-015", "visibility": "financials", "status_column": "test_total_debt_usd_status"},
+    {"item_id": "REF-016", "visibility": "financials", "status_column": "test_net_debt_usd_status"},
+    {"item_id": "REF-017", "visibility": "financials", "status_column": "test_total_cash_usd_status"},
+    {"item_id": "REF-018", "visibility": "financials", "status_column": "test_debt_to_ebitda_status"},
+    {"item_id": "REF-019", "visibility": "financials", "status_column": "test_net_debt_to_ebitda_status"},
+    {"item_id": "REF-020", "visibility": "rating", "status_column": "test_cb_rating_status"},
+    {"item_id": "REF-021", "visibility": "rating", "status_column": "test_cb_pd_status"},
+    {"item_id": "REF-022", "visibility": "expected_loss", "status_column": "derived_expected_loss_status"},
+)
+
+POLICY_REFERENCE_ITEM_IDS: tuple[str, ...] = tuple(
+    f"POL-{index:03d}" for index in range(1, 11)
+)
+
+
+def _status_is_available(value: Any) -> bool:
+    return str(value or "").strip().lower() == "available"
+
+
+def _benchmark_value(
+    row: dict[str, Any],
+    test_column: str,
+    status_column: str,
+) -> Any:
+    """Return the frozen benchmark value only when its status is available."""
+    if not _status_is_available(row.get(status_column)):
+        return None
+    return row.get(test_column)
+
+
+def _benchmark_credit_request_from_row(
+    row: dict[str, Any],
+) -> dict[str, Any]:
+    """Build the frozen synthetic facility request for one obligor test case."""
+    return {
+        "request_type": "preliminary_credit_assessment",
+        "existing_exposure_usd": _benchmark_value(
+            row,
+            "test_existing_exposure_usd",
+            "test_existing_exposure_usd_status",
+        ),
+        "requested_increase_usd": _benchmark_value(
+            row,
+            "test_requested_increase_usd",
+            "test_requested_increase_usd_status",
+        ),
+        "proposed_exposure_usd": _benchmark_value(
+            row,
+            "test_proposed_exposure_usd",
+            "test_proposed_exposure_usd_status",
+        ),
+        "facility_type": _benchmark_value(
+            row,
+            "test_facility_type",
+            "test_facility_type_status",
+        ),
+        "purpose": _benchmark_value(
+            row,
+            "test_facility_purpose",
+            "test_facility_purpose_status",
+        ),
+        "tenor_years": _benchmark_value(
+            row,
+            "test_tenor_years",
+            "test_tenor_years_status",
+        ),
+        "secured": _benchmark_value(
+            row,
+            "test_secured",
+            "test_secured_status",
+        ),
+        "seniority": _benchmark_value(
+            row,
+            "test_seniority",
+            "test_seniority_status",
+        ),
+        "relationship_context": _benchmark_value(
+            row,
+            "test_relationship_context",
+            "test_relationship_context_status",
+        ),
+        "currency": _benchmark_value(
+            row,
+            "test_currency",
+            "test_currency_status",
+        ) or "USD",
+    }
+
+
+def _input_data_coverage(row: dict[str, Any]) -> dict[str, Any]:
+    """Measure availability of the 22 frozen obligor/facility reference facts."""
+    item_statuses: list[dict[str, Any]] = []
+
+    for item in BENCHMARK_REFERENCE_ITEMS:
+        status_column = item["status_column"]
+
+        if status_column == "derived_expected_loss_status":
+            available = (
+                _status_is_available(row.get("test_cb_pd_status"))
+                and _status_is_available(
+                    row.get("test_proposed_exposure_usd_status")
+                )
+            )
+        else:
+            available = _status_is_available(row.get(status_column))
+
+        item_statuses.append({
+            "item_id": item["item_id"],
+            "status": "available" if available else "unavailable",
+        })
+
+    available_count = sum(
+        item["status"] == "available" for item in item_statuses
+    )
+    total_count = len(item_statuses)
+
+    return {
+        "catalogue_version": BENCHMARK_REFERENCE_CATALOGUE_VERSION,
+        "available_item_count": available_count,
+        "unavailable_item_count": total_count - available_count,
+        "total_item_count": total_count,
+        "coverage_pct": round(100 * available_count / total_count, 1),
+        "item_statuses": item_statuses,
+    }
+
+
+def _architectural_coverage(
+    context_mode: str,
+    policy_mode: str,
+) -> dict[str, Any]:
+    """Measure reference slots intentionally exposed by the architecture."""
+    context_mode = _normalise_context_profile(context_mode)
+    policy_mode = _normalise_policy_mode(policy_mode)
+
+    visible_fact_ids: list[str] = []
+    for item in BENCHMARK_REFERENCE_ITEMS:
+        visibility = item["visibility"]
+        visible = (
+            visibility == "always"
+            or (
+                visibility == "financials"
+                and context_mode in {
+                    "financials_only",
+                    "rating_and_financials",
+                    "full",
+                }
+            )
+            or (
+                visibility == "rating"
+                and context_mode in {
+                    "rating_only",
+                    "rating_and_financials",
+                    "full",
+                }
+            )
+            or (
+                visibility == "expected_loss"
+                and context_mode == "full"
+            )
+        )
+        if visible:
+            visible_fact_ids.append(item["item_id"])
+
+    visible_policy_ids = (
+        list(POLICY_REFERENCE_ITEM_IDS)
+        if policy_mode in {
+            "llm_evaluated",
+            "deterministic_evaluated",
+        }
+        else []
+    )
+
+    visible_ids = visible_fact_ids + visible_policy_ids
+    total_count = len(BENCHMARK_REFERENCE_ITEMS) + len(
+        POLICY_REFERENCE_ITEM_IDS
+    )
+
+    return {
+        "catalogue_version": BENCHMARK_REFERENCE_CATALOGUE_VERSION,
+        "covered_item_count": len(visible_ids),
+        "uncovered_item_count": total_count - len(visible_ids),
+        "total_item_count": total_count,
+        "coverage_pct": round(100 * len(visible_ids) / total_count, 1),
+        "covered_item_ids": visible_ids,
+        "covered_fact_item_ids": visible_fact_ids,
+        "covered_policy_item_ids": visible_policy_ids,
+    }
+
+
 # -----------------------------
 # Data loading and row lookup
 # -----------------------------
@@ -810,6 +1021,8 @@ def load_rating_context(path: str = DEFAULT_RATING_CONTEXT_PATH) -> pd.DataFrame
     if not file_path.exists():
         # Convenience fallbacks for local/prod layouts.
         candidates = [
+            Path("market_data/obligor_rating_context_with_test_cases.csv"),
+            Path("data/obligor_rating_context_with_test_cases.csv"),
             Path("data/obligor_rating_context.parquet"),
             Path("market_data/obligor_rating_context.csv"),
             Path("data/obligor_rating_context.csv"),
@@ -821,7 +1034,10 @@ def load_rating_context(path: str = DEFAULT_RATING_CONTEXT_PATH) -> pd.DataFrame
         else:
             raise FileNotFoundError(
                 f"Could not find obligor rating context file. Tried: {path}, "
-                "data/obligor_rating_context.parquet, market_data/obligor_rating_context.csv, "
+                "market_data/obligor_rating_context_with_test_cases.csv, "
+                "data/obligor_rating_context_with_test_cases.csv, "
+                "data/obligor_rating_context.parquet, "
+                "market_data/obligor_rating_context.csv, "
                 "and data/obligor_rating_context.csv."
             )
 
@@ -1200,9 +1416,25 @@ def build_credit_memo_context(
     lgd: float = 0.45,
 ) -> dict[str, Any]:
     row = get_obligor_rating_row(symbol, rating_context_path)
-    credit_request = dict(credit_request or {})
 
-    cb_pd = _safe_float(_first_present(row, "CB pd", "cb_pd", "CB_pd"))
+    frozen_request = _benchmark_credit_request_from_row(row)
+    explicit_request = dict(credit_request or {})
+    credit_request = {
+        **frozen_request,
+        **{
+            key: value
+            for key, value in explicit_request.items()
+            if value is not None
+        },
+    }
+
+    cb_pd = _safe_float(
+        _benchmark_value(
+            row,
+            "test_cb_pd",
+            "test_cb_pd_status",
+        )
+    )
     proposed_exposure = _proposed_exposure(credit_request)
     requested_increase = _safe_float(credit_request.get("requested_increase_usd"))
     lgd = _safe_float(credit_request.get("lgd"), lgd) or 0.45
@@ -1243,12 +1475,15 @@ def build_credit_memo_context(
         "memo_version": "credit_memo_v2",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "borrower": {
-            "symbol": _clean_text(row.get("symbol")),
-            "company_name": _clean_text(row.get("company_name")),
-            "business_summary": _truncate(row.get("longBusinessSummary"), 1500),
-            "industry": _clean_text(row.get("industry")),
-            "sector": _clean_text(row.get("sector")),
-            "country": _clean_text(row.get("country")),
+            "symbol": _clean_text(row.get("test_symbol")),
+            "company_name": _clean_text(row.get("test_obligor_name")),
+            "business_summary": _truncate(
+                row.get("test_business_summary"),
+                1500,
+            ),
+            "industry": _clean_text(row.get("test_industry")),
+            "sector": _clean_text(row.get("test_sector")),
+            "country": _clean_text(row.get("test_country")),
             "is_rated_obligor": _safe_bool(row.get("is_rated_obligor")),
         },
         "credit_request": {
@@ -1267,7 +1502,13 @@ def build_credit_memo_context(
         "capital_benchmark_rating": {
             "model_version": _clean_text(row.get("rating_model_version")),
             "model_type": _clean_text(row.get("rating_model_type")),
-            "cb_rating": _clean_text(row.get("cb_rating")),
+            "cb_rating": _clean_text(
+                _benchmark_value(
+                    row,
+                    "test_cb_rating",
+                    "test_cb_rating_status",
+                )
+            ),
             "cb_pd": cb_pd,
             "cb_pd_percent": cb_pd * 100 if cb_pd is not None else None,
             "cb_rating_num_raw": _safe_float(row.get("cb_rating_num_raw")),
@@ -1278,11 +1519,41 @@ def build_credit_memo_context(
             "scored_with_imputation": _safe_bool(row.get("scored_with_imputation")),
         },
         "financials": {
-            "total_debt_usd": _safe_float(row.get("totalDebt_usd")),
-            "total_revenue_usd": _safe_float(row.get("totalRevenue_usd")),
-            "total_cash_usd": _safe_float(row.get("totalCash_usd")),
-            "net_debt_usd": _safe_float(row.get("net_debt_usd")),
-            "ebitda_usd": _safe_float(row.get("ebitda_usd")),
+            "total_debt_usd": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_total_debt_usd",
+                    "test_total_debt_usd_status",
+                )
+            ),
+            "total_revenue_usd": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_total_revenue_usd",
+                    "test_total_revenue_usd_status",
+                )
+            ),
+            "total_cash_usd": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_total_cash_usd",
+                    "test_total_cash_usd_status",
+                )
+            ),
+            "net_debt_usd": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_net_debt_usd",
+                    "test_net_debt_usd_status",
+                )
+            ),
+            "ebitda_usd": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_ebitda_usd",
+                    "test_ebitda_usd_status",
+                )
+            ),
             "market_cap_usd": _safe_float(row.get("marketCap_usd")),
             "enterprise_value_usd": _safe_float(row.get("enterpriseValue_usd")),
             "net_income_to_common_usd": _safe_float(row.get("netIncomeToCommon_usd")),
@@ -1290,9 +1561,21 @@ def build_credit_memo_context(
         "credit_metrics": {
             "profit_margin": _safe_float(row.get("profitMargins")),
             "debt_to_revenue": _safe_float(row.get("debt_to_revenue")),
-            "debt_to_ebitda": _safe_float(row.get("debt_to_ebitda")),
+            "debt_to_ebitda": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_debt_to_ebitda",
+                    "test_debt_to_ebitda_status",
+                )
+            ),
             "cash_to_debt": _safe_float(row.get("cash_to_debt")),
-            "net_debt_to_ebitda": _safe_float(row.get("net_debt_to_ebitda")),
+            "net_debt_to_ebitda": _safe_float(
+                _benchmark_value(
+                    row,
+                    "test_net_debt_to_ebitda",
+                    "test_net_debt_to_ebitda_status",
+                )
+            ),
             "relative_debt": _safe_float(row.get("relative_debt")),
             "annual_vol_5y": _safe_float(row.get("annual_vol_5y")),
         },
@@ -1324,6 +1607,16 @@ def build_credit_memo_context(
             "scored_with_imputation": _safe_bool(row.get("scored_with_imputation")),
             "rating_context_quality": _clean_text(row.get("rating_context_quality")),
             "warnings": [],
+        },
+        "benchmark_test_case": {
+            "test_case_id": _clean_text(row.get("test_case_id")),
+            "data_schema_version": _clean_text(
+                row.get("test_data_schema_version")
+            ),
+            "generation_seed": _safe_float(
+                row.get("test_data_generation_seed")
+            ),
+            "input_data_coverage": _input_data_coverage(row),
         },
     }
 
@@ -1371,8 +1664,8 @@ def build_llm_context(
     if policy_mode == "deterministic_evaluated":
         if memo_context.get("credit_policy") is not None:
             llm_context["credit_policy"] = memo_context.get("credit_policy")
-        if memo_context.get("policy_evaluation") is not None:
-            llm_context["policy_evaluation"] = memo_context.get("policy_evaluation")
+        # Deterministic policy findings are rendered by the backend.
+        llm_context.pop("policy_evaluation", None)
     elif policy_mode == "llm_evaluated":
         if memo_context.get("credit_policy") is not None:
             llm_context["credit_policy"] = memo_context.get("credit_policy")
@@ -1639,14 +1932,22 @@ def create_credit_memo(
         "prompt_mode": prompt_mode,
         "model_tier": model_tier,
         "model": selected_model,
+        "architectural_coverage": _architectural_coverage(
+            context_mode,
+            policy_mode,
+        ),
+        "input_data_coverage": (
+            memo_context.get("benchmark_test_case", {})
+            .get("input_data_coverage")
+        ),
         "llm_sees_full_deterministic_context": all(resolved_visibility.values()),
         "llm_sees_credit_policy": policy_mode in {"llm_evaluated", "deterministic_evaluated"},
-        "llm_sees_policy_evaluation": policy_mode == "deterministic_evaluated",
+        "llm_sees_policy_evaluation": False,
         "policy_mode_description": _policy_mode_description(policy_mode),
         "llm_uses_tight_prompt": prompt_mode == "tight",
         "model_tier_description": (
             "GPT-5 model selected for benchmark generation."
-            if model_tier == "full"
+            if model_tier == "gpt5"
             else "Mini GPT model selected for lower-cost benchmark generation."
         ),
     }
@@ -1660,6 +1961,14 @@ def create_credit_memo(
         model_tier=model_tier,
         experiment_id=experiment_config["experiment_id"],
         visibility_overrides=visibility_overrides,
+    )
+
+    experiment_config["llm_sees_credit_policy"] = (
+    "credit_policy" in llm_context
+    )
+
+    experiment_config["llm_sees_policy_evaluation"] = (
+        "policy_evaluation" in llm_context
     )
 
     api_key_present = bool(os.getenv("OPENAI_API_KEY"))
@@ -1678,7 +1987,7 @@ def create_credit_memo(
             fallback_reason = f"openai_error: {type(exc).__name__}: {exc}"
             if require_openai:
                 raise
-            narrative = fallback_credit_memo_narrative(memo_context)
+            narrative = fallback_credit_memo_narrative(llm_context)
     else:
         if not use_openai:
             fallback_reason = "openai_disabled"
@@ -1686,7 +1995,7 @@ def create_credit_memo(
             fallback_reason = "missing_openai_api_key"
         if require_openai:
             raise RuntimeError(f"OpenAI narrative required but unavailable: {fallback_reason}")
-        narrative = fallback_credit_memo_narrative(memo_context)
+        narrative = fallback_credit_memo_narrative(llm_context)
 
     display_context = build_memo_display_context(
         memo_context=memo_context,
@@ -1694,6 +2003,19 @@ def create_credit_memo(
         policy_mode=policy_mode,
         visibility_overrides=visibility_overrides,
     )
+
+    experiment_config["supplied_reference_items"] = [
+        k for k,v in resolved_visibility.items() if v
+    ]
+    experiment_config["supplied_policy_rules"] = []
+    experiment_config["deterministic_sections"] = []
+    if policy_mode in {"llm_evaluated","deterministic_evaluated"}:
+        cp=memo_context.get("credit_policy",{})
+        experiment_config["supplied_policy_rules"]=[
+            r.get("policy_id") for r in cp.get("rules",[])
+        ]
+    if policy_mode=="deterministic_evaluated":
+        experiment_config["deterministic_sections"]=["policy_assessment"]
 
     markdown = render_credit_memo_markdown(display_context, narrative, experiment_config=experiment_config)
 
@@ -1712,18 +2034,41 @@ def create_credit_memo(
         "benchmark_metadata": {
             "section_generation_specs": SECTION_GENERATION_SPECS,
             "information_boundary": {
-                "facts_hidden_from_llm_are_hidden_from_memo": True,
-                "deterministic_tables_use_only_llm_visible_facts": True,
+                "facts_hidden_from_llm_are_hidden_from_llm_prose": True,
+                "deterministic_sections_rendered_by_backend": True,
                 "generation_method_is_excluded_from_memo_prose": True,
             },
             "score_framework": {
-                "llm_performance_score": {
-                    "status": "not_scored",
-                    "purpose": "Evaluate the model's prose, reasoning and uncertainty handling given its visible information.",
+                "architectural_coverage": {
+                    "status": "calculated",
+                    "value": experiment_config[
+                        "architectural_coverage"
+                    ],
+                    "purpose": (
+                        "Measure the proportion of benchmark reference slots "
+                        "intentionally exposed by the system architecture."
+                    ),
                 },
-                "memo_quality_score": {
+                "input_data_coverage": {
+                    "status": "calculated",
+                    "value": experiment_config[
+                        "input_data_coverage"
+                    ],
+                    "purpose": (
+                        "Describe availability of frozen obligor and facility "
+                        "inputs. This is test-case metadata and is not part of "
+                        "the system score."
+                    ),
+                },
+                "llm_performance": {
                     "status": "not_scored",
-                    "purpose": "Evaluate the final memo's completeness, accuracy and usefulness for credit decision support.",
+                    "formula": "(reasoning + fidelity + tone) / 3",
+                },
+                "overall_system_performance": {
+                    "status": "not_scored",
+                    "formula": (
+                        "(architectural_coverage + llm_performance) / 2"
+                    ),
                 },
             },
         },
